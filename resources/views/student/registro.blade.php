@@ -3,13 +3,14 @@
 @section('content')
 
 <div class="mt-0 text-left bg-white shadow-md rounded-lg p-6">
-    <h1 class="text-2xl font-bold text-[#e72352] mb-4">
-        ¡Bienvenido, Victor Sinche!
-    </h1>
-    <p class="text-gray-600 text-lg">
-        Por favor, complete el siguiente registro para continuar.
-    </p>
+  <h1 class="text-2xl font-bold text-[#e72352] mb-4">
+      ¡Hola, Victor Sinche!
+  </h1>
+  <p class="text-gray-600 text-lg">
+      Por favor, revisa cuidadosamente la información que se muestra a continuación. Si detectas algún error, actualízala antes de continuar con el proceso.
+  </p>
 </div>
+
 
 <!-- Tabs Header -->
 <div class="border-b border-gray-200 mt-5">
@@ -20,14 +21,14 @@
         Datos del interesado
       </button>
     </li>
-    <li class="me-2">
+    {{-- <li class="me-2">
       <button type="button" data-tab="uploaddoc"
         class="tab-link inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">
         Procedencia del interesado
       </button>
-    </li>
+    </li> --}}
     <li class="me-2">
-      <button type="button" data-tab="firmardoc"
+      <button type="button" data-tab="postulacion"
         class="tab-link inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">
         Postulacion del interesado
       </button>
@@ -55,8 +56,8 @@
   </div>
 
   <!-- Firmar Documentos -->
-  <div id="tab-firmardoc" class="tab-content hidden">
-    @include('student.firmardoc')
+  <div id="tab-postulacion" class="tab-content hidden">
+    @include('student.postulacion')
   </div>
 
 </div>
