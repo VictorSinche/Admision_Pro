@@ -1,84 +1,77 @@
-<form action="" class="form bg-white p-6 rounded-md shadow-sm">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-  
-      <!-- Tipo de Documento -->
-      <div>
-        <select id="tipoDocumento" name="tipoDocumento" class="border p-2 w-full rounded-md">
-          <option value="">Seleccione...</option>
-          <option value="dni">DNI</option>
-          <option value="ce">Carnet de Extranjería</option>
-          <option value="pasaporte">Pasaporte</option>
-        </select>
-      </div>
-  
-      <!-- Número de Documento -->
-      <div>
-        <input type="text" id="nroDocumento" name="nroDocumento" placeholder="Ej: 12345678"
-          class="border p-2 w-full rounded-md">
-      </div>
-  
-      <!-- Nombres -->
-      <div>
-        <input type="text" id="nombres" name="nombres" placeholder="Tus nombres"
-          class="border p-2 w-full rounded-md">
-      </div>
-  
-      <!-- Apellido Paterno -->
-      <div>
-        <input type="text" id="apellidoPaterno" name="apellidoPaterno" placeholder="Ej: Torres"
-          class="border p-2 w-full rounded-md">
-      </div>
-  
-      <!-- Apellido Materno -->
-      <div>
-        <input type="text" id="apellidoMaterno" name="apellidoMaterno" placeholder="Ej: Vargas"
-          class="border p-2 w-full rounded-md">
-      </div>
-  
-      <!-- Correo -->
-      <div>
-        <input type="email" id="correo" name="correo" placeholder="tucorreo@email.com"
-          class="border p-2 w-full rounded-md">
-      </div>
-  
-      <!-- Dirección -->
-      <div>
-        <input type="text" id="direccion" name="direccion" placeholder="Tu dirección"
-          class="border p-2 w-full rounded-md">
-      </div>
-  
-      <!-- Sexo -->
-      <div>
-        <select id="sexo" name="sexo" class="border p-2 w-full rounded-md">
-          <option value="">Seleccione...</option>
+<!-- Estilo base reutilizable para cada input -->
+@php
+    $inputClass = "placeholder-gray-400 text-sm p-2 px-3 w-full text-gray-800 border border-gray-200 rounded focus:outline-none focus:border-black transition duration-200";
+@endphp
+
+<!-- Tipo Documento y Nro Documento -->
+<div class="flex flex-col md:flex-row gap-4">
+  <div class="w-full mx-2 flex-1">
+      <select class="{{ $inputClass }}">
+          <option value="" disabled selected>Tipo Documento</option>
+          <option value="DNI">DNI</option>
+          <option value="CE">Carné de Extranjería</option>
+          <option value="Pasaporte">Pasaporte</option>
+          <option value="Otro">Otro</option>
+      </select>
+  </div>
+  <div class="w-full mx-2 flex-1">
+      <input type="text" placeholder="Nro. Documento" class="{{ $inputClass }}">
+  </div>
+</div>
+
+<!-- Nombres -->
+<div class="mt-4 mx-2">
+  <input type="text" placeholder="Nombres" class="{{ $inputClass }}">
+</div>
+
+<!-- Apellido Paterno y Apellido Materno -->
+<div class="flex flex-col md:flex-row gap-4 mt-4">
+  <div class="w-full mx-2 flex-1">
+      <input type="text" placeholder="Apellido Paterno" class="{{ $inputClass }}">
+  </div>
+  <div class="w-full mx-2 flex-1">
+      <input type="text" placeholder="Apellido Materno" class="{{ $inputClass }}">
+  </div>
+</div>
+
+<!-- Correo -->
+<div class="mt-4 mx-2">
+  <input type="email" placeholder="Correo Electrónico" class="{{ $inputClass }}">
+</div>
+
+<!-- Dirección -->
+<div class="mt-4 mx-2">
+  <input type="text" placeholder="Dirección" class="{{ $inputClass }}">
+</div>
+
+<!-- Sexo y Fecha de Nacimiento -->
+<div class="flex flex-col md:flex-row gap-4 mt-4">
+  <div class="w-full mx-2 flex-1">
+      <select class="{{ $inputClass }}">
+          <option value="" disabled selected>Sexo</option>
           <option value="M">Masculino</option>
           <option value="F">Femenino</option>
           <option value="O">Otro</option>
-        </select>
-      </div>
-  
-      <!-- Fecha de Nacimiento -->
-      <div>
-        <input type="date" id="fechaNacimiento" name="fechaNacimiento"
-          class="border p-2 w-full rounded-md">
-      </div>
-  
-      <!-- Distrito -->
-      <div>
-        <select id="distrito" name="distrito" class="border p-2 w-full rounded-md">
-          <option value="">Seleccione...</option>
-          <option value="SJM">San Juan de Miraflores</option>
-          <option value="SJL">San Juan de Lurigancho</option>
-          <option value="SMP">San Martín de Porres</option>
-        </select>
-      </div>
-  
-      <!-- Celular -->
-      <div>
-        <input type="tel" id="celular" name="celular" placeholder="Ej: 987654321"
-          class="border p-2 w-full rounded-md">
-      </div>
-  
-    </div>
-  </form>
-  
+      </select>
+  </div>
+  <div class="w-full mx-2 flex-1">
+      <input type="date" placeholder="Fecha de Nacimiento" class="{{ $inputClass }}">
+  </div>
+</div>
+
+<!-- Distrito -->
+<div class="mt-4 mx-2">
+  <select class="{{ $inputClass }}">
+      <option value="" disabled selected>Seleccione Distrito</option>
+      <option value="San Juan de Lurigancho">San Juan de Lurigancho</option>
+      <option value="Ate">Ate</option>
+      <option value="San Borja">San Borja</option>
+      <option value="La Molina">La Molina</option>
+      <option value="Otros">Otros</option>
+  </select>
+</div>
+
+<!-- Celular -->
+<div class="mt-4 mx-2 mb-4">
+  <input type="text" placeholder="Celular" class="{{ $inputClass }}">
+</div>
