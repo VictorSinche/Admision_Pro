@@ -15,9 +15,14 @@
 
 <div class="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
   <h1 class="text-2xl font-bold text-black mb-6">Adjunta tus documentos</h1>
+
   <p class="text-gray-600 text-base mb-6">
-    Adjunta cada uno de los siguientes archivos requeridos. Coloque el mouse encima de <i class="fa-solid fa-circle-info text-blue-500"></i> para ver más información.
+    Documentos requeridos para la modalidad <span class="font-semibold text-[#e72352]">Primeros Puestos</span>.
+    Pasa el mouse sobre <i class="fa-solid fa-circle-info text-blue-500"></i> para más detalles.
   </p>
+
+  <hr class="my-4 border-t border-gray-300" />
+
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Campo 1 -->

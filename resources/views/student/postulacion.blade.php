@@ -27,7 +27,7 @@
   </div>
   <div class="w-full mx-2 flex-1">
     <select class="{{ $inputClass }}">
-        <option value="" disabled selected>Tipo Documento</option>
+        <option value="" disabled selected>Tipo de institucion</option>
         <option value="0">Particular</option>
         <option value="1">Estatal</option>
     </select>
@@ -68,12 +68,33 @@
 
 <div class="mt-4 mx-2">
   <select class="{{ $inputClass }}">
-      <option value="" disabled selected>Seleccione el Programa de Interés *</option>
+      <option value="" disabled selected>Seleccione el Programa de Interés</option>
       <option value="1">ENFERMERÍA</option>
       <option value="2">FARMACIA Y BIOQUÍMICA</option>
       <option value="3">NUTRICIÓN Y DIETÉTICA</option>
       <option value="4">PSICOLOGÍA</option>
       <option value="5">TECNOLOGÍA MÉDICA EN TERAPIA FÍSICA Y REHABILITACIÓN</option>
+  </select>
+</div>
+
+<div class="mt-4 mx-2">
+  <select class="{{ $inputClass }}">
+      <option value="" disabled selected>¿Como se entero del proceso de admision?</option>
+      <option value="1">TELEVISION</option>
+      <option value="2">PANELES</option>
+      <option value="3">INTERNET</option>
+      <option value="4">POR AMIGOS</option>
+      <option value="5">OTRAS</option>
+      <option value="1">VOLANTES</option>
+      <option value="2">ASESOR</option>
+      <option value="3">FACEBOOK</option>
+      <option value="4">FERIAS VOCACIONALES</option>
+      <option value="5">GOOGLE</option>
+      <option value="5">INSTAGRAM</option>
+      <option value="5">PAGINA WEB</option>
+      <option value="5">TIKTOK</option>
+      <option value="5">GOOGLE</option>
+      <option value="5">TRAE UN AMIGO</option>
   </select>
 </div>
 

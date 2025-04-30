@@ -62,7 +62,7 @@
 <!-- Distrito -->
 <div class="mt-4 mx-2">
   <select class="{{ $inputClass }}">
-      <option value="" disabled selected>Seleccione Distrito</option>
+      <option value="" disabled selected>Seleccione Ubicación</option>
       <option value="San Juan de Lurigancho">San Juan de Lurigancho</option>
       <option value="Ate">Ate</option>
       <option value="San Borja">San Borja</option>

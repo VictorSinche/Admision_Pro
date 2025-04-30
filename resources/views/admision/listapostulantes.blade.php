@@ -21,8 +21,6 @@
                                 </svg>
                             </div>
                             <input
-                                [(ngModel)]="filtroBusqueda"
-                                (input)="filtrarUsuarios()"
                                 class="peer h-full w-full rounded-[7px] border border-blue-gray-200 bg-transparent px-3 py-2.5 !pr-9 font-sans text-sm font-normal text-blue-gray-700 outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                                 placeholder=" " />
                             <label
@@ -187,11 +185,11 @@
                 Página 1 de 10
             </p>
                 <div class="flex gap-1">
-                <button (click)="anteriorPagina()" [disabled]="paginaActual === 1"
+                <button
                     class="rounded border border-slate-300 py-2.5 px-3 text-xs font-semibold text-slate-600 transition-all hover:opacity-75 disabled:opacity-50">
                     Anterior
                 </button>
-                <button (click)="siguientePagina()" [disabled]="paginaActual === totalPaginas"
+                <button
                     class="rounded border border-slate-300 py-2.5 px-3 text-xs font-semibold text-slate-600 transition-all hover:opacity-75 disabled:opacity-50">
                     Siguiente
                 </button>
