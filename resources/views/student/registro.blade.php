@@ -21,10 +21,10 @@
           </div>
           <div class="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-[#e72352]" data-step-label="1">Datos del interasado</div>
         </div>        
-        <div class="flex-auto border-t-2 transition duration-500 ease-in-out border-[#e72352] step-line "></div>
+        <div class="flex-auto border-t-2 transition duration-500 ease-in-out border-gray-300 step-line "></div>
         
-        <div class="flex items-center text-white relative">
-          <div data-step="2" class="step-item rounded-full flex items-center justify-center transition duration-500 ease-in-out h-12 w-12 border-2 bg-[#e72352] ">
+        <div class="flex items-center text-gray-500 relative">
+          <div data-step="2" class="step-item rounded-full flex items-center justify-center transition duration-500 ease-in-out h-12 w-12 border-2 border-gray-300">
             <i class="fa-solid fa-users"></i>
           </div>
           <div class="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-gray-500"  data-step-label="2">Apoderados</div>
@@ -40,44 +40,72 @@
       </div>
   </div>
 
-  <div class="mt-8 p-4">
-      <div>
-        <div id="tab-formdatos" class="tab-content">
-          @include('student.formdatos')
-        </div>
-        
-        <div id="tab-uploaddoc" class="tab-content hidden">
-          @include('student.apoderados')
-        </div>
-        
-        <div id="tab-postulacion" class="tab-content hidden">
-          @include('student.postulacion')
-        </div>      
-      </div>
-  </div>
+  <form method="POST" action="{{ url('/registrar-postulante') }}" id="formPostulante">
+    @csrf
 
-  <div class="flex p-2 mt-4">
-    <button id="btnPrev" 
-    class="text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer 
-    hover:bg-gray-200 bg-gray-100 text-gray-700 border duration-200 ease-in-out border-gray-600 transition">
-        Anterior
-    </button>
+    <!-- Aquí dentro va absolutamente todo -->
 
-    <div class="flex-auto flex flex-row-reverse">
-        <button id="btnNext"
-        class="text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer 
-        hover:bg-[#e72352] bg-[#e72352] text-pink-100 border duration-200 ease-in-out border-[#e72352] transition">
-            Siguiente
-        </button>
+    <div class="mt-8 p-4">
+        <div>
+            <div id="tab-formdatos" class="tab-content">
+              @include('student.formdatos')
+            </div>
+            
+            <div id="tab-uploaddoc" class="tab-content hidden">
+              @include('student.apoderados')
+            </div>
+            
+            <div id="tab-postulacion" class="tab-content hidden">
+              @include('student.postulacion')
+            </div>      
+        </div>
     </div>
-</div>
+
+    <div class="flex p-2 mt-4">
+        <button id="btnPrev" type="button"
+        class="text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer 
+        hover:bg-gray-200 bg-gray-100 text-gray-700 border duration-200 ease-in-out border-gray-600 transition">
+            Anterior
+        </button>
+
+        <div class="flex-auto flex flex-row-reverse">
+            <button id="btnNext" type="button"
+            class="text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer 
+            hover:bg-[#e72352] bg-[#e72352] text-pink-100 border duration-200 ease-in-out border-[#e72352] transition">
+                Siguiente
+            </button>
+        </div>
+    </div>
+  </form>
 
 </div>
-
-
 
 @endsection
 
+
+{{-- Scripts de SweetAlert por fuera del contenido --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      @if (session('success'))
+          Swal.fire({
+              icon: 'success',
+              title: '¡Éxito!',
+              text: '{{ session('success') }}',
+              confirmButtonColor: '#e72352',
+          });
+      @elseif (session('error'))
+          Swal.fire({
+              icon: 'error',
+              title: '¡Error!',
+              text: '{{ session('error') }}',
+              confirmButtonColor: '#e72352',
+          });
+      @endif
+  });
+</script>
+
+  
 <script>
   document.addEventListener('DOMContentLoaded', function() {
       let step = 1;
@@ -146,7 +174,7 @@
           }
   
           if (step === steps.length) {
-              btnNext.textContent = 'Finalizar';
+              btnNext.textContent = 'Confirmar';
           } else {
               btnNext.textContent = 'Siguiente';
           }
@@ -157,11 +185,22 @@
                   step++;
                   showStep();
               } else {
-                  Swal.fire({
-                      icon: 'success',
-                      title: '¡Formulario completo!',
-                      text: ''
+                  console.log('✅ Botón Confirmar clickeado: enviando el formulario...');
+                  const form = document.getElementById('formPostulante');
+                  if (form) {
+                    Swal.fire({
+                      icon: 'info',
+                      title: 'Enviando...',
+                      text: 'Estamos registrando tu información.',
+                      timer: 1000,
+                      showConfirmButton: false,
                   });
+                  setTimeout(() => {
+                      form.submit();
+                  }, 1000);
+                  } else {
+                      console.error('❌ No se encontró el formulario con id="formPostulante"');
+                  }
               }
           });
       }

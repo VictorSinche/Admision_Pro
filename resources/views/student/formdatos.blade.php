@@ -6,7 +6,7 @@
 <!-- Tipo Documento y Nro Documento -->
 <div class="flex flex-col md:flex-row gap-4">
   <div class="w-full mx-2 flex-1">
-      <select class="{{ $inputClass }}">
+      <select name="tipo_documento" class="{{ $inputClass }}">
           <option value="" disabled selected>Tipo Documento</option>
           <option value="DNI">DNI</option>
           <option value="CE">Carné de Extranjería</option>
@@ -15,39 +15,39 @@
       </select>
   </div>
   <div class="w-full mx-2 flex-1">
-      <input type="text" placeholder="Nro. Documento" class="{{ $inputClass }}">
+      <input type="text" name="numero_documento" placeholder="Nro. Documento" class="{{ $inputClass }}">
   </div>
 </div>
 
 <!-- Nombres -->
 <div class="mt-4 mx-2">
-  <input type="text" placeholder="Nombres" class="{{ $inputClass }}">
+  <input type="text" name="nombres" placeholder="Nombres" class="{{ $inputClass }}">
 </div>
 
 <!-- Apellido Paterno y Apellido Materno -->
 <div class="flex flex-col md:flex-row gap-4 mt-4">
   <div class="w-full mx-2 flex-1">
-      <input type="text" placeholder="Apellido Paterno" class="{{ $inputClass }}">
+      <input type="text" name="apellido_paterno" placeholder="Apellido Paterno" class="{{ $inputClass }}">
   </div>
   <div class="w-full mx-2 flex-1">
-      <input type="text" placeholder="Apellido Materno" class="{{ $inputClass }}">
+      <input type="text" name="apellido_materno" placeholder="Apellido Materno" class="{{ $inputClass }}">
   </div>
 </div>
 
 <!-- Correo -->
 <div class="mt-4 mx-2">
-  <input type="email" placeholder="Correo Electrónico" class="{{ $inputClass }}">
+  <input type="email" name="correo" placeholder="Correo Electrónico" class="{{ $inputClass }}">
 </div>
 
 <!-- Dirección -->
 <div class="mt-4 mx-2">
-  <input type="text" placeholder="Dirección" class="{{ $inputClass }}">
+  <input type="text" name="direccion" placeholder="Dirección" class="{{ $inputClass }}">
 </div>
 
 <!-- Sexo y Fecha de Nacimiento -->
 <div class="flex flex-col md:flex-row gap-4 mt-4">
   <div class="w-full mx-2 flex-1">
-      <select class="{{ $inputClass }}">
+      <select name="sexo" class="{{ $inputClass }}">
           <option value="" disabled selected>Sexo</option>
           <option value="M">Masculino</option>
           <option value="F">Femenino</option>
@@ -55,13 +55,13 @@
       </select>
   </div>
   <div class="w-full mx-2 flex-1">
-      <input type="date" placeholder="Fecha de Nacimiento" class="{{ $inputClass }}">
+      <input type="date" name="fecha_nacimiento" placeholder="Fecha de Nacimiento" class="{{ $inputClass }}">
   </div>
 </div>
 
 <!-- Distrito -->
 <div class="mt-4 mx-2">
-  <select class="{{ $inputClass }}">
+  <select name="distrito" class="{{ $inputClass }}">
       <option value="" disabled selected>Seleccione Ubicación</option>
       <option value="San Juan de Lurigancho">San Juan de Lurigancho</option>
       <option value="Ate">Ate</option>
@@ -73,5 +73,5 @@
 
 <!-- Celular -->
 <div class="mt-4 mx-2 mb-4">
-  <input type="text" placeholder="Celular" class="{{ $inputClass }}">
+  <input type="text" name="celular" placeholder="Celular" class="{{ $inputClass }}">
 </div>

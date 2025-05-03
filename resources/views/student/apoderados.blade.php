@@ -6,22 +6,23 @@
 <!-- Tipo Documento y Nro Documento -->
 <div class="flex flex-col md:flex-row gap-4">
   <div class="w-full mx-2 flex-1">
-      <input type="number" placeholder="Nro. Documento" class="{{ $inputClass }}">
+      <input type="number" name="apoderado_documento" placeholder="Nro. Documento" class="{{ $inputClass }}">
   </div>
 
   <div class="w-full mx-2 flex-1">
-    <input type="text" placeholder="Nombres" class="{{ $inputClass }}">
+    <input type="text" name="apoderado_nombres" placeholder="Nombres" class="{{ $inputClass }}">
   </div>
 </div>
 
 <div class="mt-4 flex flex-col md:flex-row gap-4">
   <div class="w-full mx-2 flex-1">
-    <input type="number" placeholder="Celular" class="{{ $inputClass }}">
+    <input type="number" name="apoderado_celular" placeholder="Celular" class="{{ $inputClass }}">
   </div>
   <div class="w-full mx-2 flex-1">
-    <input type="number" placeholder="Telefono Fijo" class="{{ $inputClass }}">
+    <input type="number" name="apoderado_telefono" placeholder="Telefono Fijo" class="{{ $inputClass }}">
   </div>
 </div>
+
 
 {{-- <div class="bg-gray-100 h-screen">
   <div class="bg-white p-6  md:mx-auto">
