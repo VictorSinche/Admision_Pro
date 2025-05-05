@@ -5,7 +5,8 @@ use App\Http\Controllers\InfoPostulanteController;
 
 Route::get('/', function () { return view('auth.login'); }) -> name('auth.login');
 Route::get('/dashboard', function () { return view('dashboard.dashboard'); }) -> name('dashboard.dashboard');
-Route::get('/registro', function () { return view('student.registro'); }) -> name('student.registro');
+Route::get('/registro', [InfoPostulanteController::class, 'mostrarFormulario'])->name('student.registro');
+
 Route::get('/pagosinscripcion', function () { return view('student.pagosinscripcion'); }) -> name('student.pagosinscripcion');
 Route::get('/subirdocumentos', function () { return view('student.subirdocument'); }) -> name('student.subirdocumentos');
 Route::get('/verhorario', function () { return view('student.verhorario'); }) -> name('student.verhorario');

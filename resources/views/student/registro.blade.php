@@ -44,7 +44,6 @@
     @csrf
 
     <!-- Aquí dentro va absolutamente todo -->
-
     <div class="mt-8 p-4">
         <div>
             <div id="tab-formdatos" class="tab-content">
@@ -77,37 +76,12 @@
         </div>
     </div>
   </form>
-
 </div>
 
 @endsection
 
-
-{{-- Scripts de SweetAlert por fuera del contenido --}}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-      @if (session('success'))
-          Swal.fire({
-              icon: 'success',
-              title: '¡Éxito!',
-              text: '{{ session('success') }}',
-              confirmButtonColor: '#e72352',
-          });
-      @elseif (session('error'))
-          Swal.fire({
-              icon: 'error',
-              title: '¡Error!',
-              text: '{{ session('error') }}',
-              confirmButtonColor: '#e72352',
-          });
-      @endif
-  });
-</script>
-
-  
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
       let step = 1;
       const steps = ['tab-formdatos', 'tab-uploaddoc', 'tab-postulacion'];
       const btnNext = document.getElementById('btnNext');
@@ -117,101 +91,167 @@
       const stepLabels = document.querySelectorAll('[data-step-label]');
   
       function showStep() {
-          // Mostrar contenido de los tabs
-          steps.forEach(function(id, index) {
+          steps.forEach(function (id, index) {
               const tab = document.getElementById(id);
-              if ((index + 1) === step) {
-                  tab.classList.remove('hidden');
-              } else {
-                  tab.classList.add('hidden');
-              }
-          });
-  
-          // Actualizar circulitos (steps arriba)
-          stepItems.forEach(function(item) {
-              const itemStep = parseInt(item.getAttribute('data-step'));
-              if (itemStep < step) {
-                  item.classList.remove('bg-white', 'border-gray-300', 'text-gray-500');
-                  item.classList.add('bg-[#e72352]', 'border-[#e72352]', 'text-white');
-              } else if (itemStep === step) {
-                  item.classList.remove('bg-white', 'border-gray-300', 'text-gray-500');
-                  item.classList.add('bg-[#e72352]', 'border-[#e72352]', 'text-white');
-              } else {
-                  item.classList.remove('bg-[#e72352]', 'border-[#e72352]', 'text-white');
-                  item.classList.add('bg-white', 'border-gray-300', 'text-gray-500');
-              }
-          });
-  
-          // Actualizar líneas (line connecting circles)
-          stepLines.forEach(function(line, index) {
-              if (index < step - 1) {
-                  line.classList.remove('border-gray-300');
-                  line.classList.add('border-[#e72352]');
-              } else {
-                  line.classList.remove('border-[#e72352]');
-                  line.classList.add('border-gray-300');
-              }
+              tab.classList.toggle('hidden', (index + 1) !== step);
           });
 
-          // Actualizar los textos debajo de los círculos
-          stepLabels.forEach(function(label) {
+          // Permitir clic en los pasos superiores
+          stepItems.forEach(function(item) {
+              item.style.cursor = 'pointer';
+              item.addEventListener('click', function() {
+                  const itemStep = parseInt(item.getAttribute('data-step'));
+                  if (itemStep <= steps.length) {
+                      step = itemStep;
+                      showStep();
+                  }
+              });
+          });
+  
+          stepItems.forEach(function (item) {
+              const itemStep = parseInt(item.getAttribute('data-step'));
+              item.classList.toggle('bg-white', itemStep > step);
+              item.classList.toggle('border-gray-300', itemStep > step);
+              item.classList.toggle('text-gray-500', itemStep > step);
+              item.classList.toggle('bg-[#e72352]', itemStep <= step);
+              item.classList.toggle('border-[#e72352]', itemStep <= step);
+              item.classList.toggle('text-white', itemStep <= step);
+          });
+  
+          stepLines.forEach(function (line, index) {
+              line.classList.toggle('border-[#e72352]', index < step - 1);
+              line.classList.toggle('border-gray-300', index >= step - 1);
+          });
+  
+          stepLabels.forEach(function (label) {
               const labelStep = parseInt(label.getAttribute('data-step-label'));
-              if (labelStep <= step) {
-                  label.classList.remove('text-gray-500');
-                  label.classList.add('text-[#e72352]');
-              } else {
-                  label.classList.remove('text-[#e72352]');
-                  label.classList.add('text-gray-500');
+              label.classList.toggle('text-[#e72352]', labelStep <= step);
+              label.classList.toggle('text-gray-500', labelStep > step);
+          });
+  
+          btnPrev.disabled = step === 1;
+          btnPrev.classList.toggle('opacity-50', step === 1);
+          btnPrev.classList.toggle('cursor-not-allowed', step === 1);
+  
+          btnNext.textContent = step === steps.length ? 'Confirmar' : 'Siguiente';
+      }
+  
+      function validarFormulario() {
+          const campos = [
+              { name: 'tipo_documento', label: 'Tipo de documento' },
+              { name: 'numero_documento', label: 'Número de documento' },
+              { name: 'nombres', label: 'Nombres' },
+              { name: 'apellido_paterno', label: 'Apellido paterno' },
+              { name: 'apellido_materno', label: 'Apellido materno' },
+              { name: 'modalidad_ingreso_id', label: 'Modalidad de ingreso' },
+              { name: 'programa_interes', label: 'Programa de interés' },
+              { name: 'proceso_admision', label: 'Proceso de admisión' }
+          ];
+  
+          let errores = [];
+  
+          campos.forEach(campo => {
+              const input = document.querySelector(`[name="${campo.name}"]`);
+              if (input && !input.value.trim()) {
+                  errores.push(`⚠️ ${campo.label} es obligatorio`);
+                  input.classList.add('border-red-500');
+              } else if (input) {
+                  input.classList.remove('border-red-500');
               }
           });
-          // Botones de navegación
-          if (step === 1) {
-              btnPrev.disabled = true;
-              btnPrev.classList.add('opacity-50', 'cursor-not-allowed');
-          } else {
-              btnPrev.disabled = false;
-              btnPrev.classList.remove('opacity-50', 'cursor-not-allowed');
+  
+          if (errores.length > 0) {
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Campos requeridos incompletos',
+                  html: errores.join('<br>'),
+              });
+              return false;
           }
   
-          if (step === steps.length) {
-              btnNext.textContent = 'Confirmar';
-          } else {
-              btnNext.textContent = 'Siguiente';
-          }
+          return true;
       }
+  
       if (btnNext) {
-          btnNext.addEventListener('click', function() {
-              if (step < steps.length) {
-                  step++;
-                  showStep();
-              } else {
-                  console.log('✅ Botón Confirmar clickeado: enviando el formulario...');
-                  const form = document.getElementById('formPostulante');
-                  if (form) {
+        btnNext.addEventListener('click', async function () {
+            if (step < steps.length) {
+                step++;
+                showStep();
+            } else {
+              
+              if(!validarFormulario()) return;
+
+                const form = document.getElementById('formPostulante');
+                const formData = new FormData(form);
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Registro exitoso!',
+                            text: data.message || 'Tu información fue registrada correctamente.',
+                        });
+                    } else {
+                      if (data.errors) {
+                          const errores = Object.values(data.errors).flat();
+
+                          // Validación específica para número de documento duplicado
+                          const documentoDuplicado = errores.find(msg => msg.includes('numero documento') && msg.includes('taken'));
+
+                          if (documentoDuplicado) {
+                              Swal.fire({
+                                  icon: 'error',
+                                  title: 'Documento duplicado',
+                                  text: 'Este número de documento ya fue registrado.',
+                              });
+                          } else {
+                              Swal.fire({
+                                  icon: 'warning',
+                                  title: 'Campos incompletos o inválidos',
+                                  html: errores.join('<br>'),
+                              });
+                          }
+
+                      } else {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'Error inesperado',
+                              text: data.message || 'Ocurrió un error al guardar los datos.',
+                          });
+                      }
+                    }
+                } catch (error) {
+                    console.error('Error en la solicitud:', error);
                     Swal.fire({
-                      icon: 'info',
-                      title: 'Enviando...',
-                      text: 'Estamos registrando tu información.',
-                      timer: 1000,
-                      showConfirmButton: false,
-                  });
-                  setTimeout(() => {
-                      form.submit();
-                  }, 1000);
-                  } else {
-                      console.error('❌ No se encontró el formulario con id="formPostulante"');
-                  }
-              }
-          });
+                        icon: 'error',
+                        title: 'Error del sistema',
+                        text: 'No se pudo conectar con el servidor. Intenta más tarde.',
+                    });
+                }
+            }
+        });
       }
       if (btnPrev) {
-          btnPrev.addEventListener('click', function() {
+          btnPrev.addEventListener('click', function () {
               if (step > 1) {
                   step--;
                   showStep();
               }
           });
       }
+  
       showStep();
   });
   </script>
+  

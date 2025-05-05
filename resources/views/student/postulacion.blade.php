@@ -50,14 +50,12 @@
 <div class="flex flex-col md:flex-row gap-4 mt-4">
   <div class="w-full mx-2 flex-1">
     <select name="modalidad_ingreso_id" class="{{ $inputClass }}">
-        <option value="" disabled selected>Modalidad de ingreso</option>
-        <option value="0">Primeros Puestos</option>
-        <option value="1">Ordinario</option>
-        <option value="2">Alto Rendimiento</option>
-        <option value="3">Traslado Externo</option>
-        <option value="4">Admisión Técnicos</option>
-        <option value="5">Admisión Pre-UMA</option>
-    </select>
+      <option value="" disabled selected>Modalidad de ingreso</option>
+      @foreach ($modalidades as $modalidad)
+          <option value="{{ $modalidad->id_mod_ing  }}">{{ $modalidad->descripcion }}</option>
+      @endforeach
+  </select>  
+  
   </div>
   <div class="w-full mx-2 flex-1">
     <select name="sede" class="{{ $inputClass }}">

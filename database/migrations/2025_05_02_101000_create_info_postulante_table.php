@@ -20,7 +20,9 @@ return new class extends Migration
             $table->string('apellido_materno');
             $table->string('correo')->nullable();
             $table->string('celular')->nullable();
-            $table->foreignId('modalidad_ingreso_id')->constrained('modalidades_ingreso');
+            // $table->foreignId('modalidad_ingreso_id')->constrained('modalidades_ingreso');
+            $table->string('modalidad_ingreso_id');
+            $table->foreign('modalidad_ingreso_id')->references('id_mod_ing')->on('modalidades_ingreso');
             $table->unsignedTinyInteger('programa_interes');
             $table->unsignedTinyInteger('proceso_admision');
             $table->unsignedTinyInteger('sede')->nullable();

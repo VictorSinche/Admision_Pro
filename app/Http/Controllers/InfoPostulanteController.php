@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\InfoPostulante;
+use App\Models\ModalidadIngreso;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class InfoPostulanteController extends Controller
 {
@@ -25,21 +27,29 @@ class InfoPostulanteController extends Controller
                 'sede'                 => 'nullable|integer',
             ]);
 
-            // Log opcional para confirmar lo que llega
             Log::info('📥 Postulante validado:', $validated);
 
-            // Guardar
             InfoPostulante::create([
                 ...$validated,
                 'estado' => 1,
                 'fecha_confirmacion' => now(),
             ]);
 
-            return redirect('/registro')->with('success', '✅ Registro completado correctamente');
-
+            return response()->json(['message' => '✅ Registro completado correctamente.']);
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             Log::error("❌ Error al guardar postulante: " . $e->getMessage());
-            return back()->with('error', 'Ocurrió un error al registrar el postulante');
+
+            return response()->json([
+                'message' => 'Ocurrió un error al guardar el postulante.'
+            ], 500);
         }
+    }
+
+    public function mostrarFormulario()
+    {
+        $modalidades = ModalidadIngreso::all(); // Carga las modalidades
+        return view('student.registro', compact('modalidades'));
     }
 }
