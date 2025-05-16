@@ -2,17 +2,61 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InfoPostulanteController;
+use App\Http\Controllers\PostulanteLoginController;
+use App\Http\Controllers\CreatePostulanteController;
+use App\Http\Controllers\DeclaracionJuradaController;
+use App\Models\InfoPostulante;
 
-Route::get('/', function () { return view('auth.login'); }) -> name('auth.login');
-Route::get('/dashboard', function () { return view('dashboard.dashboard'); }) -> name('dashboard.dashboard');
+/*
+|--------------------------------------------------------------------------
+| Rutas de Autenticación
+|--------------------------------------------------------------------------
+*/
+Route::get('/', fn() => redirect()->route('login.postulante'))->name('auth.login');
+
+Route::get('/login-postulante', [PostulanteLoginController::class, 'form'])->name('login.postulante');
+Route::post('/login-postulante', [PostulanteLoginController::class, 'login'])->name('login.postulante.submit');
+
+/*
+|--------------------------------------------------------------------------
+| Rutas del registro sigu
+|--------------------------------------------------------------------------
+*/
+Route::get('/crear-postulante', [CreatePostulanteController::class, 'mostrarFormulario'])->name('register.registro');
+Route::post('/crear-postulante', [CreatePostulanteController::class, 'registrarPostulante']);
+
+/*
+|--------------------------------------------------------------------------
+| Rutas del Postulante
+|--------------------------------------------------------------------------
+*/
+Route::get('/dashboard', fn() => view('dashboard.dashboard'))->name('dashboard.dashboard');
+
 Route::get('/registro', [InfoPostulanteController::class, 'mostrarFormulario'])->name('student.registro');
+// Route::post('/registrar-postulante', [InfoPostulanteController::class, 'store']);
+Route::post('/guardaroupdatear', [InfoPostulanteController::class, 'storeOrUpdate']);
 
-Route::get('/pagosinscripcion', function () { return view('student.pagosinscripcion'); }) -> name('student.pagosinscripcion');
-Route::get('/subirdocumentos', function () { return view('student.subirdocument'); }) -> name('student.subirdocumentos');
-Route::get('/verhorario', function () { return view('student.verhorario'); }) -> name('student.verhorario');
+Route::get('/subirdocumentos/{c_numdoc}', [InfoPostulanteController::class, 'vistaDocumentos'])->name('student.subirdocumentos');
+Route::post('/subirdocumentos/{c_numdoc}', [InfoPostulanteController::class, 'guardarDocumentos'])->name('student.guardar.documentos');
 
-Route::get('/listpostulante', function () { return view('admision.listapostulantes'); }) -> name('admision.listpostulante');
+Route::get('/pagosinscripcion', fn() => view('student.pagosinscripcion'))->name('student.pagosinscripcion');
+Route::get('/verhorario', fn() => view('student.verhorario'))->name('student.verhorario');
 
-Route::get('/convalidacion', function () { return view('director.convalidacion'); }) -> name('director.convalidacion');
+Route::get('/especialidades-por-facultad', [InfoPostulanteController::class, 'getEspecialidades'])->name('especialidades.por.facultad');
 
-Route::post('/registrar-postulante', [InfoPostulanteController::class, 'store']);
+/*
+|--------------------------------------------------------------------------
+| Rutas de Administración
+|--------------------------------------------------------------------------
+*/
+Route::get('/listpostulante', fn() => view('admision.listapostulantes'))->name('admision.listpostulante');
+Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('director.convalidacion');
+
+
+/*
+|--------------------------------------------------------------------------
+| Rutas de Administración
+|--------------------------------------------------------------------------
+*/
+
+Route::get("/form-ordinario", [InfoPostulanteController::class, "vistaOrdinario"])->name("declaracionJurada.formulario-ordinario");

@@ -3,129 +3,177 @@
     $inputClass = "placeholder-gray-400 text-sm p-2 px-3 w-full text-gray-800 border border-gray-200 rounded focus:outline-none focus:border-black transition duration-200";
 @endphp
 
-<!-- Distrito del colegio -->
+<!-- Colegio ubicación -->
 <div class="mt-4 mx-2">
-  <select name="colegio_distrito" class="{{ $inputClass }}">
-      <option value="" disabled selected>Seleccione Distrito</option>
-      <option value="San Juan de Lurigancho">San Juan de Lurigancho</option>
-      <option value="Ate">Ate</option>
-      <option value="San Borja">San Borja</option>
-      <option value="La Molina">La Molina</option>
-      <option value="Otros">Otros</option>
+  <select id="select-ubigeo" name="c_colg_ubicacion" class="{{ $inputClass }}">
+    <option value="" disabled selected>Seleccione Ubicación</option>
+    @foreach($ubigeos as $ubigeo)
+      <option value="{{ $ubigeo->nombre }}"
+          {{ (isset($data) && $data->c_colg_ubicacion == $ubigeo->nombre) ? 'selected' : '' }}>
+          {{ $ubigeo->nombre }}
+      </option>
+    @endforeach
   </select>
 </div>
 
 <!-- Colegio de procedencia -->
 <div class="mt-4 mx-2">
-  <input type="text" name="colegio_nombre" placeholder="Colegio de Procedencia" class="{{ $inputClass }}">
+  <input type="text" name="c_procedencia" placeholder="Colegio de Procedencia" value="{{ $data->c_procedencia ?? '' }}" class="{{ $inputClass }}">
 </div>
 
 <!-- Año de egreso y tipo de institución -->
 <div class="flex flex-col md:flex-row gap-4 mt-4">
   <div class="w-full mx-2 flex-1">
-      <input type="text" name="colegio_anio_egreso" placeholder="Año de egreso" class="{{ $inputClass }}">
+      <input type="text" name="c_anoegreso" placeholder="Año de egreso" value="{{ $data->c_anoegreso ?? '' }}" class="{{ $inputClass }}">
   </div>
   <div class="w-full mx-2 flex-1">
-    <select name="colegio_tipo" class="{{ $inputClass }}">
-        <option value="" disabled selected>Tipo de institución</option>
-        <option value="0">Particular</option>
-        <option value="1">Estatal</option>
+    <select name="c_tippro" class="{{ $inputClass }}">
+      <option value="" disabled {{ empty($data->c_tippro) ? 'selected' : '' }}>Tipo de institución</option>
+      <option value="PAR" {{ ($data->c_tippro ?? '') == 'PAR' ? 'selected' : '' }}>Particular</option>
+        <option value="EST" {{ ($data->c_tippro ?? '') == 'EST' ? 'selected' : '' }}>Estatal</option>
     </select>
   </div>
 </div>
 
 <!-- Proceso de admisión -->
 <div class="mt-4 mx-2">
-  <select name="proceso_admision" class="{{ $inputClass }}">
-      <option value="" disabled selected>Seleccione Proceso de admisión</option>
-      <option value="1">ADMISIÓN 2025-I CIENCIAS DE LA SALUD</option>
-      <option value="2">ADMISION 2025-I INGENIERÍA Y NEGOCIOS</option>
-      <option value="3">ADMISIÓN 2025-I MAESTRÍA EN SALUD PÚBLICA</option>
-      <option value="4">ADMISIÓN 2025-I MAESTRÍA EN ADMINISTRACIÓN DE EMPRESAS</option>
-      <option value="5">VENTAS MATRICULAS SEGUNDAS ESPECIALIDADES FARMACIA 2025-1</option>
+  <select name="id_proceso" id="proceso_admision" class="{{ $inputClass }}">
+    <option value="" disabled selected>Seleccione Proceso de admisión</option>
+      @foreach($procesos as $proceso)
+        <option value="{{ $proceso->id_proceso }}"
+            data-codfac="{{ $proceso->c_codfac }}"
+            {{ ($data->id_proceso ?? '') == $proceso->id_proceso ? 'selected' : '' }}>
+            {{ $proceso->c_nompro }}
+        </option>
+      @endforeach
   </select>
 </div>
 
 <!-- Modalidad y sede -->
 <div class="flex flex-col md:flex-row gap-4 mt-4">
   <div class="w-full mx-2 flex-1">
-    <select name="modalidad_ingreso_id" class="{{ $inputClass }}">
-      <option value="" disabled selected>Modalidad de ingreso</option>
+    <select name="id_mod_ing" class="{{ $inputClass }}">
+      <option value="" disabled {{ empty($data->id_mod_ing) ? 'selected' : '' }}>Modalidad de ingreso</option>
       @foreach ($modalidades as $modalidad)
-          <option value="{{ $modalidad->id_mod_ing  }}">{{ $modalidad->descripcion }}</option>
+          <option value="{{ $modalidad->id_mod_ing }}"
+              {{ ($data->id_mod_ing ?? '') == $modalidad->id_mod_ing ? 'selected' : '' }}>
+              {{ $modalidad->c_descri }}
+          </option>
       @endforeach
-  </select>  
+    </select>
+
   
   </div>
   <div class="w-full mx-2 flex-1">
-    <select name="sede" class="{{ $inputClass }}">
+    <select name="c_sedcod" class="{{ $inputClass }}">
         <option value="" disabled selected>Sede</option>
-        <option value="0">Principal</option>
+        <option value="1" {{ ($data->c_sedcod ?? '') == '1' ? 'selected' : '' }}>Principal</option>
     </select>
   </div>
 </div>
 
 <!-- Programa de interés -->
 <div class="mt-4 mx-2">
-  <select name="programa_interes" class="{{ $inputClass }}">
+  <select name="c_codesp1" id="programa_interes" class="{{ $inputClass }}" 
+        data-selected="{{ $data->c_codesp1 ?? '' }}">
       <option value="" disabled selected>Seleccione el Programa de Interés</option>
-      <option value="1">ENFERMERÍA</option>
-      <option value="2">FARMACIA Y BIOQUÍMICA</option>
-      <option value="3">NUTRICIÓN Y DIETÉTICA</option>
-      <option value="4">PSICOLOGÍA</option>
-      <option value="5">TECNOLOGÍA MÉDICA EN TERAPIA FÍSICA Y REHABILITACIÓN</option>
+      @foreach ($especialidades as $esp)
+          <option value="{{ $esp->codesp }}"
+            data-codfac="{{ $esp->codfac }}"
+            {{ ($data->c_codesp1 ?? '') == $esp->codesp ? 'selected' : '' }}>
+              {{ $esp->nomesp }}
+          </option>
+      @endforeach
   </select>
 </div>
 
+
 <!-- Fuente de información -->
 <div class="mt-4 mx-2">
-  <select name="fuente_admision" class="{{ $inputClass }}">
+  <select name="id_tab_alu_contact" class="{{ $inputClass }}">
       <option value="" disabled selected>¿Cómo se enteró del proceso de admisión?</option>
-      <option value="1">TELEVISIÓN</option>
-      <option value="2">PANELES</option>
-      <option value="3">INTERNET</option>
-      <option value="4">POR AMIGOS</option>
-      <option value="5">OTRAS</option>
-      <option value="6">VOLANTES</option>
-      <option value="7">ASESOR</option>
-      <option value="8">FACEBOOK</option>
-      <option value="9">FERIAS VOCACIONALES</option>
-      <option value="10">GOOGLE</option>
-      <option value="11">INSTAGRAM</option>
-      <option value="12">PÁGINA WEB</option>
-      <option value="13">TIKTOK</option>
-      <option value="14">TRAE UN AMIGO</option>
+      <option value="TV" {{ ($data->id_tab_alu_contact ?? '') == 'TV' ? 'selected' : '' }} >TELEVISIÓN</option>
+      <option value="PANE" {{ ($data->id_tab_alu_contact ?? '') == 'PANE' ? 'selected' : '' }} >PANELES</option>
+      <option value="WEB" {{ ($data->id_tab_alu_contact ?? '') == 'WEB' ? 'selected' : '' }} >INTERNET</option>
+      <option value="AMIGOS" {{ ($data->id_tab_alu_contact ?? '') == 'AMIGOS' ? 'selected' : '' }} >POR AMIGOS</option>
+      <option value="OTRARAD" {{ ($data->id_tab_alu_contact ?? '') == 'OTRARAD' ? 'selected' : '' }} >OTRAS</option>
+      <option value="VOL" {{ ($data->id_tab_alu_contact ?? '') == 'VOL' ? 'selected' : '' }} >VOLANTES</option>
+      <option value="ASE" {{ ($data->id_tab_alu_contact ?? '') == 'ASE' ? 'selected' : '' }} >ASESOR</option>
+      <option value="FACEBOOK" {{ ($data->id_tab_alu_contact ?? '') == 'FACEBOOK' ? 'selected' : '' }} >FACEBOOK</option>
+      <option value="FERIAS_VOC" {{ ($data->id_tab_alu_contact ?? '') == 'FERIAS_VOC' ? 'selected' : '' }} >FERIAS VOCACIONALES</option>
+      <option value="GOOGLE" {{ ($data->id_tab_alu_contact ?? '') == 'GOOGLE' ? 'selected' : '' }} >GOOGLE</option>
+      <option value="INSTAGRAM" {{ ($data->id_tab_alu_contact ?? '') == 'INSTAGRAM' ? 'selected' : '' }} >INSTAGRAM</option>
+      <option value="PAGINA_WEB" {{ ($data->id_tab_alu_contact ?? '') == 'PAGINA_WEB' ? 'selected' : '' }} >PÁGINA WEB</option>
+      <option value="TIKTOK" {{ ($data->id_tab_alu_contact ?? '') == 'TIKTOK' ? 'selected' : '' }} >TIKTOK</option>
+      <option value="TRAE_AMIGO" {{ ($data->id_tab_alu_contact ?? '') == 'TRAE_AMIGO' ? 'selected' : '' }} >TRAE UN AMIGO</option>
   </select>
 </div>
 
 <!-- Turno, discapacidad, identidad étnica -->
 <div class="flex flex-col md:flex-row gap-4 mt-4">
   <div class="w-full mx-2 flex-1">
-    <select name="turno" class="{{ $inputClass }}">
+    <select name="id_tab_turno" class="{{ $inputClass }}">
         <option value="" disabled selected>Turno</option>
-        <option value="0">Mañana</option>
-        <option value="1">Tarde</option>
-        <option value="2">Noche</option>
+        <option value="M"  {{ ($data->id_tab_turno ?? '') == 'M' ? 'selected' : '' }}>Mañana</option>
+        <option value="T" {{ ($data->id_tab_turno ?? '') == 'T' ? 'selected' : '' }}>Tarde</option>
+        <option value="N" {{ ($data->id_tab_turno ?? '') == 'N' ? 'selected' : '' }}>Noche</option>
     </select>
   </div>
-  <div class="w-full mx-2 flex-1">
+  {{-- <div class="w-full mx-2 flex-1">
     <select name="discapacidad" class="{{ $inputClass }}">
         <option value="" disabled selected>Condición Discapacidad</option>
         <option value="0">NO</option>
         <option value="1">SÍ</option>
     </select>
-  </div>
+  </div> --}}
   <div class="w-full mx-2 flex-1">
     <select name="etnia" class="{{ $inputClass }}">
-        <option value="" disabled selected>Identidad Étnica</option>
-        <option value="0">Quechua</option>
-        <option value="1">Aymara</option>
-        <option value="2">Nativo o indígena de la Amazonía</option>
-        <option value="3">Perteneciente a otro pueblo originario</option>
-        <option value="4">Afroperuano o afrodescendiente</option>
-        <option value="5">Blanco</option>
-        <option value="6">Mestizo</option>
-        <option value="7">Otros</option>
+      <option value="" disabled >Tipo Documento</option>
+        <option value="" disabled {{ empty($data->c_ietnica) ? 'selected' : '' }}>Identidad Étnica</option>
+        <option value="Q" {{ ($data->c_ietnica ?? '') == 'O' ? 'selected' : '' }}>Quechua</option>
+        <option value="A" {{ ($data->c_ietnica ?? '') == 'A' ? 'selected' : '' }}>Aymara</option>
+        <option value="N" {{ ($data->c_ietnica ?? '') == 'N' ? 'selected' : '' }}>Nativo o indígena de la Amazonía</option>
+        <option value="P" {{ ($data->c_ietnica ?? '') == 'P' ? 'selected' : '' }}>Perteneciente a otro pueblo originario</option>
+        <option value="AF"{{ ($data->c_ietnica ?? '') == 'AF' ? 'selected' : '' }}>Afroperuano o afrodescendiente</option>
+        <option value="M" {{ ($data->c_ietnica ?? '') == 'M' ? 'selected' : '' }}>Mestizo</option>
+        <option value="O" {{ ($data->c_ietnica ?? '') == 'O' ? 'selected' : '' }}>Otros</option>
     </select>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const procesoSelect = document.getElementById('proceso_admision');
+    const programaSelect = document.getElementById('programa_interes');
+    const allProgramOptions = Array.from(programaSelect.options).filter(opt => opt.value !== "");
+
+    function filtrarProgramasPorFacultad(codfacSeleccionado) {
+        // Restaurar solo las opciones válidas
+        programaSelect.innerHTML = '<option value="" disabled>Seleccione el Programa de Interés</option>';
+
+        allProgramOptions.forEach(opt => {
+            if (opt.dataset.codfac === codfacSeleccionado) {
+                programaSelect.appendChild(opt);
+            }
+        });
+
+        // Reseleccionar si ya había una opción guardada
+        const preseleccionado = programaSelect.dataset.selected;
+        if (preseleccionado) {
+            programaSelect.value = preseleccionado;
+        }
+    }
+
+    procesoSelect.addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        const codfac = selectedOption.dataset.codfac;
+        if (codfac) filtrarProgramasPorFacultad(codfac);
+    });
+
+    // Al cargar la página: aplicar filtro si hay opción seleccionada
+    const optionInicial = procesoSelect.querySelector('option:checked');
+    if (optionInicial && optionInicial.dataset.codfac) {
+        filtrarProgramasPorFacultad(optionInicial.dataset.codfac);
+    }
+});
+</script>

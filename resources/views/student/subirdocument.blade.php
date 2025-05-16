@@ -12,24 +12,30 @@
   }
 </style>
 
-
 <div class="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
   <h1 class="text-2xl font-bold text-black mb-6">Adjunta tus documentos</h1>
 
   <p class="text-gray-600 text-base mb-6">
-    Documentos requeridos para la modalidad <span class="font-semibold text-[#e72352]">Primeros Puestos</span>.
+    Documentos requeridos para la modalidad 
+    <span class="font-semibold text-[#e72352]">{{ $nombreModalidad }}</span>
     Pasa el mouse sobre <i class="fa-solid fa-circle-info text-blue-500"></i> para más detalles.
   </p>
 
   <hr class="my-4 border-t border-gray-300" />
 
-@include('student.primeros_puestos')
-  {{-- @include('student.ordinario')
-  @include('student.translado_externo')
-  @include('student.alto_rendimiento')
-  @include('student.admision_tecnicos')
-  @include('student.admision_pre_uma') --}}
-
+  {{-- Incluir solo el formulario de la modalidad actual --}}
+  <form action="{{ route('student.guardar.documentos', ['c_numdoc' => $postulante->c_numdoc]) }}" method="POST" enctype="multipart/form-data">
+    @csrf
+  
+    {{-- Se incluye la vista según modalidad --}}
+    @includeIf('student.documentos.' . strtolower($modalidad))
+  
+    <button type="submit" class="mt-4 px-4 py-2 bg-[#e72352] text-white rounded-lg cursor-pointer hover:bg-[#c91e45] transition duration-200">
+      <i class="fa-solid fa-file-upload mr-2"></i>	
+      Guardar Documentos
+    </button>
+  </form>
+    
   <!-- Mensaje informativo -->
   <div class="col-span-1 md:col-span-2 mt-8 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-sm">
     <div class="flex items-start">
@@ -42,14 +48,56 @@
           <span class="text-sm text-gray-700 mt-2 block">Haz clic en el siguiente enlace para acceder al formulario:</span>
         </p>
       </div>
-    </div
-    <!-- Enlace a la otra página -->
+    </div>
+
     <div class="mt-4">
-      <a href="#" target="_blank"
+      <a href="{{ route('declaracionJurada.formulario-ordinario') }}" target="_blank"
         class="inline-flex items-center px-4 py-2 bg-[#e72352] text-white text-sm font-semibold rounded-md shadow hover:bg-[#c91e45] transition">
         <i class="fa-solid fa-file-signature mr-2"></i> Ir a la declaración jurada
       </a>
     </div>
   </div>
 </div>
+
 @endsection
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // 1. Documentos cargados (éxito)
+      @if (session('success'))
+          Swal.fire({
+              icon: 'success',
+              title: '¡Documentos enviados!',
+              text: '{{ session('success') }}',
+              confirmButtonColor: '#e72352'
+          });
+      @endif
+  
+      // 2. Faltan documentos
+      @if (session('documentos_incompletos'))
+          Swal.fire({
+              icon: 'info',
+              title: 'Faltan algunos documentos',
+              html: 'Puedes presentar una <strong>declaración jurada</strong> y entregarlos más adelante.',
+              confirmButtonColor: '#e72352'
+          });
+      @endif
+  
+      // 3. Reemplazo de archivo
+      document.querySelectorAll('input[type="file"]').forEach(input => {
+          input.addEventListener('change', function () {
+              if (this.dataset.existe === "1") {
+                  Swal.fire({
+                      icon: 'question',
+                      title: '¿Deseas reemplazar este archivo?',
+                      text: 'Ya has enviado este documento. Si continúas, se actualizará con el nuevo archivo seleccionado.',
+                      showCancelButton: true,
+                      confirmButtonText: 'Sí, reemplazar',
+                      cancelButtonText: 'Cancelar',
+                      confirmButtonColor: '#e72352',
+                  });
+              }
+          });
+      });
+  });
+  </script>

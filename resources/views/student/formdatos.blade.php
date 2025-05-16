@@ -6,72 +6,73 @@
 <!-- Tipo Documento y Nro Documento -->
 <div class="flex flex-col md:flex-row gap-4">
   <div class="w-full mx-2 flex-1">
-      <select name="tipo_documento" class="{{ $inputClass }}">
-          <option value="" disabled selected>Tipo Documento</option>
-          <option value="DNI">DNI</option>
-          <option value="CE">Carné de Extranjería</option>
-          <option value="Pasaporte">Pasaporte</option>
-          <option value="Otro">Otro</option>
-      </select>
-  </div>
-  <div class="w-full mx-2 flex-1">
-      <input type="text" name="numero_documento" placeholder="Nro. Documento" class="{{ $inputClass }}">
+    <select name="c_tipdoc" class="{{ $inputClass }}">
+        <option value="" disabled {{ empty($data->c_tipdoc) ? 'selected' : '' }}>Tipo Documento</option>
+        <option value="DNI" {{ ($data->c_tipdoc ?? '') == 'DNI' ? 'selected' : '' }}>DNI</option>
+        <option value="CARNEEXT" {{ ($data->c_tipdoc ?? '') == 'CARNEEXT' ? 'selected' : '' }}>Carné de Extranjería</option>
+        <option value="PARTNAC" {{ ($data->c_tipdoc ?? '') == 'PARTNAC' ? 'selected' : '' }}>Partida de Nacimiento</option>
+        <option value="TITULO" {{ ($data->c_tipdoc ?? '') == 'TITULO' ? 'selected' : '' }}>Título profesional o grado de bachiller</option>
+        <option value="PASPT" {{ ($data->c_tipdoc ?? '') == 'PASPT' ? 'selected' : '' }}>Pasaporte</option>
+    </select>
+</div>
+
+  <div class="w-full mx-2 flex-1 ">
+      <input type="text" name="c_numdoc" placeholder="Nro. Documento" value="{{ $data->c_numdoc ?? '' }}" class="{{ $inputClass }}">
   </div>
 </div>
 
 <!-- Nombres -->
 <div class="mt-4 mx-2">
-  <input type="text" name="nombres" placeholder="Nombres" class="{{ $inputClass }}">
+  <input type="text" name="c_nombres" placeholder="Nombres" value="{{ $data->c_nombres ?? '' }}" class="{{ $inputClass }}">
 </div>
 
 <!-- Apellido Paterno y Apellido Materno -->
 <div class="flex flex-col md:flex-row gap-4 mt-4">
   <div class="w-full mx-2 flex-1">
-      <input type="text" name="apellido_paterno" placeholder="Apellido Paterno" class="{{ $inputClass }}">
+      <input type="text" name="c_apepat" placeholder="Apellido Paterno" value="{{ $data->c_apepat ?? '' }}" class="{{ $inputClass }}">
   </div>
   <div class="w-full mx-2 flex-1">
-      <input type="text" name="apellido_materno" placeholder="Apellido Materno" class="{{ $inputClass }}">
+      <input type="text" name="c_apemat" placeholder="Apellido Materno" value="{{ $data->c_apemat ?? '' }}" class="{{ $inputClass }}">
   </div>
 </div>
 
 <!-- Correo -->
 <div class="mt-4 mx-2">
-  <input type="email" name="correo" placeholder="Correo Electrónico" class="{{ $inputClass }}">
+  <input type="email" name="c_email" placeholder="Correo Electrónico" value="{{ $data->c_email ?? '' }}" class="{{ $inputClass }}">
 </div>
 
 <!-- Dirección -->
 <div class="mt-4 mx-2">
-  <input type="text" name="direccion" placeholder="Dirección" class="{{ $inputClass }}">
+  <input type="text" name="c_dir" placeholder="Dirección" value="{{ $data->c_dir ?? '' }}" class="{{ $inputClass }}">
 </div>
 
 <!-- Sexo y Fecha de Nacimiento -->
 <div class="flex flex-col md:flex-row gap-4 mt-4">
   <div class="w-full mx-2 flex-1">
-      <select name="sexo" class="{{ $inputClass }}">
-          <option value="" disabled selected>Sexo</option>
-          <option value="M">Masculino</option>
-          <option value="F">Femenino</option>
-          <option value="O">Otro</option>
-      </select>
+    <select name="c_sexo" class="{{ $inputClass }}">
+      <option value="M" {{ ($data->c_sexo ?? '') == 'M' ? 'selected' : '' }}>Masculino</option>
+      <option value="F" {{ ($data->c_sexo ?? '') == 'F' ? 'selected' : '' }}>Femenino</option>
+  </select>
   </div>
   <div class="w-full mx-2 flex-1">
-      <input type="date" name="fecha_nacimiento" placeholder="Fecha de Nacimiento" class="{{ $inputClass }}">
+      <input type="date" name="d_fecnac" placeholder="Fecha de Nacimiento" value="{{ $data->d_fecnac ?? '' }}" class="{{ $inputClass }}">
   </div>
 </div>
 
 <!-- Distrito -->
 <div class="mt-4 mx-2">
-  <select name="distrito" class="{{ $inputClass }}">
-      <option value="" disabled selected>Seleccione Ubicación</option>
-      <option value="San Juan de Lurigancho">San Juan de Lurigancho</option>
-      <option value="Ate">Ate</option>
-      <option value="San Borja">San Borja</option>
-      <option value="La Molina">La Molina</option>
-      <option value="Otros">Otros</option>
+  <select id="select-ubigeo" name="ubigeo" class="{{ $inputClass }}">
+    <option value="" disabled selected>Seleccione Ubicación</option>
+    @foreach($ubigeos as $ubigeo)
+        <option value="{{ $ubigeo->codigo }}"
+            {{ ($data->c_dptodom . $data->c_provdom . $data->c_distdom) == $ubigeo->codigo ? 'selected' : '' }}>
+            {{ $ubigeo->nombre }}
+        </option>
+    @endforeach
   </select>
 </div>
 
 <!-- Celular -->
 <div class="mt-4 mx-2 mb-4">
-  <input type="text" name="celular" placeholder="Celular" class="{{ $inputClass }}">
+  <input type="text" name="c_celu" placeholder="Celular" value="{{ $data->c_celu ?? '' }}" class="{{ $inputClass }}">
 </div>

@@ -9,22 +9,13 @@ class InfoPostulante extends Model
     protected $table = 'info_postulante';
 
     protected $fillable = [
-        'tipo_documento',
-        'numero_documento',
-        'nombres',
-        'apellido_paterno',
-        'apellido_materno',
-        'correo',
-        'direccion',
-        'sexo',
-        'fecha_nacimiento',
-        'distrito',
-        'celular',
-        'modalidad_ingreso_id',
-        'programa_interes',
-        'proceso_admision',
-        'sede',
-        'estado',
-        'fecha_confirmacion',
+        'id_mod_ing', 'c_apepat', 'c_apemat', 'c_nombres', 'c_tipdoc', 'c_numdoc',
+        'c_email', 'c_celu', 'c_codesp1', 'id_proceso', 'c_sedcod',
+        'estado', 'fecha_confirmacion'
     ];
+
+    public function documentos()
+    {
+        return $this->hasMany(\App\Models\DocumentoPostulante::class, 'info_postulante_id');
+    }
 }

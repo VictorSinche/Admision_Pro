@@ -1,6 +1,46 @@
 @vite('resources/css/app.css')
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- CDN Tom Select -->
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
+
+<!-- Loader Global con Imagen -->
+<div id="loader-wrapper" class="hidden fixed inset-0 z-[9999] bg-white/80 flex flex-col justify-center items-center">
+  <!-- Imagen arriba -->
+  <img src="/uma/img/logo-uma.png" alt="Cargando UMA" class="w-16 h-16 mb-4 animate-pulse" />
+  
+  <!-- Loader animado -->
+  <div class="loader"></div>
+  
+  <!-- Texto -->
+  <p class="text-sm text-gray-700 mt-2">Cargando, por favor espera...</p>
+</div>
+
+<style>
+.loader {
+  width: 120px;
+  height: 22px;
+  border-radius: 20px;
+  color: #e72352;
+  border: 2px solid;
+  position: relative;
+}
+.loader::before {
+  content: "";
+  position: absolute;
+  margin: 2px;
+  inset: 0 100% 0 0;
+  border-radius: inherit;
+  background: currentColor;
+  animation: l6 2s infinite;
+}
+@keyframes l6 {
+  100% { inset: 0 }
+}
+</style>
+
 
 <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
@@ -77,13 +117,32 @@
                 Pagos inscripción
                 </a>              
               </li>
-              <li>
-                <a href="{{ route('student.subirdocumentos') }}" 
-                class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                {{ Request::routeIs('student.subirdocumentos') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                Adjuntar documentos
-                </a>              
-              </li>
+                @php
+                  use App\Models\InfoPostulante;
+
+                  $numeroDocumento = session('c_numdoc');
+                  $estadoConfirmado = false;
+
+                  if ($numeroDocumento) {
+                      $postulante = InfoPostulante::where('c_numdoc', $numeroDocumento)->first();
+                      $estadoConfirmado = $postulante && $postulante->estado === 1;
+                  }
+                @endphp
+
+                @if($estadoConfirmado)
+                    <a href="{{ route('student.subirdocumentos', ['c_numdoc' => $numeroDocumento]) }}"
+                      class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group
+                      {{ Request::routeIs('student.subirdocumentos') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                      Adjuntar documentos
+                    </a>
+                @else
+                    <a href="#"
+                      onclick="Swal.fire('Primero debe confirmar su información', '', 'warning')"
+                      class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group text-gray-400 cursor-not-allowed">
+                      Adjuntar documentos
+                    </a>
+                @endif
+
               <li>
                 <a href="{{ route('student.verhorario') }}" 
                 class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
@@ -146,44 +205,67 @@
     </div>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const toggles = document.querySelectorAll('[data-collapse-toggle]');
-    
-        toggles.forEach(function (toggle) {
-            const targetId = toggle.getAttribute('data-collapse-toggle');
-            const targetElement = document.getElementById(targetId);
-    
-            toggle.addEventListener('click', function () {
-                if (targetElement.classList.contains('hidden')) {
-                    targetElement.classList.remove('hidden');
-                } else {
-                    targetElement.classList.add('hidden');
-                }
-            });
-        });
-    });
-    </script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-          const dropdownToggles = document.querySelectorAll('[data-dropdown-toggle]');
-      
-          dropdownToggles.forEach(function (toggle) {
-              const targetId = toggle.getAttribute('data-dropdown-toggle');
-              const targetElement = document.getElementById(targetId);
-      
-              toggle.addEventListener('click', function (event) {
-                  event.stopPropagation(); // evita cerrar instantáneamente
-                  targetElement.classList.toggle('hidden');
-              });
-      
-              // Cerrar el dropdown si haces click afuera
-              document.addEventListener('click', function (e) {
-                  if (!toggle.contains(e.target) && !targetElement.contains(e.target)) {
-                      targetElement.classList.add('hidden');
-                  }
-              });
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const toggles = document.querySelectorAll('[data-collapse-toggle]');
+  
+      toggles.forEach(function (toggle) {
+          const targetId = toggle.getAttribute('data-collapse-toggle');
+          const targetElement = document.getElementById(targetId);
+  
+          toggle.addEventListener('click', function () {
+              if (targetElement.classList.contains('hidden')) {
+                  targetElement.classList.remove('hidden');
+              } else {
+                  targetElement.classList.add('hidden');
+              }
           });
       });
-      </script>
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const dropdownToggles = document.querySelectorAll('[data-dropdown-toggle]');
+  
+      dropdownToggles.forEach(function (toggle) {
+          const targetId = toggle.getAttribute('data-dropdown-toggle');
+          const targetElement = document.getElementById(targetId);
+  
+          toggle.addEventListener('click', function (event) {
+              event.stopPropagation(); // evita cerrar instantáneamente
+              targetElement.classList.toggle('hidden');
+          });
+  
+          // Cerrar el dropdown si haces click afuera
+          document.addEventListener('click', function (e) {
+              if (!toggle.contains(e.target) && !targetElement.contains(e.target)) {
+                  targetElement.classList.add('hidden');
+              }
+          });
+      });
+  });
+</script>
       
+<script>
+  function mostrarLoader() {
+    document.getElementById('loader-wrapper')?.classList.remove('hidden');
+  }
+  function ocultarLoader() {
+    document.getElementById('loader-wrapper')?.classList.add('hidden');
+  }
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const enlaces = document.querySelectorAll('a[href]:not([href^="#"]):not([target])');
+
+    enlaces.forEach(link => {
+      link.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href && !href.startsWith('javascript:') && !this.classList.contains('no-loader')) {
+          mostrarLoader();
+        }
+      });
+    });
+  });
+</script>

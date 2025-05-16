@@ -6,20 +6,20 @@
 <!-- Tipo Documento y Nro Documento -->
 <div class="flex flex-col md:flex-row gap-4">
   <div class="w-full mx-2 flex-1">
-      <input type="number" name="c_dniapo" placeholder="Nro. Documento" value="{{ $data->c_dniapo ?? '' }}" class="{{ $inputClass }}">
+      <input type="number" name="c_dniapo" placeholder="Nro. Documento" value="" class="{{ $inputClass }}">
   </div>
 
   <div class="w-full mx-2 flex-1">
-    <input type="text" name="c_nomapo" placeholder="Nombres" value="{{ $data->c_nomapo ?? '' }}" class="{{ $inputClass }}">
+    <input type="text" name="c_nomapo" placeholder="Nombres" value="" class="{{ $inputClass }}">
   </div>
 </div>
 
 <div class="mt-4 flex flex-col md:flex-row gap-4">
   <div class="w-full mx-2 flex-1">
-    <input type="number" name="c_celuapo" placeholder="Celular" value="{{ $data->c_celuapo ?? '' }}" class="{{ $inputClass }}">
+    <input type="number" name="c_celuapo" placeholder="Celular" value="" class="{{ $inputClass }}">
   </div>
   <div class="w-full mx-2 flex-1">
-    <input type="number" name="c_fonoapo" placeholder="Telefono Fijo" value="{{ $data->c_fonoapo ?? '' }}" class="{{ $inputClass }}">
+    <input type="number" name="c_fonoapo" placeholder="Telefono Fijo" value="" class="{{ $inputClass }}">
   </div>
 </div>
 

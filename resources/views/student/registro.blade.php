@@ -1,6 +1,41 @@
 @extends('layouts.app')
 
+@php
+    $data = session('datos_postulante');
+@endphp
+
 @section('content')
+
+<!-- Loader global -->
+<div id="loader-wrapper" class="hidden fixed inset-0 z-[9999] bg-white/80 flex flex-col justify-center items-center">
+  <img src="/uma/img/logo-uma.png" alt="Cargando UMA" class="w-16 h-16 mb-4 animate-pulse" />
+  <div class="loader"></div>
+  <p class="text-sm text-gray-700 mt-2">Procesando datos, por favor espera...</p>
+</div>
+
+<style>
+.loader {
+  width: 120px;
+  height: 22px;
+  border-radius: 20px;
+  color: #e72352;
+  border: 2px solid;
+  position: relative;
+}
+.loader::before {
+  content: "";
+  position: absolute;
+  margin: 2px;
+  inset: 0 100% 0 0;
+  border-radius: inherit;
+  background: currentColor;
+  animation: l6 2s infinite;
+}
+@keyframes l6 {
+  100% { inset: 0 }
+}
+</style>
+
 
 <div class="mt-0 text-left bg-white shadow-lg border border-gray-300 rounded-lg p-6">
     <h1 class="text-2xl font-bold mb-4">
@@ -40,7 +75,7 @@
       </div>
   </div>
 
-  <form method="POST" action="{{ url('/registrar-postulante') }}" id="formPostulante">
+  <form method="POST" action="{{ url('/guardaroupdatear') }}" id="formPostulante">
     @csrf
 
     <!-- Aquí dentro va absolutamente todo -->
@@ -82,95 +117,96 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-      let step = 1;
-      const steps = ['tab-formdatos', 'tab-uploaddoc', 'tab-postulacion'];
-      const btnNext = document.getElementById('btnNext');
-      const btnPrev = document.getElementById('btnPrev');
-      const stepItems = document.querySelectorAll('.step-item');
-      const stepLines = document.querySelectorAll('.step-line');
-      const stepLabels = document.querySelectorAll('[data-step-label]');
-  
-      function showStep() {
-          steps.forEach(function (id, index) {
-              const tab = document.getElementById(id);
-              tab.classList.toggle('hidden', (index + 1) !== step);
-          });
+    let step = 1;
+    const steps = ['tab-formdatos', 'tab-uploaddoc', 'tab-postulacion'];
+    const btnNext = document.getElementById('btnNext');
+    const btnPrev = document.getElementById('btnPrev');
+    const stepItems = document.querySelectorAll('.step-item');
+    const stepLines = document.querySelectorAll('.step-line');
+    const stepLabels = document.querySelectorAll('[data-step-label]');
 
-          // Permitir clic en los pasos superiores
-          stepItems.forEach(function(item) {
-              item.style.cursor = 'pointer';
-              item.addEventListener('click', function() {
-                  const itemStep = parseInt(item.getAttribute('data-step'));
-                  if (itemStep <= steps.length) {
-                      step = itemStep;
-                      showStep();
-                  }
-              });
-          });
+    function showStep() {
+        steps.forEach(function (id, index) {
+            const tab = document.getElementById(id);
+            tab.classList.toggle('hidden', (index + 1) !== step);
+        });
+        // Permitir clic en los pasos superiores
+        stepItems.forEach(function(item) {
+            item.style.cursor = 'pointer';
+            item.addEventListener('click', function() {
+                const itemStep = parseInt(item.getAttribute('data-step'));
+                if (itemStep <= steps.length) {
+                    step = itemStep;
+                    showStep();
+                }
+            });
+        });
+
+        stepItems.forEach(function (item) {
+            const itemStep = parseInt(item.getAttribute('data-step'));
+            item.classList.toggle('bg-white', itemStep > step);
+            item.classList.toggle('border-gray-300', itemStep > step);
+            item.classList.toggle('text-gray-500', itemStep > step);
+            item.classList.toggle('bg-[#e72352]', itemStep <= step);
+            item.classList.toggle('border-[#e72352]', itemStep <= step);
+            item.classList.toggle('text-white', itemStep <= step);
+        });
+
+        stepLines.forEach(function (line, index) {
+            line.classList.toggle('border-[#e72352]', index < step - 1);
+            line.classList.toggle('border-gray-300', index >= step - 1);
+        });
+
+        stepLabels.forEach(function (label) {
+            const labelStep = parseInt(label.getAttribute('data-step-label'));
+            label.classList.toggle('text-[#e72352]', labelStep <= step);
+            label.classList.toggle('text-gray-500', labelStep > step);
+        });
+
+        btnPrev.disabled = step === 1;
+        btnPrev.classList.toggle('opacity-50', step === 1);
+        btnPrev.classList.toggle('cursor-not-allowed', step === 1);
+
+        btnNext.textContent = step === steps.length ? 'Confirmar' : 'Siguiente';
+    }
   
-          stepItems.forEach(function (item) {
-              const itemStep = parseInt(item.getAttribute('data-step'));
-              item.classList.toggle('bg-white', itemStep > step);
-              item.classList.toggle('border-gray-300', itemStep > step);
-              item.classList.toggle('text-gray-500', itemStep > step);
-              item.classList.toggle('bg-[#e72352]', itemStep <= step);
-              item.classList.toggle('border-[#e72352]', itemStep <= step);
-              item.classList.toggle('text-white', itemStep <= step);
-          });
-  
-          stepLines.forEach(function (line, index) {
-              line.classList.toggle('border-[#e72352]', index < step - 1);
-              line.classList.toggle('border-gray-300', index >= step - 1);
-          });
-  
-          stepLabels.forEach(function (label) {
-              const labelStep = parseInt(label.getAttribute('data-step-label'));
-              label.classList.toggle('text-[#e72352]', labelStep <= step);
-              label.classList.toggle('text-gray-500', labelStep > step);
-          });
-  
-          btnPrev.disabled = step === 1;
-          btnPrev.classList.toggle('opacity-50', step === 1);
-          btnPrev.classList.toggle('cursor-not-allowed', step === 1);
-  
-          btnNext.textContent = step === steps.length ? 'Confirmar' : 'Siguiente';
-      }
-  
-      function validarFormulario() {
-          const campos = [
-              { name: 'tipo_documento', label: 'Tipo de documento' },
-              { name: 'numero_documento', label: 'Número de documento' },
-              { name: 'nombres', label: 'Nombres' },
-              { name: 'apellido_paterno', label: 'Apellido paterno' },
-              { name: 'apellido_materno', label: 'Apellido materno' },
-              { name: 'modalidad_ingreso_id', label: 'Modalidad de ingreso' },
-              { name: 'programa_interes', label: 'Programa de interés' },
-              { name: 'proceso_admision', label: 'Proceso de admisión' }
-          ];
-  
-          let errores = [];
-  
-          campos.forEach(campo => {
-              const input = document.querySelector(`[name="${campo.name}"]`);
-              if (input && !input.value.trim()) {
-                  errores.push(`⚠️ ${campo.label} es obligatorio`);
-                  input.classList.add('border-red-500');
-              } else if (input) {
-                  input.classList.remove('border-red-500');
-              }
-          });
-  
-          if (errores.length > 0) {
-              Swal.fire({
-                  icon: 'error',
-                  title: 'Campos requeridos incompletos',
-                  html: errores.join('<br>'),
-              });
-              return false;
-          }
-  
-          return true;
-      }
+    function validarFormulario() {
+        const campos = [
+            { name: 'c_tipdoc', label: 'Tipo de documento' },
+            { name: 'c_numdoc', label: 'Número de documento' },
+            { name: 'c_nombres', label: 'Nombres' },
+            { name: 'c_apepat', label: 'Apellido paterno' },
+            { name: 'c_apemat', label: 'Apellido materno' },
+            { name: 'id_mod_ing', label: 'Modalidad de ingreso' },
+            { name: 'c_codesp1', label: 'Programa de interés' },
+            { name: 'id_proceso', label: 'Proceso de admisión' }
+        ];
+
+
+        let errores = [];
+
+        campos.forEach(campo => {
+            const input = document.querySelector(`[name="${campo.name}"]`);
+            if (input && !input.value.trim()) {
+                errores.push(`⚠️ ${campo.label} es obligatorio`);
+                input.classList.add('border-red-500');
+            } else if (input) {
+                input.classList.remove('border-red-500');
+            }
+        });
+
+        if (errores.length > 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Campos requeridos incompletos',
+                html: errores.join('<br>'),
+            });
+            return false;
+        }
+
+        return true;
+    }
+
   
       if (btnNext) {
         btnNext.addEventListener('click', async function () {
@@ -180,6 +216,8 @@
             } else {
               
               if(!validarFormulario()) return;
+
+							document.getElementById('loader-wrapper').classList.remove('hidden'); // ⬅️ Mostrar loader
 
                 const form = document.getElementById('formPostulante');
                 const formData = new FormData(form);
@@ -193,22 +231,44 @@
                             'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
                         }
                     });
-
                     const data = await response.json();
 
+										  document.getElementById('loader-wrapper').classList.add('hidden'); // ⬅️ Ocultar loader
+
                     if (response.ok) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: '¡Registro exitoso!',
-                            text: data.message || 'Tu información fue registrada correctamente.',
-                        });
+                        if (data.actualizado) {
+													Swal.fire({
+															icon: 'success',
+															title: 'Datos actualizados',
+															text: 'Tus datos fueron actualizados correctamente.',
+													}).then(() => {
+															document.getElementById('loader-wrapper').classList.remove('hidden');
+															setTimeout(() => {
+																	window.location.href = '/registro';
+															}, 500);
+													});
+                        } else {
+													Swal.fire({
+															icon: 'success',
+															title: '¡Registro exitoso!',
+															text: 'Tu información fue registrada correctamente.',
+													}).then(() => {
+															document.getElementById('loader-wrapper').classList.remove('hidden');
+															setTimeout(() => {
+																	window.location.href = '/registro';
+															}, 500);
+													});
+                        }
                     } else {
+											    document.getElementById('loader-wrapper').classList.add('hidden'); // También ocultar aquí por si hay error
                       if (data.errors) {
                           const errores = Object.values(data.errors).flat();
 
                           // Validación específica para número de documento duplicado
-                          const documentoDuplicado = errores.find(msg => msg.includes('numero documento') && msg.includes('taken'));
-
+                            const documentoDuplicado = errores.find(msg =>
+                                msg.toLowerCase().includes('documento') && msg.toLowerCase().includes('ya') && msg.toLowerCase().includes('registrado')
+                            );
+												
                           if (documentoDuplicado) {
                               Swal.fire({
                                   icon: 'error',
@@ -233,6 +293,7 @@
                     }
                 } catch (error) {
                     console.error('Error en la solicitud:', error);
+										  document.getElementById('loader-wrapper').classList.add('hidden'); // ⬅️ Asegurar que se oculte
                     Swal.fire({
                         icon: 'error',
                         title: 'Error del sistema',
@@ -254,4 +315,3 @@
       showStep();
   });
   </script>
-  

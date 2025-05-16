@@ -5,7 +5,7 @@
         Formulario de inscripción
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Formulario de inscripción virtual, debidamente llenado."></i>
       </label>
-      <input id="formulario" type="file"
+      <input id="formulario" type="file" name="formulario"
         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
     </div>
 
@@ -15,29 +15,29 @@
         Comprobante de pago
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Copia del comprobante de Pago por Derechos de Inscripción al Concurso de Admisión."></i>
       </label>
-      <input id="pago" type="file"
+      <input id="pago" type="file" name="pago"
         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
     </div>
 
     <!-- Campo 3 -->
     <div>
-      <label for="constancia" class="block text-sm font-medium text-gray-900 mb-1">
+      <label for="constancianotas" class="block text-sm font-medium text-gray-900 mb-1">
         Certificado académico
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Certificado o constancia de notas original firmada por autoridad competente de la universidad de origen.">
         </i>
       </label>
-      <input id="constancia" type="file"
+      <input id="constancia" type="file" name="constancianotas"
         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
     </div>
 		
 		<!-- Campo 4 -->
 		<div>
-      <label for="constanciama" class="block text-sm font-medium text-gray-900 mb-1">
+      <label for="constmatricula" class="block text-sm font-medium text-gray-900 mb-1">
         Constancia matricula
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Certificado o constancia de notas original firmada por autoridad competente de la universidad de origen.">
         </i>
       </label>
-      <input id="constanciama" type="file"
+      <input id="constmatricula" type="file" name="constmatricula"
         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
     </div>
 
@@ -48,7 +48,7 @@
 				<i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Certificado o constancia de notas original firmada por autoridad competente de la universidad de origen.">
 				</i>
 			</label>
-			<input id="syllabus" type="file"
+			<input id="syllabus" type="file" name="syllabus"
 				class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
 		</div>
 
@@ -58,7 +58,7 @@
         DNI del postulante/apoderado
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Copia del D.N.I. y de su representante, de ser el caso de menores de edad."></i>
       </label>
-      <input id="dni" type="file"
+      <input id="dni" type="file" name="dni"
         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
     </div>
 
@@ -68,7 +68,7 @@
         Seguro de salud
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Constancia de seguro de salud (ESSALUD, SIS, seguro particular)."></i>
       </label>
-      <input id="seguro" type="file"
+      <input id="seguro" type="file" name="seguro"
         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
     </div>
 
@@ -78,7 +78,7 @@
         Foto tamaño carné
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Fotografía tamaño carné sobre fondo blanco."></i>
       </label>
-      <input id="foto" type="file"
+      <input id="foto" type="file" name="foto"
         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
     </div>
 

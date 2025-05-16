@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\ModalidadIngreso;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades○\DB;
 
 class ModalidadesIngresoSeeder extends Seeder
 {
@@ -19,7 +20,7 @@ class ModalidadesIngresoSeeder extends Seeder
             ['id_mod_ing' => 'O', 'descripcion' => 'ALTO RENDIMIENTO'],
             ['id_mod_ing' => 'D', 'descripcion' => 'TRASLADO EXTERNO'],
             ['id_mod_ing' => 'M', 'descripcion' => 'ADMISIÓN TÉCNICO'],
-            ['id_mod_ing' => 'C', 'descripcion' => 'PRE UMA'],
+            ['id_mod_ing' => 'C', 'descripcion' => 'ADMISIÓN PRE UMA'],
         ];
         
         foreach ($modalidades as $n) {
