@@ -6,8 +6,8 @@
     <title>Declaración Jurada - Universidad María Auxiliadora</title>
     <link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://kit.fontawesome.com/c500eba471.js" crossorigin="anonymous"></script>
     <style>
@@ -51,7 +51,6 @@
     </style>
 </head>
 <body>
-    
     <div class="container-form mt-4">
         <div class="document-border">
             <!-- Encabezado -->
@@ -61,31 +60,32 @@
             </div>
             <p class="text-end"><small> Fecha de Presentación de la solicitud: <span id="fecha_solicitud">{{ $fecha_actual }}</span></small> </p>
             <form id="formDeclaracion" method="POST" action="{{ route('declaracionJurada.guardar') }}">
-                @csrf                
+                @csrf               
                 <h5 class="fw-bold text-danger">Sr. Rector de la Universidad María Auxiliadora <br>Presente. -</h5>
                 <div class="mb-2">
                     <label for="nombre_postulante" class="form-label">Quien suscribe (colocar los apellidos y nombres completos del <b>postulante</b> en la siguiente línea):</label>
-                    <input type="text" id="nombre_postulante" name="nombre_postulante" class="input-line" 
-                    value="{{ $data->c_nombres ?? '' }} {{ $data->c_apepat ?? '' }} {{ $data->c_apemat ?? '' }}" readonly>
+                    <input type="text" id="nombre_postulante" name="nombre_postulante" class="input-line"
+                    value="{{ $data->c_nombres ?? '' }} {{ $data->c_apepat ?? '' }} {{ $data->c_apemat ?? '' }} " readonly>
                 </div>  
 
                 <div class="row mb-2">
                     <div class="col-md-6">
                         <label for="dni_postulante" class="form-label">DNI del postulante:</label>
                         <input type="text" id="dni_postulante" name="dni_postulante" class="input-line"
-                        value="{{ $data->c_numdoc ?? '' }}" maxlength="8" readonly>
+                        value= "{{ $data->c_numdoc ?? ''}}" readonly>
                     </div>
                     <div class="col-md-6">
                         <label for="fech_nac" class="form-label">Fecha de nacimiento:</label>
                         <input type="date" id="fech_nac" name="fech_nac" class="input-line"
-                        value="{{ $data->d_fecnac ?? '' }}" readonly>
+                        value="{{ \Carbon\Carbon::parse($data->d_fecnac)->format('Y-m-d') }}" readonly>
+
                     </div>
                 </div>
 
                 <div class="mb-2">
                     <label for="domicilio" class="form-label">Domicilio:</label>
-                    <input type="text" id="domicilio" name="domicilio"
-                        value="{{ $data->c_dir }}" class="input-line" readonly>
+                    <input type="text" id="domicilio" name="domicilio" class="input-line"
+                    value="{{ $data->c_dir ?? '' }}" readonly>
                 </div>
 
                 <div class="mb-2">
@@ -99,15 +99,17 @@
                         readonly
                     >
                 </div>
-
+                
                 <div id="apoderadoSection" class="mt-3" style="display: none;">
                     <label for="apoderado_nombre" class="form-label">Nombre del apoderado (solo menores de edad):</label>
-                    <input type="text" id="apoderado_nombre" name="apoderado_nombre" class="input-line mb-2">
+                    <input type="text" id="apoderado_nombre" name="apoderado_nombre" class="input-line mb-2" 
+                    value="{{ $data->c_nomapo ?? '' }}" readonly>
             
                     <div class="row mb-2">
                         <div class="col-md-6">
                             <label for="apoderado_dni" class="form-label">DNI del apoderado:</label>
-                            <input type="text" id="apoderado_dni" name="apoderado_dni" class="input-line">
+                            <input type="text" id="apoderado_dni" name="apoderado_dni" class="input-line" 
+                            value="{{ $data->c_dniapo ?? '' }}" readonly>
                         </div>
                         <div class="col-md-6">
                             <label for="selectVinculo" class="form-label">Vínculo con el estudiante:</label>
@@ -142,7 +144,7 @@
                 </div>
 
                 <p>
-                    En la modalidad: <b>ORDINARIO</b>
+                    En la modalidad: <b>CENTRO PRE UNIVERSITARIO</b>
                 </p>
 
                 <p class="fw-bold">Para lo cual acompaño la documentación requerida, con la calidad de declaración jurada:</p>
@@ -177,7 +179,7 @@
                         <input id="foto_carnet" type="checkbox" class="form-check-input me-2" name="foto_carnet" value="1">
                         <label for="foto_carnet">Fotografía tamaño carné sobre fondo blanco.</label>
                     </li>
-                </ul>                
+                </ul>               
                 <p class="mt-4">
                     En caso de falsedad en lo declarado y de la documentación presentada, me allano a las disposiciones y sanciones que emita la Universidad María Auxiliadora.
                 </p>
@@ -198,7 +200,7 @@
             <ul class="mt-3">
                 <li>
                     <b>HE CULMINADO</b> de manera satisfactoria mis estudios básicos – nivel secundaria en el año 
-                    <input type="text" id="anio_secundaria" name="anio_secundaria" class="input-line ms-1" style="width: 60px;" maxlength="4" value="{{ $data->c_anoegreso ?? '' }}">
+                    <input type="text" id="anio_secundaria" name="anio_secundaria" class="input-line ms-1" style="width: 60px;" maxlength="4" value="{{ $data->c_anoegreso ?? '' }}">.
                 </li>
                 
                 <li><b>CUMPLO CON LOS REQUISITOS</b> exigidos por la UNIVERSIDAD MARÍA AUXILIADORA para participar en el proceso de admisión 2025-II.</li>
@@ -211,13 +213,13 @@
                     </ul>
                 </li>
             </ul>
-            <p>En caso de falsedad o incumplimiento de lo aquí declarado <b>AUTORIZO</b> a la Universidad María Auxiliadora y sin posibilidad de reclamo, a restringir mi matrícula para el siguiente semestre académico, a bloquear mi acceso a mi SIGU del estudiante concluido el semestre académico y a no entregarme el certificado o constancia de estudios o notas del semestre concluido o cualquier otro documento asociado hasta que no cumpla con presentar mi certificado o constancia de culminación satisfactoria de estudios secundarios; sin derecho a reembolso de los pagos que pudiera haber efectuado a dicha fecha.</p>
+            <p>En caso de falsedad o incumplimiento de lo aquí declarado AUTORIZO a la Universidad María Auxiliadora y sin posibilidad de reclamo, a restringir mi matrícula para el siguiente semestre académico, a bloquear mi acceso a mi SIGU del estudiante concluido el semestre académico y a no entregarme el certificado o constancia de notas del semestre concluido o cualquier documento asociado hasta que no cumpla con presentar mi certificado o constancia de culminación satisfactoria de estudios secundarios; sin derecho a reembolso de los pagos que pudiera haber efectuado a dicha fecha.</p>
             <div class="mb-3">
                 <p>En señal de absoluta conformidad y expreso conocimiento y voluntad con lo aquí declarado, suscribo el presente documento a los <span id="fecha_actual"></span>.</p>
             </div>  
             
             <div class="d-flex align-items-center mt-3">
-                <input name="acepto_terminos" class="form-check-input me-1" type="checkbox" id="acepto_terminos" required>
+                <input  name="acepto_terminos" class="form-check-input me-1" type="checkbox" id="acepto_terminos" required>
                 <label class="form-check-label" for="acepto_terminos">
                     Acepto los <a href="#" data-bs-toggle="modal" data-bs-target="#indicacionesModal">Términos y Condiciones</a>.
                 </label>

@@ -7,7 +7,6 @@
     <link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://kit.fontawesome.com/c500eba471.js" crossorigin="anonymous"></script>
     <style>
@@ -51,7 +50,6 @@
     </style>
 </head>
 <body>
-    
     <div class="container-form mt-4">
         <div class="document-border">
             <!-- Encabezado -->
@@ -60,32 +58,32 @@
                 <h4>SOLICITUD DE INSCRIPCIÓN PARA <br> EL PROCESO DE ADMISIÓN</h4>
             </div>
             <p class="text-end"><small> Fecha de Presentación de la solicitud: <span id="fecha_solicitud">{{ $fecha_actual }}</span></small> </p>
-            <form id="formDeclaracion" method="POST" action="{{ route('declaracionJurada.guardar') }}">
-                @csrf                
+            <form id="formDeclaracion">
+                @csrf               
                 <h5 class="fw-bold text-danger">Sr. Rector de la Universidad María Auxiliadora <br>Presente. -</h5>
                 <div class="mb-2">
                     <label for="nombre_postulante" class="form-label">Quien suscribe (colocar los apellidos y nombres completos del <b>postulante</b> en la siguiente línea):</label>
-                    <input type="text" id="nombre_postulante" name="nombre_postulante" class="input-line" 
-                    value="{{ $data->c_nombres ?? '' }} {{ $data->c_apepat ?? '' }} {{ $data->c_apemat ?? '' }}" readonly>
+                    <input type="text" id="nombre_postulante" name="nombre_postulante" class="input-line"
+                    value="{{ $data->c_nombres }} {{ $data->c_apepat }} {{ $data->c_apemat }}" readonly>
                 </div>  
 
                 <div class="row mb-2">
                     <div class="col-md-6">
                         <label for="dni_postulante" class="form-label">DNI del postulante:</label>
                         <input type="text" id="dni_postulante" name="dni_postulante" class="input-line"
-                        value="{{ $data->c_numdoc ?? '' }}" maxlength="8" readonly>
+                        value="{{ $data->c_numdoc }}" readonly>
                     </div>
                     <div class="col-md-6">
                         <label for="fech_nac" class="form-label">Fecha de nacimiento:</label>
                         <input type="date" id="fech_nac" name="fech_nac" class="input-line"
-                        value="{{ $data->d_fecnac ?? '' }}" readonly>
+                        value="{{ $data->d_fecnac }}" readonly>
                     </div>
                 </div>
 
                 <div class="mb-2">
                     <label for="domicilio" class="form-label">Domicilio:</label>
-                    <input type="text" id="domicilio" name="domicilio"
-                        value="{{ $data->c_dir }}" class="input-line" readonly>
+                    <input type="text" id="domicilio" name="domicilio" class="input-line"
+                    value="{{ $data->c_dir }}" readonly>
                 </div>
 
                 <div class="mb-2">
@@ -98,7 +96,7 @@
                         value="{{ optional($ubigeos->firstWhere('codigo', $postulante->c_dptodom . $postulante->c_provdom . $postulante->c_distdom))->nombre ?? '' }}"
                         readonly
                     >
-                </div>
+                </div> 
 
                 <div id="apoderadoSection" class="mt-3" style="display: none;">
                     <label for="apoderado_nombre" class="form-label">Nombre del apoderado (solo menores de edad):</label>
@@ -140,40 +138,37 @@
                         readonly>                        
                     </select>
                 </div>
-
                 <p>
-                    En la modalidad: <b>ORDINARIO</b>
+                    En la modalidad: <b>ALTO RENDIMIENTO</b>
                 </p>
 
                 <p class="fw-bold">Para lo cual acompaño la documentación requerida, con la calidad de declaración jurada:</p>
                 <ul class="list-unstyled">
                     <li class="d-flex align-items-center">
-                        <input type="hidden" name="formulario_inscripcion" value="0">
                         <input id="formulario_inscripcion" type="checkbox" class="form-check-input me-2" name="formulario_inscripcion" value="1">
                         <label for="formulario_inscripcion">Formulario de inscripción virtual, debidamente llenado.</label>
                     </li>
                     <li class="d-flex align-items-center">
-                        <input type="hidden" name="comprobante_pago" value="0">
                         <input id="comprobante_pago" type="checkbox" class="form-check-input me-2" name="comprobante_pago" value="1">
                         <label for="comprobante_pago">Copia del comprobante de Pago por Derechos de Inscripción al Concurso de Admisión.</label>
                     </li>
                     <li class="d-flex align-items-center">
-                        <input type="hidden" name="certificado_estudios" value="0">
                         <input id="certificado_estudios" type="checkbox" class="form-check-input me-2" name="certificado_estudios" value="1">
                         <label for="certificado_estudios">Certificado o constancia de estudios o documento similar idóneo que acredite los 5 años de estudios de Educación Secundaria.</label>
                     </li>
                     <li class="d-flex align-items-center">
-                        <input type="hidden" name="copia_dni" value="0">
+                        <input id="constancia_colegio" type="checkbox" class="form-check-input me-2" name="constancia_colegio" value="1">
+                        <label for="constancia_colegio">Constancia original del director del colegio de procedencia que acredite el promedio de 14 del tercero al quinto de secundaria. (debe haber egresado los dos últimos años inmediatos a la fecha de admisión).</label>
+                    </li>
+                    <li class="d-flex align-items-center">
                         <input id="copia_dni" type="checkbox" class="form-check-input me-2" name="copia_dni" value="1">
                         <label for="copia_dni">Copia del D.N.I. y de su representante, de ser el caso de menores de edad.</label>
                     </li>
                     <li class="d-flex align-items-center">
-                        <input type="hidden" name="seguro_salud" value="0">
                         <input id="seguro_salud" type="checkbox" class="form-check-input me-2" name="seguro_salud" value="1">
                         <label for="seguro_salud">Constancia de seguro de salud (ESSALUD, SIS, seguro particular).</label>
                     </li>
                     <li class="d-flex align-items-center">
-                        <input type="hidden" name="foto_carnet" value="0">
                         <input id="foto_carnet" type="checkbox" class="form-check-input me-2" name="foto_carnet" value="1">
                         <label for="foto_carnet">Fotografía tamaño carné sobre fondo blanco.</label>
                     </li>
@@ -198,7 +193,7 @@
             <ul class="mt-3">
                 <li>
                     <b>HE CULMINADO</b> de manera satisfactoria mis estudios básicos – nivel secundaria en el año 
-                    <input type="text" id="anio_secundaria" name="anio_secundaria" class="input-line ms-1" style="width: 60px;" maxlength="4" value="{{ $data->c_anoegreso ?? '' }}">
+                    <input type="text" id="anio_secundaria" name="anio_secundaria" class="input-line ms-1" style="width: 60px;" maxlength="4" value="{{ $data->c_anoegreso ?? '' }}">.
                 </li>
                 
                 <li><b>CUMPLO CON LOS REQUISITOS</b> exigidos por la UNIVERSIDAD MARÍA AUXILIADORA para participar en el proceso de admisión 2025-II.</li>
@@ -211,13 +206,13 @@
                     </ul>
                 </li>
             </ul>
-            <p>En caso de falsedad o incumplimiento de lo aquí declarado <b>AUTORIZO</b> a la Universidad María Auxiliadora y sin posibilidad de reclamo, a restringir mi matrícula para el siguiente semestre académico, a bloquear mi acceso a mi SIGU del estudiante concluido el semestre académico y a no entregarme el certificado o constancia de estudios o notas del semestre concluido o cualquier otro documento asociado hasta que no cumpla con presentar mi certificado o constancia de culminación satisfactoria de estudios secundarios; sin derecho a reembolso de los pagos que pudiera haber efectuado a dicha fecha.</p>
+            <p>En caso de falsedad o incumplimiento de lo aquí declarado <b>AUTORIZO</b> a la Universidad María Auxiliadora y sin posibilidad de reclamo, a restringir mi matrícula para el siguiente semestre académico, a bloquear mi acceso a mi SIGU del estudiante concluido el semestre académico y a no entregarme el certificado o constancia de notas o cualquier documento asociado del semestre concluido hasta que no cumpla con presentar mi certificado o constancia de culminación satisfactoria de estudios secundarios; sin derecho a reembolso de los pagos que pudiera haber efectuado a dicha fecha.</p>
             <div class="mb-3">
                 <p>En señal de absoluta conformidad y expreso conocimiento y voluntad con lo aquí declarado, suscribo el presente documento a los <span id="fecha_actual"></span>.</p>
             </div>  
             
             <div class="d-flex align-items-center mt-3">
-                <input name="acepto_terminos" class="form-check-input me-1" type="checkbox" id="acepto_terminos" required>
+                <input class="form-check-input me-1" type="checkbox" id="acepto_terminos" required>
                 <label class="form-check-label" for="acepto_terminos">
                     Acepto los <a href="#" data-bs-toggle="modal" data-bs-target="#indicacionesModal">Términos y Condiciones</a>.
                 </label>
@@ -259,99 +254,6 @@
     
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const inputFecha = document.getElementById('fech_nac');
-            const apoderadoSection = document.getElementById('apoderadoSection');
-
-            if (inputFecha && apoderadoSection) {
-                const fechaNacimiento = inputFecha.value;
-
-                if (fechaNacimiento) {
-                    const hoy = new Date();
-                    const nacimiento = new Date(fechaNacimiento);
-                    let edad = hoy.getFullYear() - nacimiento.getFullYear();
-                    const mes = hoy.getMonth() - nacimiento.getMonth();
-
-                    if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
-                        edad--;
-                    }
-
-                    if (edad < 18) {
-                        apoderadoSection.style.display = 'block';
-                    } else {
-                        apoderadoSection.style.display = 'none';
-                    }
-                }
-            }
-        });
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"].form-check-input');
-            const pendientesList = document.getElementById('pendientesList');
-
-            const actualizarPendientes = () => {
-            // Limpiar lista
-            pendientesList.innerHTML = '';
-
-            // Arreglo para acumular pendientes
-            let tienePendientes = false;
-
-            checkboxes.forEach(checkbox => {
-                if (checkbox.id === 'acepto_terminos') return; // Ignorar el checkbox de términos y condiciones
-
-
-                const label = document.querySelector(`label[for="${checkbox.id}"]`);
-                if (!checkbox.checked) {
-                tienePendientes = true;
-
-                // Crear un nuevo ítem deshabilitado
-                const li = document.createElement('li');
-                li.classList.add('text-muted', 'mb-2');
-                li.innerHTML = `<i class="fa-regular fa-circle-xmark text-danger me-2"></i> ${label.textContent}`;
-                pendientesList.appendChild(li);
-                }
-            });
-
-            // Mostrar u ocultar la lista según haya pendientes
-            pendientesList.hidden = !tienePendientes;
-            };
-
-            // Ejecutar al cargar
-            actualizarPendientes();
-
-            // Ejecutar cuando cualquier checkbox cambie
-            checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', actualizarPendientes);
-            });
-        });
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const btnEnviar = document.querySelector('.btnGuardarDeclaracion');
-            const aceptoTerminos = document.getElementById('acepto_terminos');
-            const form = document.getElementById('formDeclaracion');
-
-            btnEnviar.addEventListener('click', function (e) {
-                if (!aceptoTerminos.checked) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Debes aceptar los Términos y Condiciones',
-                        text: 'Para continuar con el envío de tu Declaración Jurada, es necesario que marques la casilla de conformidad.',
-                        confirmButtonText: 'Entendido',
-                        confirmButtonColor: '#e72352',
-                    });
-                    return; // Detener el envío
-                }
-
-                // Si pasó la validación, enviar el formulario
-                form.submit();
-            });
-        });
-    </script>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

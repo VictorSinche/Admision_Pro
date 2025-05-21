@@ -237,27 +237,27 @@
 
                     if (response.ok) {
                         if (data.actualizado) {
-													Swal.fire({
-															icon: 'success',
-															title: 'Datos actualizados',
-															text: 'Tus datos fueron actualizados correctamente.',
-													}).then(() => {
-															document.getElementById('loader-wrapper').classList.remove('hidden');
-															setTimeout(() => {
-																	window.location.href = '/registro';
-															}, 500);
-													});
+							Swal.fire({
+									icon: 'success',
+									title: 'Datos actualizados',
+									text: 'Tus datos fueron actualizados correctamente.',
+							}).then(() => {
+									document.getElementById('loader-wrapper').classList.remove('hidden');
+									setTimeout(() => {
+											window.location.href = '/registro';
+									}, 500);
+							});
                         } else {
-													Swal.fire({
-															icon: 'success',
-															title: '¡Registro exitoso!',
-															text: 'Tu información fue registrada correctamente.',
-													}).then(() => {
-															document.getElementById('loader-wrapper').classList.remove('hidden');
-															setTimeout(() => {
-																	window.location.href = '/registro';
-															}, 500);
-													});
+							Swal.fire({
+									icon: 'success',
+									title: 'Confirmacion exitoso!',
+									text: 'Tu información fue registrada correctamente.',
+							}).then(() => {
+									document.getElementById('loader-wrapper').classList.remove('hidden');
+									setTimeout(() => {
+											window.location.href = '/registro';
+									}, 500);
+							});
                         }
                     } else {
 											    document.getElementById('loader-wrapper').classList.add('hidden'); // También ocultar aquí por si hay error

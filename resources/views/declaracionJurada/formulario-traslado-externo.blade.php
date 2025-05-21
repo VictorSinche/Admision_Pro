@@ -6,8 +6,8 @@
     <title>Declaración Jurada - Universidad María Auxiliadora</title>
     <link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://kit.fontawesome.com/c500eba471.js" crossorigin="anonymous"></script>
     <style>
@@ -51,7 +51,6 @@
     </style>
 </head>
 <body>
-    
     <div class="container-form mt-4">
         <div class="document-border">
             <!-- Encabezado -->
@@ -61,11 +60,11 @@
             </div>
             <p class="text-end"><small> Fecha de Presentación de la solicitud: <span id="fecha_solicitud">{{ $fecha_actual }}</span></small> </p>
             <form id="formDeclaracion" method="POST" action="{{ route('declaracionJurada.guardar') }}">
-                @csrf                
+                @csrf               
                 <h5 class="fw-bold text-danger">Sr. Rector de la Universidad María Auxiliadora <br>Presente. -</h5>
                 <div class="mb-2">
                     <label for="nombre_postulante" class="form-label">Quien suscribe (colocar los apellidos y nombres completos del <b>postulante</b> en la siguiente línea):</label>
-                    <input type="text" id="nombre_postulante" name="nombre_postulante" class="input-line" 
+                    <input type="text" id="nombre_postulante" name="nombre_postulante" class="input-line"
                     value="{{ $data->c_nombres ?? '' }} {{ $data->c_apepat ?? '' }} {{ $data->c_apemat ?? '' }}" readonly>
                 </div>  
 
@@ -84,8 +83,8 @@
 
                 <div class="mb-2">
                     <label for="domicilio" class="form-label">Domicilio:</label>
-                    <input type="text" id="domicilio" name="domicilio"
-                        value="{{ $data->c_dir }}" class="input-line" readonly>
+                    <input type="text" id="domicilio" name="domicilio" class="input-line"
+                    value="{{ $data->c_dir }}" readonly>
                 </div>
 
                 <div class="mb-2">
@@ -102,12 +101,14 @@
 
                 <div id="apoderadoSection" class="mt-3" style="display: none;">
                     <label for="apoderado_nombre" class="form-label">Nombre del apoderado (solo menores de edad):</label>
-                    <input type="text" id="apoderado_nombre" name="apoderado_nombre" class="input-line mb-2">
+                    <input type="text" id="apoderado_nombre" name="apoderado_nombre" class="input-line mb-2" 
+                    value="{{ $data->c_nomapo ?? '' }}" readonly>
             
                     <div class="row mb-2">
                         <div class="col-md-6">
                             <label for="apoderado_dni" class="form-label">DNI del apoderado:</label>
-                            <input type="text" id="apoderado_dni" name="apoderado_dni" class="input-line">
+                            <input type="text" id="apoderado_dni" name="apoderado_dni" class="input-line"
+                            value="{{ $data->c_dniapo ?? '' }}">
                         </div>
                         <div class="col-md-6">
                             <label for="selectVinculo" class="form-label">Vínculo con el estudiante:</label>
@@ -142,13 +143,13 @@
                 </div>
 
                 <p>
-                    En la modalidad: <b>ORDINARIO</b>
+                    En la modalidad: <b>TRASLADO EXTERNO</b>
                 </p>
 
                 <p class="fw-bold">Para lo cual acompaño la documentación requerida, con la calidad de declaración jurada:</p>
                 <ul class="list-unstyled">
+                    <!-- Elementos comunes -->
                     <li class="d-flex align-items-center">
-                        <input type="hidden" name="formulario_inscripcion" value="0">
                         <input id="formulario_inscripcion" type="checkbox" class="form-check-input me-2" name="formulario_inscripcion" value="1">
                         <label for="formulario_inscripcion">Formulario de inscripción virtual, debidamente llenado.</label>
                     </li>
@@ -156,11 +157,6 @@
                         <input type="hidden" name="comprobante_pago" value="0">
                         <input id="comprobante_pago" type="checkbox" class="form-check-input me-2" name="comprobante_pago" value="1">
                         <label for="comprobante_pago">Copia del comprobante de Pago por Derechos de Inscripción al Concurso de Admisión.</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input type="hidden" name="certificado_estudios" value="0">
-                        <input id="certificado_estudios" type="checkbox" class="form-check-input me-2" name="certificado_estudios" value="1">
-                        <label for="certificado_estudios">Certificado o constancia de estudios o documento similar idóneo que acredite los 5 años de estudios de Educación Secundaria.</label>
                     </li>
                     <li class="d-flex align-items-center">
                         <input type="hidden" name="copia_dni" value="0">
@@ -176,8 +172,25 @@
                         <input type="hidden" name="foto_carnet" value="0">
                         <input id="foto_carnet" type="checkbox" class="form-check-input me-2" name="foto_carnet" value="1">
                         <label for="foto_carnet">Fotografía tamaño carné sobre fondo blanco.</label>
+                    </li>                
+                    <!-- Elementos únicos del segundo formulario -->
+                    <li class="d-flex align-items-center">
+                        <input type="hidden" name="certificado_notas_original" value="0">
+                        <input id="certificado_notas_original" type="checkbox" class="form-check-input me-2" name="certificado_notas_original" value="1">
+                        <label for="certificado_notas_original">Certificado o constancia de notas original firmada por autoridad competente de la universidad de origen.</label>
                     </li>
-                </ul>                
+                    <li class="d-flex align-items-center">
+                        <input type="hidden" name="constancia_primera_matricula" value="0">
+                        <input id="constancia_primera_matricula" type="checkbox" class="form-check-input me-2" name="constancia_primera_matricula" value="1">
+                        <label for="constancia_primera_matricula">Constancia de primera matrícula de primer periodo de la universidad de origen.</label>
+                    </li>
+                    <li class="d-flex align-items-center">
+                        <input type="hidden" name="syllabus_visados" value="0">
+                        <input id="syllabus_visados" type="checkbox" class="form-check-input me-2" name="syllabus_visados" value="1">
+                        <label for="syllabus_visados">Syllabus visados.</label>
+                    </li>
+                </ul>
+                
                 <p class="mt-4">
                     En caso de falsedad en lo declarado y de la documentación presentada, me allano a las disposiciones y sanciones que emita la Universidad María Auxiliadora.
                 </p>
@@ -192,14 +205,16 @@
                 <img src="{{ asset('/uma/img/logo.png') }}" alt="UMA Logo" class="logo">
                 <h4>DECLARACIÓN JURADA</h4>
             </div>
-            <p>Yo, <b id="view_nombre_postulante"> {{ $data->c_nombres . ' ' . $data->c_apepat . ' ' . $data->c_apemat }}</b> Identificado con DNI Nº <b id="view_dni_postulante">{{ $data->c_numdoc }}</b>, domiciliado en <b id="view_domicilio_postulante">{{ $data->c_dir }}</b>, distrito de <b id="view_selectDistrito">{{ optional($ubigeos->firstWhere('codigo', $data->c_dptodom . $data->c_provdom . $data->c_distdom))->nombre }}</b>, postulante a la carrera profesional de  <b id="view_selectCarrera">{{ optional($especialidades->firstWhere('codesp', $data->c_codesp1))->nomesp }}</b>, con la finalidad de participar en el proceso de admisión 2025-II de la Universidad María Auxiliadora, declaro <b>BAJO JURAMENTO</b> lo siguiente:            
+            <p>Yo, <b id="view_nombre_postulante">[Nombre del postulante] </b> Identificado con DNI Nº <b id="view_dni_postulante">[DNI]</b>, domiciliado en <b id="view_domicilio_postulante">[Domicilio]</b>, distrito de <b id="view_selectDistrito">[Distrito]</b>, postulante a la carrera profesional de  <b id="view_selectCarrera">[Carrera]</b>, con la finalidad de participar en el proceso de admisión 2025-II de la Universidad María Auxiliadora, declaro <b>BAJO JURAMENTO</b> lo siguiente:            
             </p>
-            
+
             <ul class="mt-3">
                 <li>
-                    <b>HE CULMINADO</b> de manera satisfactoria mis estudios básicos – nivel secundaria en el año 
-                    <input type="text" id="anio_secundaria" name="anio_secundaria" class="input-line ms-1" style="width: 60px;" maxlength="4" value="{{ $data->c_anoegreso ?? '' }}">
-                </li>
+                    <b>HE CURSADO</b> de manera satisfactoria mis estudios de nivel superior - profesional en la universidad  
+                    <input type="text" id="universidad_traslado" name="universidad_traslado" class="input-line ms-1" style="width: 250px;"> 
+                    hasta el año  
+                    <input type="text" id="anno_culminado" name="anno_culminado" class="input-line ms-1" style="width: 100px;" maxlength="4">.
+                </li>                
                 
                 <li><b>CUMPLO CON LOS REQUISITOS</b> exigidos por la UNIVERSIDAD MARÍA AUXILIADORA para participar en el proceso de admisión 2025-II.</li>
                 <li>
@@ -211,10 +226,10 @@
                     </ul>
                 </li>
             </ul>
-            <p>En caso de falsedad o incumplimiento de lo aquí declarado <b>AUTORIZO</b> a la Universidad María Auxiliadora y sin posibilidad de reclamo, a restringir mi matrícula para el siguiente semestre académico, a bloquear mi acceso a mi SIGU del estudiante concluido el semestre académico y a no entregarme el certificado o constancia de estudios o notas del semestre concluido o cualquier otro documento asociado hasta que no cumpla con presentar mi certificado o constancia de culminación satisfactoria de estudios secundarios; sin derecho a reembolso de los pagos que pudiera haber efectuado a dicha fecha.</p>
+            <p>Yo, <b id="view_nombre_postulante"> {{ $data->c_nombres . ' ' . $data->c_apepat . ' ' . $data->c_apemat }}</b> Identificado con DNI Nº <b id="view_dni_postulante">{{ $data->c_numdoc }}</b>, domiciliado en <b id="view_domicilio_postulante">{{ $data->c_dir }}</b>, distrito de <b id="view_selectDistrito">{{ optional($ubigeos->firstWhere('codigo', $data->c_dptodom . $data->c_provdom . $data->c_distdom))->nombre }}</b>, postulante a la carrera profesional de  <b id="view_selectCarrera">{{ optional($especialidades->firstWhere('codesp', $data->c_codesp1))->nomesp }}</b>, con la finalidad de participar en el proceso de admisión 2025-II de la Universidad María Auxiliadora, declaro <b>BAJO JURAMENTO</b> lo siguiente:            
             <div class="mb-3">
                 <p>En señal de absoluta conformidad y expreso conocimiento y voluntad con lo aquí declarado, suscribo el presente documento a los <span id="fecha_actual"></span>.</p>
-            </div>  
+            </div> 
             
             <div class="d-flex align-items-center mt-3">
                 <input name="acepto_terminos" class="form-check-input me-1" type="checkbox" id="acepto_terminos" required>
@@ -257,9 +272,7 @@
         </div>
     </div>
     
-
-
-    <script>
+        <script>
         document.addEventListener('DOMContentLoaded', function () {
             const inputFecha = document.getElementById('fech_nac');
             const apoderadoSection = document.getElementById('apoderadoSection');
@@ -352,6 +365,7 @@
             });
         });
     </script>
+
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

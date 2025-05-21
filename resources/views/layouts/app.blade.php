@@ -1,5 +1,7 @@
 @vite('resources/css/app.css')
 
+<link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- CDN Tom Select -->
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">

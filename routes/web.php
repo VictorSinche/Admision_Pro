@@ -55,8 +55,10 @@ Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('dire
 
 /*
 |--------------------------------------------------------------------------
-| Rutas de Administración
+| Rutas de Declaración Jurada
 |--------------------------------------------------------------------------
 */
+Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
 
-Route::get("/form-ordinario", [InfoPostulanteController::class, "vistaOrdinario"])->name("declaracionJurada.formulario-ordinario");
+Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');
+

@@ -244,7 +244,7 @@
                     if (response.ok) {
                         Swal.fire({
                             icon: 'success',
-                            title: '¡Registro exitoso!',
+                            title: 'Confirmacion exitoso!',
                             text: data.message || 'Tu información fue registrada correctamente.',
                         });
                     } else {

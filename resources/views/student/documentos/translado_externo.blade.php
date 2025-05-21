@@ -21,39 +21,6 @@
 
     <!-- Campo 3 -->
     <div>
-      <label for="constancianotas" class="block text-sm font-medium text-gray-900 mb-1">
-        Certificado académico
-        <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Certificado o constancia de notas original firmada por autoridad competente de la universidad de origen.">
-        </i>
-      </label>
-      <input id="constancia" type="file" name="constancianotas"
-        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
-    </div>
-		
-		<!-- Campo 4 -->
-		<div>
-      <label for="constmatricula" class="block text-sm font-medium text-gray-900 mb-1">
-        Constancia matricula
-        <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Certificado o constancia de notas original firmada por autoridad competente de la universidad de origen.">
-        </i>
-      </label>
-      <input id="constmatricula" type="file" name="constmatricula"
-        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
-    </div>
-
-		<!-- Campo 5 -->
-		<div>
-			<label for="syllabus" class="block text-sm font-medium text-gray-900 mb-1">
-				Syllabus visados.
-				<i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Certificado o constancia de notas original firmada por autoridad competente de la universidad de origen.">
-				</i>
-			</label>
-			<input id="syllabus" type="file" name="syllabus"
-				class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
-		</div>
-
-    <!-- Campo 6 -->
-    <div>
       <label for="dni" class="block text-sm font-medium text-gray-900 mb-1">
         DNI del postulante/apoderado
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Copia del D.N.I. y de su representante, de ser el caso de menores de edad."></i>
@@ -61,9 +28,9 @@
       <input id="dni" type="file" name="dni"
         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
     </div>
-
-    <!-- Campo 7 -->
-    <div>
+		
+		<!-- Campo 4 -->
+		<div>
       <label for="seguro" class="block text-sm font-medium text-gray-900 mb-1">
         Seguro de salud
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Constancia de seguro de salud (ESSALUD, SIS, seguro particular)."></i>
@@ -72,8 +39,8 @@
         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
     </div>
 
-    <!-- Campo 8 -->
-    <div>
+		<!-- Campo 5 -->
+		<div>
       <label for="foto" class="block text-sm font-medium text-gray-900 mb-1">
         Foto tamaño carné
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Fotografía tamaño carné sobre fondo blanco."></i>
@@ -81,5 +48,40 @@
       <input id="foto" type="file" name="foto"
         class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
     </div>
+
+    <!-- Campo 6 -->
+    <div>
+      <label for="constancianotas" class="block text-sm font-medium text-gray-900 mb-1">
+        Certificado académico
+        <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Certificado o constancia de notas original firmada por autoridad competente de la universidad de origen.
+">
+        </i>
+      </label>
+      <input id="constancia" type="file" name="constancianotas"
+        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
+    </div>
+
+    <!-- Campo 7 -->
+    <div>
+      <label for="constmatricula" class="block text-sm font-medium text-gray-900 mb-1">
+        Constancia matricula
+        <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Constancia de primera matrícula de primer periodo de la universidad de origen.
+.">
+        </i>
+      </label>
+      <input id="constmatricula" type="file" name="constmatricula"
+        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
+    </div>
+
+    <!-- Campo 8 -->
+    <div>
+			<label for="syllabus" class="block text-sm font-medium text-gray-900 mb-1">
+				Syllabus visados.
+				<i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Certificado o constancia de notas original firmada por autoridad competente de la universidad de origen.">
+				</i>
+			</label>
+			<input id="syllabus" type="file" name="syllabus"
+				class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
+		</div>
 
   </div>

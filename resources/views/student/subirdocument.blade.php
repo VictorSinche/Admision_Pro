@@ -51,7 +51,7 @@
     </div>
 
     <div class="mt-4">
-      <a href="{{ route('declaracionJurada.formulario-ordinario') }}" target="_blank"
+      <a href="{{ route('declaracionJurada.formulario', ['modalidad' => $modalidad]) }}" target="_blank"
         class="inline-flex items-center px-4 py-2 bg-[#e72352] text-white text-sm font-semibold rounded-md shadow hover:bg-[#c91e45] transition">
         <i class="fa-solid fa-file-signature mr-2"></i> Ir a la declaración jurada
       </a>
@@ -72,7 +72,7 @@
               confirmButtonColor: '#e72352'
           });
       @endif
-  
+        
       // 2. Faltan documentos
       @if (session('documentos_incompletos'))
           Swal.fire({
@@ -82,7 +82,7 @@
               confirmButtonColor: '#e72352'
           });
       @endif
-  
+        
       // 3. Reemplazo de archivo
       document.querySelectorAll('input[type="file"]').forEach(input => {
           input.addEventListener('change', function () {
@@ -100,4 +100,17 @@
           });
       });
   });
-  </script>
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      @if(session('declaracion_enviada'))
+          Swal.fire({
+              icon: 'success',
+              title: '¡Declaración jurada enviada!',
+              text: 'Tu declaración fue registrada correctamente.',
+              confirmButtonColor: '#e72352'
+          });
+      @endif
+  });
+</script>

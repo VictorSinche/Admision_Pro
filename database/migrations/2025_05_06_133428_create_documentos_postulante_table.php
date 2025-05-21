@@ -12,23 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('documentos_postulante', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('info_postulante_id')->constrained('info_postulante')->onDelete('cascade');
+            $table->id();
+            $table->foreignId('info_postulante_id')->constrained('info_postulante')->onDelete('cascade');
 
-        $table->string('formulario')->nullable();
-        $table->string('pago')->nullable();
-        $table->string('constancia')->nullable();
-        $table->string('constancianotas')->nullable();
-        $table->string('dni')->nullable();
-        $table->string('seguro')->nullable();
-        $table->string('foto')->nullable();
-        $table->string('constmatricula')->nullable();
-        $table->string('certprofecional')->nullable();
-        $table->string('syllabus')->nullable();
-        $table->string('merito')->nullable();
-        $table->unsignedTinyInteger('estado')->default(0); // Opcional: estado global del documento
-        $table->timestamps();
-    });
+            $table->string('formulario')->nullable();
+            $table->string('pago')->nullable();
+            $table->string('constancia')->nullable();
+            $table->string('constancianotas')->nullable();
+            $table->string('dni')->nullable();
+            $table->string('seguro')->nullable();
+            $table->string('foto')->nullable();
+            $table->string('constmatricula')->nullable();
+            $table->string('certprofecional')->nullable();
+            $table->string('syllabus')->nullable();
+            $table->string('merito')->nullable();
+            $table->unsignedTinyInteger('estado')->default(0); // Opcional: estado global del documento
+            $table->timestamps();
+        });
     }
 
     /**
