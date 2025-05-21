@@ -102,12 +102,14 @@
 
                 <div id="apoderadoSection" class="mt-3" style="display: none;">
                     <label for="apoderado_nombre" class="form-label">Nombre del apoderado (solo menores de edad):</label>
-                    <input type="text" id="apoderado_nombre" name="apoderado_nombre" class="input-line mb-2">
+                    <input type="text" id="apoderado_nombre" name="apoderado_nombre" class="input-line mb-2"
+                    value="{{ $data->c_nomapo }}" readonly>
             
                     <div class="row mb-2">
                         <div class="col-md-6">
                             <label for="apoderado_dni" class="form-label">DNI del apoderado:</label>
-                            <input type="text" id="apoderado_dni" name="apoderado_dni" class="input-line">
+                            <input type="text" id="apoderado_dni" name="apoderado_dni" class="input-line"
+                            value="{{ $data->c_dniapo }}" readonly>
                         </div>
                         <div class="col-md-6">
                             <label for="selectVinculo" class="form-label">Vínculo con el estudiante:</label>
