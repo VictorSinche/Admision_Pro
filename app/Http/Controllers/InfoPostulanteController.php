@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InfoPostulante;
 use App\Models\DeclaracionJurada;
+use App\Models\DocumentoPostulante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -193,7 +194,7 @@ class InfoPostulanteController extends Controller
             abort(403, 'No tienes permiso para acceder a esta pagina');
         }
 
-        $postulante = InfoPostulante::where('c_numdoc', $c_numdoc)->firstOrFail();
+        $postulante = InfoPostulante::with('documentos')->where('c_numdoc', $c_numdoc)->firstOrFail();
         
         $mapaModalidades = [
             'B' => 'primeros_puestos',
@@ -216,7 +217,10 @@ class InfoPostulanteController extends Controller
             'C' => 'Admisión Pre-UMA',
         ][$codigo] ?? 'Desconocida';
 
-        return view('student.subirdocument', compact('postulante', 'modalidad', 'nombreModalidad'));
+        $registraDoc = DocumentoPostulante::where('info_postulante_id', $postulante->id)->first();
+        $documentosCompletos = $registraDoc && $registraDoc->estado == 2;
+
+        return view('student.subirdocument', compact('postulante', 'modalidad', 'nombreModalidad', 'documentosCompletos'));
     }
 
     public function guardarDocumentos(Request $request)
@@ -415,6 +419,4 @@ class InfoPostulanteController extends Controller
             return redirect()->back()->with('error', 'Ocurrió un error al guardar la declaración.');
         }
     }
-
-
 }

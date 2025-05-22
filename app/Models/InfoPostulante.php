@@ -16,6 +16,7 @@ class InfoPostulante extends Model
 
     public function documentos()
     {
-        return $this->hasMany(\App\Models\DocumentoPostulante::class, 'info_postulante_id');
+        return $this->hasOne(\App\Models\DocumentoPostulante::class, 'info_postulante_id');
     }
+
 }

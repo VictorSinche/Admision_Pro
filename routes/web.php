@@ -61,3 +61,4 @@ Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('dire
 Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
 Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');
 
+Route::get('/declaracion-jurada/pdf', [InfoPostulanteController::class, 'descargarDeclaracionPDF'])->name('declaracion.pdf');
