@@ -112,7 +112,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="selectVinculo" class="form-label">Vínculo con el estudiante:</label>
-                            <select id="selectVinculo" name="vinculo" class="form-select form-select-sm">
+                            <select id="selectVinculo" name="selectVinculo" class="form-select form-select-sm">
                                 <option value="" selected disabled>Seleccionar</option>
                                 <option value="Papá">Papá</option>
                                 <option value="Mamá">Mamá</option>
@@ -120,7 +120,7 @@
                             </select>
                         </div>
                     </div>
-                </div>                
+                </div>
 
                 <p>Ante Ud. Con el debido respeto me presento y expongo:</p>
 
@@ -205,7 +205,7 @@
                 <img src="{{ asset('/uma/img/logo.png') }}" alt="UMA Logo" class="logo">
                 <h4>DECLARACIÓN JURADA</h4>
             </div>
-            <p>Yo, <b id="view_nombre_postulante">[Nombre del postulante] </b> Identificado con DNI Nº <b id="view_dni_postulante">[DNI]</b>, domiciliado en <b id="view_domicilio_postulante">[Domicilio]</b>, distrito de <b id="view_selectDistrito">[Distrito]</b>, postulante a la carrera profesional de  <b id="view_selectCarrera">[Carrera]</b>, con la finalidad de participar en el proceso de admisión 2025-II de la Universidad María Auxiliadora, declaro <b>BAJO JURAMENTO</b> lo siguiente:            
+            <p>Yo, <b id="view_nombre_postulante">{{ $data->c_nombres . ' ' . $data->c_apepat . ' ' . $data->c_apemat }} </b> Identificado con DNI Nº <b id="view_dni_postulante">{{ $data->c_numdoc }} </b>, domiciliado en <b id="view_domicilio_postulante">{{ $data->c_dir }}</b>, distrito de <b id="view_selectDistrito">{{ optional($ubigeos->firstWhere('codigo', $data->c_dptodom . $data->c_provdom . $data->c_distdom))->nombre }}</b>, postulante a la carrera profesional de  <b id="view_selectCarrera">{{ optional($especialidades->firstWhere('codesp', $data->c_codesp1))->nomesp }}</b>, con la finalidad de participar en el proceso de admisión 2025-II de la Universidad María Auxiliadora, declaro <b>BAJO JURAMENTO</b> lo siguiente:
             </p>
 
             <ul class="mt-3">
@@ -226,11 +226,20 @@
                     </ul>
                 </li>
             </ul>
-            <p>Yo, <b id="view_nombre_postulante"> {{ $data->c_nombres . ' ' . $data->c_apepat . ' ' . $data->c_apemat }}</b> Identificado con DNI Nº <b id="view_dni_postulante">{{ $data->c_numdoc }}</b>, domiciliado en <b id="view_domicilio_postulante">{{ $data->c_dir }}</b>, distrito de <b id="view_selectDistrito">{{ optional($ubigeos->firstWhere('codigo', $data->c_dptodom . $data->c_provdom . $data->c_distdom))->nombre }}</b>, postulante a la carrera profesional de  <b id="view_selectCarrera">{{ optional($especialidades->firstWhere('codesp', $data->c_codesp1))->nomesp }}</b>, con la finalidad de participar en el proceso de admisión 2025-II de la Universidad María Auxiliadora, declaro <b>BAJO JURAMENTO</b> lo siguiente:            
+            <p>En caso de falsedad o incumplimiento de lo aquí declarado <b>AUTORIZO</b> a la Universidad María Auxiliadora y sin posibilidad de reclamo a restringir mi matrícula para el siguiente semestre académico, anular la convalidación de cursos efectuada, a bloquear mi acceso a mi SIGU del estudiante concluido el semestre académico y a no entregarme el certificado o constancia de notas del semestre concluido o cualquier documento asociado, así como la Resolución de Convalidación, hasta que cumpla con presentar los documentos pendientes; sin derecho a reembolso de los pagos que pudiera haber efectuado a dicha fecha.</p>
             <div class="mb-3">
-                <p>En señal de absoluta conformidad y expreso conocimiento y voluntad con lo aquí declarado, suscribo el presente documento a los <span id="fecha_actual"></span>.</p>
-            </div> 
-            
+
+                @php
+                    use Carbon\Carbon;
+                    $fecha = Carbon::parse('2025-05-26'); // O puedes usar Carbon::now() si es la fecha actual
+                    $dia = $fecha->day;
+                    $mes = $fecha->locale('es')->translatedFormat('F');
+                    $anio = $fecha->year;
+                @endphp
+
+                <p>En señal de absoluta conformidad y expreso conocimiento y voluntad con lo aquí declarado, suscribo el presente documento a los <span id="fecha_actual">{{ $dia }} días del mes de {{ ucfirst($mes) }} del {{ $anio }}</span>.</p>
+            </div>
+
             <div class="d-flex align-items-center mt-3">
                 <input name="acepto_terminos" class="form-check-input me-1" type="checkbox" id="acepto_terminos" required>
                 <label class="form-check-label" for="acepto_terminos">
@@ -348,19 +357,50 @@
             const aceptoTerminos = document.getElementById('acepto_terminos');
             const form = document.getElementById('formDeclaracion');
 
+            const vinculo = document.getElementById('selectVinculo');
+            const universidad = document.getElementById('universidad_traslado');
+            const anio = document.getElementById('anno_culminado');
+
             btnEnviar.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                let errores = [];
+
+                // Limpiar estilos previos
+                [vinculo, universidad, anio].forEach(el => el?.classList.remove('is-invalid'));
+
+                // Validar términos
                 if (!aceptoTerminos.checked) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Debes aceptar los Términos y Condiciones',
-                        text: 'Para continuar con el envío de tu Declaración Jurada, es necesario que marques la casilla de conformidad.',
-                        confirmButtonText: 'Entendido',
-                        confirmButtonColor: '#e72352',
-                    });
-                    return; // Detener el envío
+                    errores.push('Aceptar los Términos y Condiciones');
                 }
 
-                // Si pasó la validación, enviar el formulario
+                // Validar campos visibles
+                if (vinculo && vinculo.offsetParent !== null && vinculo.value === "") {
+                    vinculo.classList.add('is-invalid');
+                    errores.push('Vínculo con el estudiante');
+                }
+
+                if (universidad && universidad.offsetParent !== null && universidad.value.trim() === "") {
+                    universidad.classList.add('is-invalid');
+                    errores.push('Nombre de la universidad');
+                }
+
+                if (anio && anio.offsetParent !== null && anio.value.trim() === "") {
+                    anio.classList.add('is-invalid');
+                    errores.push('Año de culminación');
+                }
+
+                if (errores.length > 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Faltan campos por completar',
+                        html: '<ul style="text-align:left;">' + errores.map(e => `<li>🔸 ${e}</li>`).join('') + '</ul>',
+                        confirmButtonColor: '#e72352',
+                    });
+                    return;
+                }
+
+                // Si todo está OK
                 form.submit();
             });
         });

@@ -36,7 +36,7 @@
     </button>
   </form>
     
-  <!-- Mensaje informativo -->
+  {{-- <!-- Mensaje informativo -->
   @if (!$documentosCompletos)
     <!-- Mensaje informativo -->
     <div class="col-span-1 md:col-span-2 mt-8 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-sm">
@@ -57,6 +57,46 @@
           class="inline-flex items-center px-4 py-2 bg-[#e72352] text-white text-sm font-semibold rounded-md shadow hover:bg-[#c91e45] transition">
           <i class="fa-solid fa-file-signature mr-2"></i> Ir a la declaración jurada
         </a>
+      </div>
+    </div>
+  @endif --}}
+
+  @if ($declaracionExiste)
+    {{-- ✅ Ya tiene declaración jurada, mostramos solo botón de descarga --}}
+    <div class="mt-8 bg-green-100 border-l-4 border-green-600 text-green-800 p-4 rounded-lg shadow-sm">
+      <div class="flex items-start">
+        <i class="fa-solid fa-circle-check text-green-600 mt-1 mr-3"></i>
+        <div>
+          <h3 class="font-semibold text-base mb-1">Ya enviaste tu declaración jurada</h3>
+          <p class="text-sm leading-relaxed">
+            Puedes descargar una copia en PDF si lo necesitas.
+          </p>
+          <div class="mt-3">
+              <a href="{{ route('declaracionJurada.descargar') }}" target="_blank"
+              class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-md shadow hover:bg-green-700 transition">
+              <i class="fa-solid fa-file-pdf mr-2"></i> Descargar declaración jurada
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  @else
+    {{-- ⚠️ Aún no tiene declaración, mostrar mensaje normal --}}
+    <div class="col-span-1 md:col-span-2 mt-8 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-sm">
+      <div class="flex items-start">
+        <i class="fa-solid fa-triangle-exclamation text-yellow-500 mt-1 mr-3"></i>
+        <div>
+          <h3 class="font-semibold text-base mb-1">¿No cuentas con alguno de los documentos requeridos?</h3>
+          <p class="text-sm leading-relaxed">
+            Puedes completar una <strong>declaración jurada</strong> comprometiéndote a presentarlos más adelante.
+          </p>
+          <div class="mt-3">
+            <a href="{{ route('declaracionJurada.formulario', ['modalidad' => $modalidad]) }}" target="_blank"
+              class="inline-flex items-center px-4 py-2 bg-[#e72352] text-white text-sm font-semibold rounded-md shadow hover:bg-[#c91e45] transition">
+              <i class="fa-solid fa-file-signature mr-2"></i> Ir a la declaración jurada
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   @endif

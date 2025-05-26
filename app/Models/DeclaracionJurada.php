@@ -23,12 +23,15 @@ class DeclaracionJurada extends Model
         'titulo_tecnico',
         'constancia_colegio',
         'selectVinculo',
+        'universidad_traslado',
+        'anno_culminado',
         'estado',
     ];
 
     // Relación con InfoPostulante (opcional, si quieres usarla)
-    public function postulante()
+    public function infoPostulante()
     {
         return $this->belongsTo(InfoPostulante::class, 'info_postulante_id');
     }
+
 }

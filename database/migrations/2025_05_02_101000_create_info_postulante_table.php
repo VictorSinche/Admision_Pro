@@ -22,9 +22,9 @@ return new class extends Migration
             $table->string('c_numdoc', 11)->unique();       // Número documento
             $table->string('c_email', 50)->nullable();      // Correo
             $table->string('c_celu', 30)->nullable();       // Celular
-
+            $table->string('nomesp', 100)->nullable();      // Nombre de la especialidad
             $table->string('c_codesp1', 5);                 // Programa de interés (especialidad)
-            $table->integer('id_proceso');                 // Proceso de admisión
+            $table->integer('id_proceso');                  // Proceso de admisión
             $table->string('c_sedcod', 4)->nullable();      // Sede
 
             $table->tinyInteger('estado')->default(0);      // Estado: 0 = No confirmado, 1 = Confirmado

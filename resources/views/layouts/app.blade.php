@@ -1,6 +1,8 @@
 @vite('resources/css/app.css')
 
 <link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
+<title>UMA | INFORMES</title>
+
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- CDN Tom Select -->
@@ -64,10 +66,11 @@
             <!-- Menú de usuario -->
             <div id="dropdown-user" class="absolute right-0 z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow dark:bg-gray-700 dark:divide-gray-600">
               <div class="px-4 py-3" role="none">
-                <p class="text-sm text-gray-900 dark:text-white" role="none">Victor Sinche
+                <p class="text-sm text-gray-900 dark:text-white" role="none">
+                  {{ Str::title(session('nombre_completo') ?? 'Postulante') }}
                 </p>
                 <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                  victor@gmail.com
+                  {{ session('correo') ?? 'correo@ejemplo.com' }}
                 </p>
               </div>
               <ul class="py-1" role="none">
@@ -168,8 +171,15 @@
               <li>
                 <a href="{{ route('admision.listpostulante') }}" 
                 class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                {{ Request::routeIs('admision.listapostulante') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                {{ Request::routeIs('admision.listpostulante') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                   Lista Postulantes
+              </a>              
+              </li>
+              <li>
+                <a href="{{ route('admision.historialDj') }}" 
+                class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                {{ Request::routeIs('admision.historialDj') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                  Historial Declaración Jurada
               </a>              
               </li>
             </ul>

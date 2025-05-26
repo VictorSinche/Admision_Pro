@@ -101,7 +101,7 @@
                 </div>
 
                 <div id="apoderadoSection" class="mt-3" style="display: none;">
-                    <label for="apoderado_nombre" class="form-label">Nombre del apoderado (solo menores de edad):</label>
+                    <label for="apoderado_nombre" class="form-label"><strong>Nombre del apoderado (solo menores de edad):</strong></label>
                     <input type="text" id="apoderado_nombre" name="apoderado_nombre" class="input-line mb-2"
                     value="{{ $data->c_nomapo }}" readonly>
             
@@ -113,7 +113,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="selectVinculo" class="form-label">Vínculo con el estudiante:</label>
-                            <select id="selectVinculo" name="vinculo" class="form-select form-select-sm">
+                            <select id="selectVinculo" name="selectVinculo" class="form-select form-select-sm">
                                 <option value="" selected disabled>Seleccionar</option>
                                 <option value="Papá">Papá</option>
                                 <option value="Mamá">Mamá</option>
@@ -219,7 +219,7 @@
             <ul class="mt-3">                
                 <li>
                     <b>HE CULMINADO</b> de manera satisfactoria mis estudios de nivel superior - técnico o profesional en el año 
-                    <input type="text" id="anno_culminado" name="anno_culminado" class="input-line ms-1" style="width: 60px;" maxlength="4" value="{{ $data->c_anoegreso }}">
+                    <input type="text" id="anno_culminado" name="anno_culminado" class="input-line ms-1 " style="width: 60px;" maxlength="4">
                 </li>
                 <li>
                     <b>CUMPLO CON LOS REQUISITOS</b> exigidos por la UNIVERSIDAD MARÍA AUXILIADORA para participar en el proceso de admisión 2025-II.</li>
@@ -354,19 +354,50 @@
             const aceptoTerminos = document.getElementById('acepto_terminos');
             const form = document.getElementById('formDeclaracion');
 
+            const vinculo = document.getElementById('selectVinculo');
+            const universidad = document.getElementById('universidad_traslado');
+            const anio = document.getElementById('anno_culminado');
+
             btnEnviar.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                let errores = [];
+
+                // Limpiar estilos previos
+                [vinculo, universidad, anio].forEach(el => el?.classList.remove('is-invalid'));
+
+                // Validar términos
                 if (!aceptoTerminos.checked) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Debes aceptar los Términos y Condiciones',
-                        text: 'Para continuar con el envío de tu Declaración Jurada, es necesario que marques la casilla de conformidad.',
-                        confirmButtonText: 'Entendido',
-                        confirmButtonColor: '#e72352',
-                    });
-                    return; // Detener el envío
+                    errores.push('Aceptar los Términos y Condiciones');
                 }
 
-                // Si pasó la validación, enviar el formulario
+                // Validar campos visibles
+                if (vinculo && vinculo.offsetParent !== null && vinculo.value === "") {
+                    vinculo.classList.add('is-invalid');
+                    errores.push('Vínculo con el estudiante');
+                }
+
+                if (universidad && universidad.offsetParent !== null && universidad.value.trim() === "") {
+                    universidad.classList.add('is-invalid');
+                    errores.push('Nombre de la universidad');
+                }
+
+                if (anio && anio.offsetParent !== null && anio.value.trim() === "") {
+                    anio.classList.add('is-invalid');
+                    errores.push('Año de culminación');
+                }
+
+                if (errores.length > 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Faltan campos por completar',
+                        html: '<ul style="text-align:left;">' + errores.map(e => `<li>🔸 ${e}</li>`).join('') + '</ul>',
+                        confirmButtonColor: '#e72352',
+                    });
+                    return;
+                }
+
+                // Si todo está OK
                 form.submit();
             });
         });

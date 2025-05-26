@@ -5,8 +5,6 @@ use App\Http\Controllers\InfoPostulanteController;
 use App\Http\Controllers\PostulanteLoginController;
 use App\Http\Controllers\CreatePostulanteController;
 use App\Http\Controllers\DeclaracionJuradaController;
-use App\Models\InfoPostulante;
-
 /*
 |--------------------------------------------------------------------------
 | Rutas de Autenticación
@@ -51,14 +49,21 @@ Route::get('/especialidades-por-facultad', [InfoPostulanteController::class, 'ge
 */
 Route::get('/listpostulante', fn() => view('admision.listapostulantes'))->name('admision.listpostulante');
 Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('director.convalidacion');
-
+Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesConDJ'])->name('admision.historialDj');
 
 /*
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------  
 | Rutas de Declaración Jurada
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------  
 */
-Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
-Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');
 
-Route::get('/declaracion-jurada/pdf', [InfoPostulanteController::class, 'descargarDeclaracionPDF'])->name('declaracion.pdf');
+// 👇 ESTA VA PRIMERO
+Route::get('/declaracion-jurada/pdf', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])
+    ->name('declaracionJurada.descargar');
+
+// 👇 ESTA VA DESPUÉS
+Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])
+    ->name('declaracionJurada.formulario');
+
+Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])
+    ->name('declaracionJurada.guardar');

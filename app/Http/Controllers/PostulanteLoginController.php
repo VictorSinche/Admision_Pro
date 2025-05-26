@@ -29,7 +29,9 @@ class PostulanteLoginController extends Controller
             'datos_postulante',
             'postulante_data',
             'c_numdoc',
-            'numero_documento'
+            'numero_documento',
+            'nombre_completo',
+            'correo',
         ]);
 
         $postulante = DB::connection('mysql_sigu')
@@ -47,7 +49,9 @@ class PostulanteLoginController extends Controller
                 session([
                     'dni_postulante'    => $postulante->c_numdoc,
                     'datos_postulante' => $postulante,
-                    'c_numdoc'          => $postulante->c_numdoc, // para usarlo en el menú
+                    'c_numdoc'          => $postulante->c_numdoc,
+                    'nombre_completo'   => $postulante->c_nombres . ' ' . $postulante->c_apepat . ' ' . $postulante->c_apemat,
+                    'correo'            => $postulante->c_email_institucional ?? $postulante->c_email,
                 ]);
 
                 Log::info('📌 DNI guardado en sesión:', [

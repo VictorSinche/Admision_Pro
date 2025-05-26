@@ -11,6 +11,8 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 class InfoPostulanteController extends Controller
 {
 
@@ -61,6 +63,15 @@ class InfoPostulanteController extends Controller
             $c_dptodom = substr($ubigeo, 0, 2);
             $c_provdom = substr($ubigeo, 2, 2);
             $c_distdom = substr($ubigeo, 4, 2);
+
+            // Obtener nombre de la especialidad desde la base externa
+            $nomesp = DB::connection('mysql_sigu')
+                ->table('tb_especialidad')
+                ->where('codesp', $validated['c_codesp1'])
+                ->value('nomesp');
+
+            // Asignar al array validated
+            $validated['nomesp'] = $nomesp ?? 'Sin nombre';
 
             // Guardar en base local
             $postulante = InfoPostulante::updateOrCreate(
@@ -220,7 +231,9 @@ class InfoPostulanteController extends Controller
         $registraDoc = DocumentoPostulante::where('info_postulante_id', $postulante->id)->first();
         $documentosCompletos = $registraDoc && $registraDoc->estado == 2;
 
-        return view('student.subirdocument', compact('postulante', 'modalidad', 'nombreModalidad', 'documentosCompletos'));
+        $declaracionExiste = \App\Models\DeclaracionJurada::where('info_postulante_id', $postulante->id)->exists();
+
+        return view('student.subirdocument', compact('postulante', 'modalidad', 'nombreModalidad', 'documentosCompletos', 'declaracionExiste'));
     }
 
     public function guardarDocumentos(Request $request)
@@ -403,7 +416,10 @@ class InfoPostulanteController extends Controller
                     'syllabus_visados' => $request->input('syllabus_visados', 0),
                     'titulo_tecnico' => $request->input('titulo_tecnico', 0),
                     'constancia_colegio' => $request->input('constancia_colegio', 0),
-                    'selectVinculo' => $request->input('selectVinculo'),
+                    'selectVinculo' => trim($request->input('selectVinculo')),
+                    'universidad_traslado' => trim($request->input('universidad_traslado')),
+                    'anno_culminado' => trim($request->input('anno_culminado')),
+
                     'estado' => 1,
                 ]
             );
@@ -419,4 +435,45 @@ class InfoPostulanteController extends Controller
             return redirect()->back()->with('error', 'Ocurrió un error al guardar la declaración.');
         }
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | funciones de Declarción Jurada
+    |--------------------------------------------------------------------------
+    */
+    public function listarPostulantesConDJ()
+    {
+        // Consulta a la base local
+        $postulantes = DB::table('info_postulante as ip')
+            ->leftJoin('declaracion_jurada as dj', 'ip.id', '=', 'dj.info_postulante_id')
+            ->select(
+                'ip.id',
+                'ip.c_nombres',
+                'ip.c_apepat',
+                'ip.c_apemat',
+                'ip.id_mod_ing',
+                'ip.c_codesp1',
+                'ip.c_email',
+                'ip.c_numdoc',
+                'ip.nomesp',
+                'ip.created_at as dj_fecha',
+                'dj.id as dj_id'
+            )
+            ->orderBy('ip.created_at', 'desc')
+            ->get();
+
+        // Traer modalidades desde la base externa
+        $modalidades = DB::connection('mysql_sigu')
+            ->table('sga_tb_modalidad_ingreso')
+            ->pluck('c_descri', 'id_mod_ing'); // ['A' => 'Ordinario', 'B' => 'Primeros Puestos', etc.]
+
+        // Asignar nombre de modalidad manualmente a cada postulante
+        $postulantes->transform(function ($postulante) use ($modalidades) {
+            $postulante->nombre_modalidad = $modalidades[$postulante->id_mod_ing] ?? 'Desconocida';
+            return $postulante;
+        });
+
+        return view('admision.historialDJ', compact('postulantes'));
+    }
+
 }

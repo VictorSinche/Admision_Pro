@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('titulo_tecnico')->nullable();
             $table->string('constancia_colegio')->nullable();
             $table->string('selectVinculo')->nullable();
+            $table->string('universidad_traslado')->nullable();
+            $table->string('anno_culminado')->nullable();
             $table->unsignedTinyInteger('estado')->default(0); // Opcional: estado global del documento
             $table->timestamps();
         });
