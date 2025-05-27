@@ -8,10 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('modules', function (Blueprint $table) {
+        Schema::create('permissions_postulantes', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->string('codigo')->unique();
+            $table->foreignId('postulante_id')->constrained('postulantes')->onDelete('cascade');
+            $table->foreignId('item_id')->constrained('items')->onDelete('cascade');
             $table->char('estado', 1)->default('A'); // A = Activo, I = Inactivo
             $table->timestamps();
         });
@@ -19,6 +19,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('modules');
+        Schema::dropIfExists('permissions_postulantes');
     }
 };

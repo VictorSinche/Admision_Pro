@@ -121,96 +121,120 @@
             </ul>
           </li>
 
-          <li>
-            <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-estudiante" data-collapse-toggle="submenu-estudiante">
-              <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
-              </svg>
-              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Postulante</span>
-              <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
-              </svg>
-            </button>
-            <ul id="submenu-estudiante" class="py-2 space-y-2 {{ Request::routeIs('student.*') ? '' : 'hidden' }}">
-              <li>
-                <a href="{{ route('student.registro') }}" 
-                class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                {{ Request::routeIs('student.registro') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                Información
-                </a>              
-              </li>
-              <li>
-                <a href="{{ route('student.pagosinscripcion') }}" 
-                class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                {{ Request::routeIs('student.pagosinscripcion') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                Pagos inscripción
-                </a>              
-              </li>
-                @php
-                  use App\Models\InfoPostulante;
+        @php
+          use App\Models\InfoPostulante;
 
-                  $numeroDocumento = session('c_numdoc');
-                  $estadoConfirmado = false;
+          $numeroDocumento = session('c_numdoc');
+          $estadoConfirmado = false;
 
-                  if ($numeroDocumento) {
-                      $postulante = InfoPostulante::where('c_numdoc', $numeroDocumento)->first();
-                      $estadoConfirmado = $postulante && $postulante->estado === 1;
-                  }
-                @endphp
+          if ($numeroDocumento) {
+              $postulante = InfoPostulante::where('c_numdoc', $numeroDocumento)->first();
+              $estadoConfirmado = $postulante && $postulante->estado === 1;
+          }
+        @endphp
 
-                @if($estadoConfirmado)
-                    <a href="{{ route('student.subirdocumentos', ['c_numdoc' => $numeroDocumento]) }}"
-                      class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group
-                      {{ Request::routeIs('student.subirdocumentos') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                      Adjuntar documentos
-                    </a>
-                @else
-                    <a href="#"
-                      onclick="Swal.fire('Primero debe confirmar su información', '', 'warning')"
-                      class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group text-gray-400 cursor-not-allowed">
-                      Adjuntar documentos
-                    </a>
+          @if(tieneAlgunPermiso(['POS.1', 'POS.2', 'POS.3']))
+            <li>
+              <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-estudiante" data-collapse-toggle="submenu-estudiante">
+                <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                  <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z"/>
+                </svg>
+                <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Postulante</span>
+                <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
+                </svg>
+              </button>
+
+              <ul id="submenu-estudiante" class="py-2 space-y-2 {{ Request::routeIs('student.*') ? '' : 'hidden' }}">
+                
+                @if(tienePermisoPostulante('POS.1'))
+                  <li>
+                    <a href="{{ route('student.registro') }}" 
+                    class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                    {{ Request::routeIs('student.registro') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    Información
+                    </a>              
+                  </li>
                 @endif
 
-              <li>
-                <a href="{{ route('student.verhorario') }}" 
-                class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                {{ Request::routeIs('student.verhorario') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                Ver horario
-                </a>              
-              </li>
-            </ul>
-          </li>
+                @if(tienePermisoPostulante('POS.2'))
+                  <li>
+                    <a href="{{ route('student.pagosinscripcion') }}" 
+                    class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                    {{ Request::routeIs('student.pagosinscripcion') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    Pagos inscripción
+                    </a>              
+                  </li>
+                @endif
 
-          <li>
-            <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-admision" data-collapse-toggle="submenu-admision">
-              <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
-              </svg>
-              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Admisión</span>
-              <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
-              </svg>
-            </button>
-            <ul id="submenu-admision" class="py-2 space-y-2 {{ Request::routeIs('admision.*') ? '' : 'hidden' }}">
-              <li>
-                <a href="{{ route('admision.listpostulante') }}" 
-                class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                {{ Request::routeIs('admision.listpostulante') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                  Lista Postulantes
-              </a>              
-              </li>
-              <li>
-                <a href="{{ route('admision.historialDj') }}" 
-                class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                {{ Request::routeIs('admision.historialDj') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                  Historial Declaración Jurada
-              </a>              
-              </li>
-            </ul>
-          </li>
+                @if(tienePermisoPostulante('POS.3'))
+                  @if($estadoConfirmado)
+                    <li>
+                      <a href="{{ route('student.subirdocumentos', ['c_numdoc' => $numeroDocumento]) }}"
+                        class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group
+                        {{ Request::routeIs('student.subirdocumentos') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                        Adjuntar documentos
+                      </a>
+                    </li>
+                  @else
+                    <li>
+                      <a href="#"
+                        onclick="Swal.fire('Primero debe confirmar su información', '', 'warning')"
+                        class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group text-gray-400 cursor-not-allowed">
+                        Adjuntar documentos
+                      </a>
+                    </li>
+                  @endif
+                @endif
+                @if(tienePermisoPostulante('POS.4'))
+                  <li>
+                    <a href="{{ route('student.verhorario') }}" 
+                    class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                    {{ Request::routeIs('student.verhorario') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    Ver horario
+                    </a>              
+                  </li>
+                @endif
+              </ul>
+            </li>
+          @endif
 
-          <li>
+          @if (tieneAlgunPermiso(['ADM.1', 'ADM.2']))
+            <li>
+              <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-admision" data-collapse-toggle="submenu-admision">
+                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
+                </svg>
+                <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Admisión</span>
+                <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
+                </svg>
+              </button>
+              <ul id="submenu-admision" class="py-2 space-y-2 {{ Request::routeIs('admision.*') ? '' : 'hidden' }}">
+                @if(tienePermisoPostulante('ADM.1'))
+                  <li>
+                    <a href="{{ route('admision.listpostulante') }}" 
+                      class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                      {{ Request::routeIs('admision.listpostulante') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                        Lista Postulantes
+                    </a>              
+                  </li>
+                @endif
+                @if(tienePermisoPostulante('ADM.2'))
+                  <li>
+                    <a href="{{ route('admision.listadocentes') }}" 
+                      class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                      {{ Request::routeIs('admision.listadocentes') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                        Lista Docentes
+                    </a>              
+                  </li>
+                @endif
+              </ul>
+            </li>
+          @endif
+
+          @if (tieneAlgunPermiso(['DIR.1']))
+            <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-director" data-collapse-toggle="submenu-director">
               
               <i class="fa-solid fa-user-tie fa-lg text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
@@ -223,17 +247,21 @@
             </button>
           
             <ul id="submenu-director" class="py-2 space-y-2 {{ Request::routeIs('director.*') ? '' : 'hidden' }}">
-              <li>
-                <a href="{{ route('director.convalidacion') }}" 
-                  class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                  {{ Request::routeIs('director.convalidacion') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                  Convalidación
-                </a>              
-              </li>
+              @if (tienePermisoPostulante('DIR.1'))
+                <li>
+                  <a href="{{ route('director.convalidacion') }}" 
+                    class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                    {{ Request::routeIs('director.convalidacion') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    Convalidación
+                  </a>              
+                </li>
+              @endif
             </ul>
           </li>
+          @endif
 
-          <li>
+          @if (tieneAlgunPermiso(['COA.1']))
+            <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-coa" data-collapse-toggle="submenu-coa">
               
               <i class="fa-solid fa-laptop-file text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
@@ -246,17 +274,21 @@
             </button>
           
             <ul id="submenu-coa" class="py-2 space-y-2 {{ Request::routeIs('coa.*') ? '' : 'hidden' }}">
-              <li>
-                <a href="{{ route('coa.listado') }}" 
-                  class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                  {{ Request::routeIs('coa.listado') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                  Listado
-                </a>              
-              </li>
+              @if (tienePermisoPostulante('COA.1'))
+                <li>
+                  <a href="{{ route('coa.listado') }}" 
+                    class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                    {{ Request::routeIs('coa.listado') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    Listado
+                  </a>              
+                </li>
+              @endif
             </ul>
           </li>
+          @endif
 
-          <li>
+          @if (tieneAlgunPermiso(['OSA.1']))
+            <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-osar" data-collapse-toggle="submenu-osar">
               
               <i class="fa-solid fa-file text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
@@ -269,6 +301,7 @@
             </button>
           
             <ul id="submenu-osar" class="py-2 space-y-2 {{ Request::routeIs('osar.*') ? '' : 'hidden' }}">
+            @if (tienePermisoPostulante('OSA.1'))
               <li>
                 <a href="{{ route('osar.listado') }}" 
                   class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
@@ -276,10 +309,13 @@
                   Listado
                 </a>
               </li>
+              @endif
             </ul>
           </li>
+          @endif
 
-          <li>
+          @if (tieneAlgunPermiso(['TES.1']))
+            <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-tesoreria" data-collapse-toggle="submenu-tesoreria">
               
               <i class="fa-solid fa-credit-card text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
@@ -292,15 +328,19 @@
             </button>
           
             <ul id="submenu-tesoreria" class="py-2 space-y-2 {{ Request::routeIs('tesoreria.*') ? '' : 'hidden' }}">
-              <li>
+              @if (tienePermisoPostulante('TES.1'))
+                <li>
                 <a href="{{ route('tesoreria.listado') }}" 
                   class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
                   {{ Request::routeIs('tesoreria.listado') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                   Listado
                 </a>              
               </li>
+              @endif
             </ul>
           </li>
+          @endif
+
         </ul>
     </div>
   </aside>
