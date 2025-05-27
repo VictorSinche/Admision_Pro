@@ -17,6 +17,17 @@ Route::post('/login-postulante', [PostulanteLoginController::class, 'login'])->n
 
 /*
 |--------------------------------------------------------------------------
+| Rutas de menus y submenus
+|--------------------------------------------------------------------------
+*/
+Route::get('/coa', fn() => view('coa.listado'))->name('coa.listado');
+Route::get('/osar', fn() => view('osar.listado'))->name('osar.listado');
+Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.listado');
+
+Route::get('/users', fn() => view('auth.listyPermisos.listuser'))->name('user.list');
+
+/*
+|--------------------------------------------------------------------------
 | Rutas del registro sigu
 |--------------------------------------------------------------------------
 */
@@ -50,6 +61,7 @@ Route::get('/especialidades-por-facultad', [InfoPostulanteController::class, 'ge
 Route::get('/listpostulante', fn() => view('admision.listapostulantes'))->name('admision.listpostulante');
 Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('director.convalidacion');
 Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesConDJ'])->name('admision.historialDj');
+Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
 
 /*
 |--------------------------------------------------------------------------  
@@ -57,13 +69,8 @@ Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesC
 |--------------------------------------------------------------------------  
 */
 
-// 👇 ESTA VA PRIMERO
-Route::get('/declaracion-jurada/pdf', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])
-    ->name('declaracionJurada.descargar');
+Route::get('/declaracion-jurada/pdf', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])->name('declaracionJurada.descargar');
 
-// 👇 ESTA VA DESPUÉS
-Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])
-    ->name('declaracionJurada.formulario');
+Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
 
-Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])
-    ->name('declaracionJurada.guardar');
+Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');

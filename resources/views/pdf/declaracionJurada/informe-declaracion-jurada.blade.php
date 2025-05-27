@@ -129,7 +129,7 @@
             'B' => 'PRIMEROS PUESTOS',
             'C' => 'ADMISIÓN PRE-UMA',
             'D' => 'TRASLADO EXTERNO',
-            'E' => 'ADMISIÓN PARA TÉCNICOS',
+            'E' => 'TITULADOS O GRADUADOS',
             'O' => 'ALTO RENDIMIENTO',
         ];
         $textoTipo = $tiposTexto[$declaracion->infoPostulante->id_mod_ing] ?? 'DESCONOCIDO';
