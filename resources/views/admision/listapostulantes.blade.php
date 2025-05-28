@@ -277,32 +277,31 @@
 @endsection
 
 <script>
-function abrirModalDocumentos(dni) {
-    fetch(`/documentos-json/${dni}`)
-        .then(res => res.json())
-        .then(data => {
-            const select = document.getElementById('select-doc');
-            select.setAttribute('data-dni', dni); // 💥 ESTA LÍNEA ES CLAVE
-            select.innerHTML = `<option value="" disabled selected>Seleccione un documento</option>`;
+    function abrirModalDocumentos(dni) {
+        fetch(`/documentos-json/${dni}`)
+            .then(res => res.json())
+            .then(data => {
+                const select = document.getElementById('select-doc');
+                select.setAttribute('data-dni', dni); // 💥 ESTA LÍNEA ES CLAVE
+                select.innerHTML = `<option value="" disabled selected>Seleccione un documento</option>`;
 
-            Object.entries(data).forEach(([campo, ruta]) => {
-                if (ruta) {
-                    const option = document.createElement('option');
-                    option.value = ruta;
-                    option.text = campo.toUpperCase();
-                    select.appendChild(option);
-                }
+                Object.entries(data).forEach(([campo, ruta]) => {
+                    if (ruta) {
+                        const option = document.createElement('option');
+                        option.value = ruta;
+                        option.text = campo.toUpperCase();
+                        select.appendChild(option);
+                    }
+                });
+
+                document.getElementById('preview-doc').innerHTML = `<span>Selecciona un documento para visualizar</span>`;
+                document.getElementById('modal-documentos').classList.remove('hidden');
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Error al cargar documentos.');
             });
-
-            document.getElementById('preview-doc').innerHTML = `<span>Selecciona un documento para visualizar</span>`;
-            document.getElementById('modal-documentos').classList.remove('hidden');
-        })
-        .catch(err => {
-            console.error(err);
-            alert('Error al cargar documentos.');
-        });
-}
-
+    }
 
     function cerrarModalDocumentos() {
         document.getElementById('modal-documentos').classList.add('hidden');
