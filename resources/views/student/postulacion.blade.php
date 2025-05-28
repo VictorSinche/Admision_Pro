@@ -87,7 +87,6 @@
   </select>
 </div>
 
-
 <!-- Fuente de información -->
 <div class="mt-4 mx-2">
   <select name="id_tab_alu_contact" class="{{ $inputClass }}">
@@ -145,35 +144,54 @@
 document.addEventListener('DOMContentLoaded', function () {
     const procesoSelect = document.getElementById('proceso_admision');
     const programaSelect = document.getElementById('programa_interes');
-    const allProgramOptions = Array.from(programaSelect.options).filter(opt => opt.value !== "");
+    const selectedPrograma = programaSelect.dataset.selected;
+
+    const allProgramOptions = Array.from(programaSelect.querySelectorAll('option'))
+        .filter(opt => opt.value !== "");
 
     function filtrarProgramasPorFacultad(codfacSeleccionado) {
-        // Restaurar solo las opciones válidas
-        programaSelect.innerHTML = '<option value="" disabled>Seleccione el Programa de Interés</option>';
+        programaSelect.innerHTML = `
+            <option value="" disabled ${!selectedPrograma ? 'selected' : ''}>
+                Seleccione el Programa de Interés
+            </option>
+        `;
+
+        let seleccionadoAgregado = false;
 
         allProgramOptions.forEach(opt => {
-            if (opt.dataset.codfac === codfacSeleccionado) {
-                programaSelect.appendChild(opt);
+            const codfac = opt.dataset.codfac;
+            const esSeleccionado = opt.value === selectedPrograma;
+
+            if (codfac === codfacSeleccionado || esSeleccionado) {
+                const clon = opt.cloneNode(true);
+                if (esSeleccionado) {
+                    clon.selected = true;
+                    seleccionadoAgregado = true;
+                }
+                programaSelect.appendChild(clon);
             }
         });
 
-        // Reseleccionar si ya había una opción guardada
-        const preseleccionado = programaSelect.dataset.selected;
-        if (preseleccionado) {
-            programaSelect.value = preseleccionado;
+        // Por si no se encontró en la lista (respaldo)
+        if (!seleccionadoAgregado && selectedPrograma) {
+            const original = allProgramOptions.find(opt => opt.value === selectedPrograma);
+            if (original) {
+                const clon = original.cloneNode(true);
+                clon.selected = true;
+                programaSelect.appendChild(clon);
+            }
         }
     }
 
     procesoSelect.addEventListener('change', function () {
-        const selectedOption = this.options[this.selectedIndex];
-        const codfac = selectedOption.dataset.codfac;
+        const codfac = this.options[this.selectedIndex].dataset.codfac;
         if (codfac) filtrarProgramasPorFacultad(codfac);
     });
 
-    // Al cargar la página: aplicar filtro si hay opción seleccionada
-    const optionInicial = procesoSelect.querySelector('option:checked');
-    if (optionInicial && optionInicial.dataset.codfac) {
-        filtrarProgramasPorFacultad(optionInicial.dataset.codfac);
+    const codfacInicial = procesoSelect.querySelector('option:checked')?.dataset.codfac;
+    if (codfacInicial) {
+        filtrarProgramasPorFacultad(codfacInicial);
     }
 });
+
 </script>

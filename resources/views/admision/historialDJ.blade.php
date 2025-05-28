@@ -177,24 +177,6 @@
                                 </p>
                             </div>
                         </td>
-                        {{-- <td class="p-4 border-b border-slate-200">
-                            <div class="w-max">
-                                <span
-                                    [ngClass]="{
-                                        'text-green-900 bg-green-500/20': usuario.estado === 'A',
-                                        'text-slate-500 bg-slate-100': usuario.estado === 'I'
-                                    }"
-                                    class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-md select-none whitespace-nowrap"
-                                >
-                                    {{ { 'A': 'Activo', 'I': 'Inactivo' }[usuario.estado] }}
-                                </span>
-                            </div>
-                        </td> --}}
-                        <!-- <td class="p-4 border-b border-slate-200">
-                            <p class="text-sm text-slate-500">
-                            23/04/18
-                            </p>
-                        </td> -->
                         <td class="p-4 border-b border-slate-200">
                             <div class="flex flex-col">
                                 <p class="text-sm font-semibold text-slate-700">
@@ -222,9 +204,9 @@
                             <td class="p-4 border-b border-slate-200 text-center">
                                 @if ($post->dj_id)
                                     <a href="{{ route('declaracionJurada.descargar', ['dni' => $post->c_numdoc]) }}"
-                                    class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-slate-900 hover:bg-slate-900/10 transition no-loader"
-                                    title="Descargar DJ"
-                                    target="_blank">
+                                        class="inline-flex items-center justify-center h-10 w-10 rounded-lg text-slate-900 hover:bg-slate-900/10 transition no-loader"
+                                        title="Descargar DJ"
+                                        target="_blank">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M12 16l4-5h-3V4h-2v7H8l4 5zm8 2H4v2h16v-2z"/>
                                         </svg>

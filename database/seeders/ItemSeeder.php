@@ -13,6 +13,9 @@ class ItemSeeder extends Seeder
         $modulos = DB::table('modules')->pluck('id', 'codigo');
 
         $items = [
+            // Permisos
+            ['module_codigo' => 'PER', 'nombre' => 'Lista de Usuarios', 'codigo' => 'PER.1'],
+            ['module_codigo' => 'PER', 'nombre' => 'Permisos de Usuario', 'codigo' => 'PER.2'],
             // Postulante
             ['module_codigo' => 'POS', 'nombre' => 'Informacion Personal', 'codigo' => 'POS.1'],
             ['module_codigo' => 'POS', 'nombre' => 'Pagos Incripcion', 'codigo' => 'POS.2'],

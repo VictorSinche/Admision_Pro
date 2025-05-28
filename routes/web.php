@@ -5,6 +5,8 @@ use App\Http\Controllers\InfoPostulanteController;
 use App\Http\Controllers\PostulanteLoginController;
 use App\Http\Controllers\CreatePostulanteController;
 use App\Http\Controllers\DeclaracionJuradaController;
+use App\Http\Controllers\PermisoPostulanteController;
+
 /*
 |--------------------------------------------------------------------------
 | Rutas de Autenticación
@@ -24,7 +26,10 @@ Route::get('/coa', fn() => view('coa.listado'))->name('coa.listado');
 Route::get('/osar', fn() => view('osar.listado'))->name('osar.listado');
 Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.listado');
 
-Route::get('/users', fn() => view('auth.listyPermisos.listuser'))->name('user.list');
+Route::get('/listusers', fn() => view('auth.listyPermisos.listuser'))->name('user.list');
+
+Route::get('/listPermisos', [PermisoPostulanteController::class, 'index'])->name('user.listPermisos');
+Route::post('/listPermisos', [PermisoPostulanteController::class, 'update'])->name('user.updatePermisos');
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +74,8 @@ Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->n
 |--------------------------------------------------------------------------  
 */
 
-Route::get('/declaracion-jurada/pdf', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])->name('declaracionJurada.descargar');
+Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])
+    ->name('declaracionJurada.descargar');
 
 Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
 

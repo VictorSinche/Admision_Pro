@@ -118,7 +118,17 @@
                   Lista de usuarios
                 </a>              
               </li>
+
+              <li>
+                <a href="{{ route('user.listPermisos') }}" 
+                  class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                  {{ Request::routeIs('user.listPermisos') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                  Lista de permisos
+                </a>              
+              </li>
             </ul>
+
+            
           </li>
 
         @php
@@ -133,7 +143,7 @@
           }
         @endphp
 
-          @if(tieneAlgunPermiso(['POS.1', 'POS.2', 'POS.3']))
+          @if(tieneAlgunPermisoGlobal(['POS.1', 'POS.2', 'POS.3']))
             <li>
               <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-estudiante" data-collapse-toggle="submenu-estudiante">
                 <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
@@ -147,7 +157,7 @@
 
               <ul id="submenu-estudiante" class="py-2 space-y-2 {{ Request::routeIs('student.*') ? '' : 'hidden' }}">
                 
-                @if(tienePermisoPostulante('POS.1'))
+                @if(tienePermisoGlobal('POS.1'))
                   <li>
                     <a href="{{ route('student.registro') }}" 
                     class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
@@ -157,7 +167,7 @@
                   </li>
                 @endif
 
-                @if(tienePermisoPostulante('POS.2'))
+                @if(tienePermisoGlobal('POS.2'))
                   <li>
                     <a href="{{ route('student.pagosinscripcion') }}" 
                     class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
@@ -167,7 +177,7 @@
                   </li>
                 @endif
 
-                @if(tienePermisoPostulante('POS.3'))
+                @if(tienePermisoGlobal('POS.3'))
                   @if($estadoConfirmado)
                     <li>
                       <a href="{{ route('student.subirdocumentos', ['c_numdoc' => $numeroDocumento]) }}"
@@ -186,7 +196,7 @@
                     </li>
                   @endif
                 @endif
-                @if(tienePermisoPostulante('POS.4'))
+                @if(tienePermisoGlobal('POS.4'))
                   <li>
                     <a href="{{ route('student.verhorario') }}" 
                     class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
@@ -199,10 +209,11 @@
             </li>
           @endif
 
-          @if (tieneAlgunPermiso(['ADM.1', 'ADM.2']))
+          @if (tieneAlgunPermisoGlobal(['ADM.1', 'ADM.2']))
             <li>
               <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-admision" data-collapse-toggle="submenu-admision">
-                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                <!-- ícono -->
+<svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
                   <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
                 </svg>
                 <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Admisión</span>
@@ -210,30 +221,32 @@
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
                 </svg>
               </button>
+
               <ul id="submenu-admision" class="py-2 space-y-2 {{ Request::routeIs('admision.*') ? '' : 'hidden' }}">
-                @if(tienePermisoPostulante('ADM.1'))
+                @if(tienePermisoGlobal('ADM.1'))
                   <li>
                     <a href="{{ route('admision.listpostulante') }}" 
                       class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
                       {{ Request::routeIs('admision.listpostulante') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                        Lista Postulantes
+                      Lista Postulantes
                     </a>              
                   </li>
                 @endif
-                @if(tienePermisoPostulante('ADM.2'))
+
+                @if(tienePermisoGlobal('ADM.2'))
                   <li>
-                    <a href="{{ route('admision.listadocentes') }}" 
+                    <a href="{{ route('admision.historialDj') }}" 
                       class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                      {{ Request::routeIs('admision.listadocentes') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                        Lista Docentes
-                    </a>              
+                      {{ Request::routeIs('admision.historialDj') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                      Historial Declaración Jurada
+                    </a>            
                   </li>
                 @endif
               </ul>
             </li>
           @endif
 
-          @if (tieneAlgunPermiso(['DIR.1']))
+          @if (tieneAlgunPermisoGlobal(['DIR.1']))
             <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-director" data-collapse-toggle="submenu-director">
               
@@ -247,7 +260,7 @@
             </button>
           
             <ul id="submenu-director" class="py-2 space-y-2 {{ Request::routeIs('director.*') ? '' : 'hidden' }}">
-              @if (tienePermisoPostulante('DIR.1'))
+              @if (tienePermisoGlobal('DIR.1'))
                 <li>
                   <a href="{{ route('director.convalidacion') }}" 
                     class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
@@ -260,7 +273,7 @@
           </li>
           @endif
 
-          @if (tieneAlgunPermiso(['COA.1']))
+          @if (tieneAlgunPermisoGlobal(['COA.1']))
             <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-coa" data-collapse-toggle="submenu-coa">
               
@@ -274,7 +287,7 @@
             </button>
           
             <ul id="submenu-coa" class="py-2 space-y-2 {{ Request::routeIs('coa.*') ? '' : 'hidden' }}">
-              @if (tienePermisoPostulante('COA.1'))
+              @if (tienePermisoGlobal('COA.1'))
                 <li>
                   <a href="{{ route('coa.listado') }}" 
                     class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
@@ -287,7 +300,7 @@
           </li>
           @endif
 
-          @if (tieneAlgunPermiso(['OSA.1']))
+          @if (tieneAlgunPermisoGlobal(['OSA.1']))
             <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-osar" data-collapse-toggle="submenu-osar">
               
@@ -301,7 +314,7 @@
             </button>
           
             <ul id="submenu-osar" class="py-2 space-y-2 {{ Request::routeIs('osar.*') ? '' : 'hidden' }}">
-            @if (tienePermisoPostulante('OSA.1'))
+            @if (tienePermisoGlobal('OSA.1'))
               <li>
                 <a href="{{ route('osar.listado') }}" 
                   class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
@@ -314,7 +327,7 @@
           </li>
           @endif
 
-          @if (tieneAlgunPermiso(['TES.1']))
+          @if (tieneAlgunPermisoGlobal(['TES.1']))
             <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-tesoreria" data-collapse-toggle="submenu-tesoreria">
               
@@ -328,7 +341,7 @@
             </button>
           
             <ul id="submenu-tesoreria" class="py-2 space-y-2 {{ Request::routeIs('tesoreria.*') ? '' : 'hidden' }}">
-              @if (tienePermisoPostulante('TES.1'))
+              @if (tienePermisoGlobal('TES.1'))
                 <li>
                 <a href="{{ route('tesoreria.listado') }}" 
                   class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\UserAdmin;
 use Illuminate\Support\Facades\Hash;
+
 class UserAdminSeeder extends Seeder
 {
     /**
@@ -12,14 +13,16 @@ class UserAdminSeeder extends Seeder
      */
     public function run(): void
     {
-        UserAdmin::create([
-            'nombre'     => 'Super',
-            'apellidos'  => 'Administrador',
-            'email'      => 'admin@uma.edu.pe',
-            'genero'     => 'Masculino',
-            'grado'      => 'Lic.',
-            'estado'     => true,
-            'password'   => Hash::make('admin123'), // Cambia esto luego por seguridad
-        ]);
+        UserAdmin::updateOrCreate(
+            ['email' => 'ti@uma.edu.pe'], // condición de búsqueda
+            [
+                'nombre'    => 'Super',
+                'apellidos' => 'Administrador',
+                'genero'    => 'Masculino',
+                'grado'     => 'Admin',
+                'estado'    => true,
+                'password'  => Hash::make('admin123'), // puedes usar env('DEFAULT_ADMIN_PASS') si deseas
+            ]
+        );
     }
 }

@@ -10,6 +10,7 @@ class ModuleSeeder extends Seeder
     public function run(): void
     {
         $modules = [
+            ['nombre' => 'Permisos', 'codigo' => 'PER'],
             ['nombre' => 'Postulante', 'codigo' => 'POS'],
             ['nombre' => 'Admisión', 'codigo' => 'ADM'],
             ['nombre' => 'COA', 'codigo' => 'COA'],
@@ -30,5 +31,4 @@ class ModuleSeeder extends Seeder
             );
         }
     }
-    
 }

@@ -55,6 +55,12 @@ class InfoPostulanteController extends Controller
                 'd_fecnac'       => 'nullable|date',
             ]);
 
+            // Obtener c_codfac desde el proceso seleccionado
+            $c_codfac = DB::connection('mysql_sigu')
+                ->table('sga_tb_adm_proceso')
+                ->where('id_proceso', $validated['id_proceso'])
+                ->value('c_codfac');
+
             // Estado y fecha de confirmación
             $validated['estado'] = 1;
             $validated['fecha_confirmacion'] = now();
@@ -98,6 +104,7 @@ class InfoPostulanteController extends Controller
                         'c_celu'         => $validated['c_celu'],
                         'id_proceso'     => $validated['id_proceso'],
                         'c_codesp1'      => $validated['c_codesp1'],
+                        'c_codfac1'      => $c_codfac ?? null, // 👈 NUEVO campo asignado
                         'c_sedcod'       => $validated['c_sedcod'] ?? '',
                         'c_dptodom'      => $c_dptodom,
                         'c_provdom'      => $c_provdom,
@@ -446,7 +453,7 @@ class InfoPostulanteController extends Controller
     {
         // Consulta a la base local
         $postulantes = DB::table('info_postulante as ip')
-            ->leftJoin('declaracion_jurada as dj', 'ip.id', '=', 'dj.info_postulante_id')
+            ->join('declaracion_jurada as dj', 'ip.id', '=', 'dj.info_postulante_id')
             ->select(
                 'ip.id',
                 'ip.c_nombres',
