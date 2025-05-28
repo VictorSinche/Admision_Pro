@@ -604,6 +604,7 @@ class InfoPostulanteController extends Controller
                 'dp.estado as estado_docs',
                 'dj.estado as estado_dj'
             )
+            ->orderBy('p.id', 'asc')
             ->get();
 
         return view('admision.listapostulantes', compact('postulantes'));
