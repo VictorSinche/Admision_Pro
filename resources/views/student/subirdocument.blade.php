@@ -47,7 +47,7 @@
             Puedes descargar una copia en PDF si lo necesitas.
           </p>
           <div class="mt-3">
-              <a href="{{ route('declaracionJurada.descargar') }}" target="_blank"
+              <a href="{{ route('declaracionJurada.descargar',['dni' => $postulante->c_numdoc]) }}" target="_blank"
               class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-md shadow hover:bg-green-700 transition">
               <i class="fa-solid fa-file-pdf mr-2"></i> Descargar declaración jurada
             </a>

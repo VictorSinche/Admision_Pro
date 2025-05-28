@@ -63,7 +63,7 @@ Route::get('/especialidades-por-facultad', [InfoPostulanteController::class, 'ge
 | Rutas de Administración
 |--------------------------------------------------------------------------
 */
-Route::get('/listpostulante', fn() => view('admision.listapostulantes'))->name('admision.listpostulante');
+Route::get('/listpostulante', [InfoPostulanteController::class, 'resumenEstados'])->name('admision.listpostulante');
 Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('director.convalidacion');
 Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesConDJ'])->name('admision.historialDj');
 Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
@@ -80,3 +80,6 @@ Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class,
 Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
 
 Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');
+
+
+Route::get('/documentos-json/{dni}', [InfoPostulanteController::class, 'documentosJson']);

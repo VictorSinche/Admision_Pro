@@ -253,11 +253,6 @@ class InfoPostulanteController extends Controller
                 return back()->with('error', 'Postulante no encontrado.');
             }
 
-            // $documentos = [
-            //     'formulario', 'pago', 'constancia', 'constancianotas', 'dni', 'seguro', 'foto',
-            //     'constmatricula', 'certprofecional', 'syllabus', 'merito'
-            // ];
-
             $documentosPorModalidad = [
                 'B' => ['formulario', 'pago', 'constancia', 'merito', 'dni', 'seguro', 'foto'],
                 'A' => ['formulario', 'pago', 'constancia', 'dni', 'seguro', 'foto'],
@@ -451,9 +446,9 @@ class InfoPostulanteController extends Controller
     */
     public function listarPostulantesConDJ()
     {
-        // Consulta a la base local
+        // Solo traer postulantes que tienen declaración jurada (dj.id no nulo)
         $postulantes = DB::table('info_postulante as ip')
-            ->join('declaracion_jurada as dj', 'ip.id', '=', 'dj.info_postulante_id')
+            ->join('declaracion_jurada as dj', 'ip.id', '=', 'dj.info_postulante_id') // usamos JOIN en vez de LEFT JOIN
             ->select(
                 'ip.id',
                 'ip.c_nombres',
@@ -464,16 +459,16 @@ class InfoPostulanteController extends Controller
                 'ip.c_email',
                 'ip.c_numdoc',
                 'ip.nomesp',
-                'ip.created_at as dj_fecha',
+                'dj.created_at as dj_fecha',
                 'dj.id as dj_id'
             )
-            ->orderBy('ip.created_at', 'desc')
+            ->orderBy('dj.created_at', 'desc')
             ->get();
 
         // Traer modalidades desde la base externa
         $modalidades = DB::connection('mysql_sigu')
             ->table('sga_tb_modalidad_ingreso')
-            ->pluck('c_descri', 'id_mod_ing'); // ['A' => 'Ordinario', 'B' => 'Primeros Puestos', etc.]
+            ->pluck('c_descri', 'id_mod_ing');
 
         // Asignar nombre de modalidad manualmente a cada postulante
         $postulantes->transform(function ($postulante) use ($modalidades) {
@@ -586,6 +581,54 @@ class InfoPostulanteController extends Controller
         } catch (\Exception $e) {
             Log::error('❌ Error al exportar excel DJ: ' . $e->getMessage());
             return back()->with('error', 'Ocurrió un error al exportar los datos.');
+        }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Lista de Postulantes con Estados
+    |--------------------------------------------------------------------------
+    */
+    public function resumenEstados()
+    {
+        $postulantes = DB::table('postulantes as p')
+            ->leftJoin('info_postulante as ip', 'ip.c_numdoc', '=', 'p.dni')
+            ->leftJoin('documentos_postulante as dp', 'dp.info_postulante_id', '=', 'ip.id')
+            ->leftJoin('declaracion_jurada as dj', 'dj.info_postulante_id', '=', 'ip.id')
+            ->select(
+                'p.id',
+                'ip.c_numdoc',
+                DB::raw("CONCAT(p.nombres, ' ', p.apellidos) as nombre_completo"),
+                'p.email',
+                'ip.estado as estado_info',
+                'dp.estado as estado_docs',
+                'dj.estado as estado_dj'
+            )
+            ->get();
+
+        return view('admision.listapostulantes', compact('postulantes'));
+    }
+
+    public function documentosJson($dni)
+    {
+        try {
+            $postulante = \App\Models\InfoPostulante::where('c_numdoc', $dni)->firstOrFail();
+            $documentos = \App\Models\DocumentoPostulante::where('info_postulante_id', $postulante->id)->first();
+
+            if (!$documentos) {
+                return response()->json([]);
+            }
+
+            // Devuelve solo campos con ruta
+            $documentosFiltrados = collect($documentos->getAttributes())
+                ->filter(function ($valor, $campo) {
+                    return $campo !== 'estado' && !in_array($campo, ['id', 'info_postulante_id', 'created_at', 'updated_at']) && $valor;
+                });
+
+            return response()->json($documentosFiltrados);
+        } catch (\Exception $e) {
+            Log::error("❌ Error documentosJson: " . $e->getMessage());
+            return response()->json(['error' => 'No se pudo cargar los documentos'], 500);
         }
     }
 

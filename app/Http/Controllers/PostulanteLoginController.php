@@ -94,11 +94,13 @@ class PostulanteLoginController extends Controller
         if ($admin && Hash::check($request->password, $admin->password)) {
             // 💾 Guardar sesión
             session([
-                'admin_id'   => $admin->id,
-                'admin_name' => $admin->nombre . ' ' . $admin->apellidos,
-                'correo'     => $admin->email,
-                'rol'        => 'admin',
+                'admin_id'        => $admin->id,
+                'admin_name'      => $admin->nombre . ' ' . $admin->apellidos,
+                'nombre_completo' => $admin->nombre . ' ' . $admin->apellidos,
+                'correo'          => $admin->email,
+                'rol'             => 'admin',
             ]);
+            Log::info('📥 Datos del administrador:', (array) $admin);
 
             return redirect()->route('dashboard.dashboard');
         }

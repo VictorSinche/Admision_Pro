@@ -92,6 +92,18 @@
                         class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                         <p
                         class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+                        Declaración Jurada
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                        </svg>
+                        </p>
+                    </th>
+                    <th
+                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                        <p
+                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
                         Acción
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                             stroke="currentColor" aria-hidden="true" class="w-4 h-4">
@@ -103,81 +115,126 @@
 
                     </tr>
                 </thead>
-                <tbody>
-                    <tr *ngFor="let usuario of usuariosPaginados">
-                    <td class="p-4 border-b border-slate-200">
-                        <input type="checkbox" class="w-4 h-4 text-blue-700 rounded focus:ring-blue-700" />
-                    </td>
-                    <td class="p-4 border-b border-slate-200">
-                        <div class="flex items-center gap-3">
-                        <img src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
-                            alt="John Michael" class="relative inline-block h-9 w-9 !rounded-full object-cover object-center" />
-                        <div class="flex flex-col">
-                            <p class="text-sm font-semibold text-slate-700">
-                            </p>
-                            Victor Sinche
-                            <p
-                            class="text-sm text-slate-500">
-                            victor@gmail.com
-                            </p>
-                        </div>
-                        </div>
-                    </td>
-                    <td class="p-4 border-b border-slate-200">
-                        <div class="w-max">
-                            <span
-                                class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-md select-none whitespace-nowrap text-yellow-500 bg-yellow-500/20">
-                                Falta confirmar
-                            </span>
-                        </div>
-                    </td>
-                    <td class="p-4 border-b border-slate-200">
-                        <div class="w-max">
-                            <span
-                                class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-md select-none whitespace-nowrap text-yellow-500 bg-yellow-500/20">
-                                Pendiente de pago
-                            </span>
-                        </div>
-                    </td>
-                    {{-- Estados --}}
-                    {{-- <td class="p-4 border-b border-slate-200">
-                        <div class="w-max">
-                            <span
-                                class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-md select-none whitespace-nowrap text-green-900 bg-green-500/20">
-                                Completado
-                            </span>
-                        </div>
-                    </td> --}}
-                    
-                    <td class="p-4 border-b border-slate-200">
-                        <div class="w-max">
-                            <span
-                                class="relative grid items-center px-2 py-1 font-sans text-xs font-bold uppercase rounded-md select-none whitespace-nowrap text-yellow-500 bg-yellow-500/20">
-                                Documento DJ
-                            </span>
-                        </div>
-                    </td>
-                    {{-- ENDEstados --}}
-                    <td class="p-4 border-b border-slate-200">
-                        <button
-                        class="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-slate-900 transition-all hover:bg-slate-900/10 active:bg-slate-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                        type="button"
-                        title="Generar codigo">
-                        <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                            <i class="fa-solid fa-square-binary text-2xl"></i>
-                        </span>
-                        </button>
-                        <button
-                        class="relative h-10 max-h-[40px] w-10 max-w-[40px] select-none rounded-lg text-center align-middle font-sans text-xs font-medium uppercase text-slate-900 transition-all hover:bg-slate-900/10 active:bg-slate-900/20 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                        type="button"
-                        title="Matricular">
-                        <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                            <i class="fa-solid fa-floppy-disk text-2xl"></i>
-                        </span>
-                        </button>
-                    </td>
-                    </tr>
-                </tbody>
+                    <tbody>
+                        @foreach ($postulantes as $post)
+                            <tr>
+                                <td class="p-4 border-b border-slate-200">
+                                    <input type="checkbox" class="w-4 h-4 text-blue-700 rounded focus:ring-blue-700" />
+                                </td>
+
+                                <td class="p-4 border-b border-slate-200">
+                                    <div class="flex items-center gap-3">
+                                        <img src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
+                                            alt="Avatar" class="relative inline-block h-9 w-9 !rounded-full object-cover object-center" />
+                                        <div class="flex flex-col">
+                                            <p class="text-sm font-semibold text-slate-700">
+                                                {{ Str::title($post->nombre_completo) }}
+                                            </p>
+                                            <p class="text-sm text-slate-500">
+                                                {{ $post->email }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                {{-- Estado Información --}}
+                                <td class="p-4 border-b border-slate-200">
+                                    <div class="w-max">
+                                        @if ($post->estado_info === 1)
+                                            <span class="relative grid items-center px-2 py-1 text-xs font-bold text-green-900 bg-green-500/20 rounded-md uppercase">
+                                                Completado
+                                            </span>
+                                        @elseif ($post->estado_info === 0)
+                                            <span class="relative grid items-center px-2 py-1 text-xs font-bold text-yellow-500 bg-yellow-500/20 rounded-md uppercase">
+                                                Falta confirmar
+                                            </span>
+                                        @else
+                                            <span class="relative grid items-center px-2 py-1 text-xs font-bold text-slate-400 bg-slate-300/20 rounded-md uppercase">
+                                                Falta confirmar
+                                            </span>
+                                        @endif
+                                    </div>
+                                </td>
+
+                                {{-- Estado Pago --}}
+                                <td class="p-4 border-b border-slate-200">
+                                    <div class="w-max">
+                                        {{-- @if ($post->estado_dj === 1)
+                                            <span class="relative grid items-center px-2 py-1 text-xs font-bold text-green-900 bg-green-500/20 rounded-md uppercase">
+                                                Declaración OK
+                                            </span>
+                                        @elseif ($post->estado_dj === 0)
+                                            <span class="relative grid items-center px-2 py-1 text-xs font-bold text-yellow-500 bg-yellow-500/20 rounded-md uppercase">
+                                                Pendiente
+                                            </span>
+                                        @else --}}
+                                            <span class="relative grid items-center px-2 py-1 text-xs font-bold text-slate-400 bg-slate-300/20 rounded-md uppercase">
+                                                Sinc registro
+                                            </span>
+                                        {{-- @endif --}}
+                                    </div>
+                                </td>
+
+                                {{-- Estado Documentación --}}
+                                <td class="p-4 border-b border-slate-200">
+                                    <div class="w-max">
+                                        @if ($post->estado_docs === 2)
+                                            <span class="relative grid items-center px-2 py-1 text-xs font-bold text-green-900 bg-green-500/20 rounded-md uppercase">
+                                                Completo
+                                            </span>
+                                        @elseif ($post->estado_docs === 1)
+                                            <span class="relative grid items-center px-2 py-1 text-xs font-bold text-yellow-500 bg-yellow-500/20 rounded-md uppercase">
+                                                Incompleto
+                                            </span>
+                                        @else
+                                            <span class="relative grid items-center px-2 py-1 text-xs font-bold text-slate-400 bg-slate-300/20 rounded-md uppercase">
+                                                Pendiente
+                                            </span>
+                                        @endif
+                                    </div>
+                                </td>
+
+                                {{-- Estado Declaración Jurada --}}
+                                <td class="p-4 border-b border-slate-200">
+                                    <div class="w-max">
+                                        @if ($post->estado_dj === 1)
+                                            <span class="relative grid items-center px-2 py-1 text-xs font-bold text-green-900 bg-green-500/20 rounded-md uppercase">
+                                                Declaración OK
+                                            </span>
+                                        @elseif ($post->estado_dj === 0)
+                                            <span class="relative grid items-center px-2 py-1 text-xs font-bold text-yellow-500 bg-yellow-500/20 rounded-md uppercase">
+                                                Pendiente
+                                            </span>
+                                        @else
+                                            <span class="relative grid items-center px-2 py-1 text-xs font-bold text-slate-400 bg-slate-300/20 rounded-md uppercase">
+                                                Pendiente
+                                            </span>
+                                        @endif
+                                    </div>
+                                </td>
+
+                                {{-- Botones de acción --}}
+                                <td class="p-4 border-b border-slate-200">
+                                    {{-- <button title="Generar código"
+                                        class="relative h-10 w-10 rounded-lg text-slate-900 hover:bg-slate-900/10 transition">
+                                        <span class="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                                            <i class="fa-solid fa-square-binary text-2xl"></i>
+                                        </span>
+                                    </button> --}}
+
+                                    <button 
+                                        onclick="abrirModalDocumentos('{{ $post->c_numdoc }}')" 
+                                        title="Ver Documentos"
+                                        class="relative h-10 w-10 rounded-lg text-slate-900 hover:bg-slate-900/10 transition">
+                                        <span class="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                                            <i class="fa-solid fa-floppy-disk text-2xl"></i>
+                                        </span>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+
             </table>
         </div>
         <div class="flex items-center justify-between p-3">
@@ -197,4 +254,72 @@
             </div>
         </div>
 </div>
+
+
+<div id="modal-documentos" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-center justify-center">
+    <div class="bg-white w-full max-w-3xl mx-auto p-6 rounded-lg shadow-2xl relative">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">📁 Documentos Adjuntos</h2>
+
+        <label class="block mb-2 text-sm font-medium text-gray-700">Tipo de documento:</label>
+        <select id="select-doc" onchange="mostrarDocumento()" class="w-full mb-4 p-2 border rounded">
+            <option value="" disabled selected>Seleccione un documento</option>
+        </select>
+
+        <div id="preview-doc" class="h-[500px] bg-gray-50 rounded p-4 flex items-center justify-center text-gray-500 border">
+            <span>Selecciona un documento para visualizar</span>
+        </div>
+
+        <button onclick="cerrarModalDocumentos()" class="absolute top-4 right-4 text-gray-600 hover:text-red-600">
+            <i class="fa-solid fa-xmark text-2xl"></i>
+        </button>
+    </div>
+</div>
 @endsection
+
+<script>
+function abrirModalDocumentos(dni) {
+    fetch(`/documentos-json/${dni}`)
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById('select-doc');
+            select.setAttribute('data-dni', dni); // 💥 ESTA LÍNEA ES CLAVE
+            select.innerHTML = `<option value="" disabled selected>Seleccione un documento</option>`;
+
+            Object.entries(data).forEach(([campo, ruta]) => {
+                if (ruta) {
+                    const option = document.createElement('option');
+                    option.value = ruta;
+                    option.text = campo.toUpperCase();
+                    select.appendChild(option);
+                }
+            });
+
+            document.getElementById('preview-doc').innerHTML = `<span>Selecciona un documento para visualizar</span>`;
+            document.getElementById('modal-documentos').classList.remove('hidden');
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Error al cargar documentos.');
+        });
+}
+
+
+    function cerrarModalDocumentos() {
+        document.getElementById('modal-documentos').classList.add('hidden');
+    }
+
+    function mostrarDocumento() {
+        const ruta = document.getElementById('select-doc').value;
+        const ext = ruta.split('.').pop().toLowerCase();
+        const container = document.getElementById('preview-doc');
+        const dni = document.getElementById('select-doc').getAttribute('data-dni');
+
+        const fullRuta = `/storage/postulantes/${dni}/${ruta}`;
+
+        if (['pdf'].includes(ext)) {
+            container.innerHTML = `<iframe src="${fullRuta}" class="w-full h-96 border rounded" frameborder="0"></iframe>`;
+        } else {
+            container.innerHTML = `<a href="${fullRuta}" target="_blank" class="text-blue-600 underline">Ver/descargar documento</a>`;
+        }
+    }
+</script>

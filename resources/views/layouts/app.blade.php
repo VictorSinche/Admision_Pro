@@ -213,7 +213,7 @@
             <li>
               <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-admision" data-collapse-toggle="submenu-admision">
                 <!-- ícono -->
-<svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                  <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
                   <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
                 </svg>
                 <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Admisión</span>
@@ -364,67 +364,68 @@
     </div>
   </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-      const toggles = document.querySelectorAll('[data-collapse-toggle]');
-  
-      toggles.forEach(function (toggle) {
-          const targetId = toggle.getAttribute('data-collapse-toggle');
-          const targetElement = document.getElementById(targetId);
-  
-          toggle.addEventListener('click', function () {
-              if (targetElement.classList.contains('hidden')) {
-                  targetElement.classList.remove('hidden');
-              } else {
-                  targetElement.classList.add('hidden');
-              }
-          });
-      });
-  });
-</script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-      const dropdownToggles = document.querySelectorAll('[data-dropdown-toggle]');
-  
-      dropdownToggles.forEach(function (toggle) {
-          const targetId = toggle.getAttribute('data-dropdown-toggle');
-          const targetElement = document.getElementById(targetId);
-  
-          toggle.addEventListener('click', function (event) {
-              event.stopPropagation(); // evita cerrar instantáneamente
-              targetElement.classList.toggle('hidden');
-          });
-  
-          // Cerrar el dropdown si haces click afuera
-          document.addEventListener('click', function (e) {
-              if (!toggle.contains(e.target) && !targetElement.contains(e.target)) {
-                  targetElement.classList.add('hidden');
-              }
-          });
-      });
-  });
-</script>
-      
-<script>
-  function mostrarLoader() {
-    document.getElementById('loader-wrapper')?.classList.remove('hidden');
-  }
-  function ocultarLoader() {
-    document.getElementById('loader-wrapper')?.classList.add('hidden');
-  }
-</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggles = document.querySelectorAll('[data-collapse-toggle]');
+    
+        toggles.forEach(function (toggle) {
+            const targetId = toggle.getAttribute('data-collapse-toggle');
+            const targetElement = document.getElementById(targetId);
+    
+            toggle.addEventListener('click', function () {
+                if (targetElement.classList.contains('hidden')) {
+                    targetElement.classList.remove('hidden');
+                } else {
+                    targetElement.classList.add('hidden');
+                }
+            });
+        });
+    });
+  </script>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const enlaces = document.querySelectorAll('a[href]:not([href^="#"]):not([target])');
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdownToggles = document.querySelectorAll('[data-dropdown-toggle]');
+    
+        dropdownToggles.forEach(function (toggle) {
+            const targetId = toggle.getAttribute('data-dropdown-toggle');
+            const targetElement = document.getElementById(targetId);
+    
+            toggle.addEventListener('click', function (event) {
+                event.stopPropagation(); // evita cerrar instantáneamente
+                targetElement.classList.toggle('hidden');
+            });
+    
+            // Cerrar el dropdown si haces click afuera
+            document.addEventListener('click', function (e) {
+                if (!toggle.contains(e.target) && !targetElement.contains(e.target)) {
+                    targetElement.classList.add('hidden');
+                }
+            });
+        });
+    });
+  </script>
+        
+  <script>
+    function mostrarLoader() {
+      document.getElementById('loader-wrapper')?.classList.remove('hidden');
+    }
+    function ocultarLoader() {
+      document.getElementById('loader-wrapper')?.classList.add('hidden');
+    }
+  </script>
 
-    enlaces.forEach(link => {
-      link.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        if (href && !href.startsWith('javascript:') && !this.classList.contains('no-loader')) {
-          mostrarLoader();
-        }
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const enlaces = document.querySelectorAll('a[href]:not([href^="#"]):not([target])');
+
+      enlaces.forEach(link => {
+        link.addEventListener('click', function (e) {
+          const href = this.getAttribute('href');
+          if (href && !href.startsWith('javascript:') && !this.classList.contains('no-loader')) {
+            mostrarLoader();
+          }
+        });
       });
     });
-  });
-</script>
+  </script>
