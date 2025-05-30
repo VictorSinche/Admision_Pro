@@ -36,7 +36,21 @@
     </button>
   </form>
 
-  @if ($declaracionExiste)
+  @if ($documentosCompletos)
+    {{-- ✅ Documentos completos, no necesita declaración jurada --}}
+    <div class="bg-green-100 border-l-4 border-green-600 text-green-800 p-4 rounded shadow-sm mt-6">
+        <div class="flex items-start">
+            <i class="fa-solid fa-circle-check text-green-600 mt-1 mr-3"></i>
+            <div>
+                <h3 class="font-semibold text-base mb-1">Documentación completa</h3>
+                <p class="text-sm leading-relaxed">
+                    Ya cargaste todos los documentos requeridos. <br>
+                    <strong>No necesitas presentar una declaración jurada.</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+  @elseif($declaracionExiste)
     {{-- ✅ Ya tiene declaración jurada, mostramos solo botón de descarga --}}
     <div class="mt-8 bg-green-100 border-l-4 border-green-600 text-green-800 p-4 rounded-lg shadow-sm">
       <div class="flex items-start">
@@ -75,9 +89,8 @@
       </div>
     </div>
   @endif
-
+  
 </div>
-
 @endsection
 
 <script>

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use App\Exports\PostulantesDJExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -277,6 +278,10 @@ class InfoPostulanteController extends Controller
                 if ($request->hasFile($campo)) {
                     $archivo = $request->file($campo);
                     if ($archivo->isValid()) {
+                        if (!empty($registro->$campo)) {
+                            $rutaAnterior = 'postulantes/' . $postulante->c_numdoc . '/' . $registro->$campo;
+                            Storage::disk('public')->delete($rutaAnterior);
+                        }
                         $nombre = now()->format('Ymd_His') . '_' . $campo . '.' . $archivo->getClientOriginalExtension();
                         $ruta = $archivo->storeAs('postulantes/' . $postulante->c_numdoc, $nombre, 'public');
                         Log::info("📂 Subido archivo: $nombre a $ruta");

@@ -164,5 +164,8 @@ class PostulanteLoginController extends Controller
     }
 }
 
-
+    public function logout(Request $request){
+        session()->flush();
+        return redirect()->route('login.postulante');
+    }
 }

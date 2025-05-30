@@ -75,7 +75,12 @@
               </div>
               <ul class="py-1" role="none">
                 <li>
-                  <a href="{{ route('auth.login') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Cerrar sesión</a>
+                  <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">
+                      <i class="fa-solid fa-right-from-bracket mr-2"></i> Cerrar sesión
+                    </button>
+                  </form>
                 </li>
               </ul>
             </div>
@@ -98,6 +103,7 @@
             </a>
           </li>
 
+          @if(tieneAlgunPermisoGlobal(['PER.1', 'PER.2']))
           <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-user" data-collapse-toggle="submenu-user">
               
@@ -111,25 +117,29 @@
             </button>
 
             <ul id="submenu-user" class="py-2 space-y-2 {{ Request::routeIs('user.*') ? '' : 'hidden' }}">
-              <li>
-                <a href="{{ route('user.list') }}" 
-                  class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                  {{ Request::routeIs('user.list') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                  Lista de usuarios
-                </a>              
-              </li>
+              @if(tienePermisoGlobal('PER.1'))
+                <li>
+                  <a href="{{ route('user.list') }}" 
+                    class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                    {{ Request::routeIs('user.list') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    Lista de usuarios
+                  </a>              
+                </li>              
+              @endif
 
-              <li>
+              @if(tienePermisoGlobal('PER.2'))
+                <li>
                 <a href="{{ route('user.listPermisos') }}" 
                   class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
                   {{ Request::routeIs('user.listPermisos') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                   Lista de permisos
                 </a>              
               </li>
-            </ul>
-
-            
+              @endif
+            </ul>            
           </li>
+          @endif
+
 
         @php
           use App\Models\InfoPostulante;

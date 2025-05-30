@@ -10,7 +10,8 @@
           $doc = $postulante->documentos; // solo hay una fila
           $archivoExiste = !empty($doc?->formulario);
       @endphp
-      <input id="formulario" type="file" name="formulario" 
+      <input id="formulario" type="file" name="formulario"
+            accept=".pdf, .jpg, .jpeg, .png"
             data-existe="{{ $archivoExiste ? '1' : '0' }}"
             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" />
 

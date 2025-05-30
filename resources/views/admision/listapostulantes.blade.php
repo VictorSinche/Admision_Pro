@@ -37,91 +37,90 @@
             <table class="w-full mt-4 text-left table-auto min-w-max">
                 <thead>
                     <tr>
-                        <th class="p-4 border-y border-slate-200 bg-slate-50">
+                        {{-- <th class="p-4 border-y border-slate-200 bg-slate-50">
                             <input type="checkbox" class="w-4 h-4 text-blue-700 rounded" />
+                        </th> --}}
+                        <th
+                            class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                            <p
+                            class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
+                            Postulante
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                            </svg>
+                            </p>
                         </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                        Postulante
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                        Informacion
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Pago Incripción
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Documentación
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Declaración Jurada
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Acción
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                        </svg>
-                        </p>
-                    </th>
+                        <th
+                            class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                            <p
+                            class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
+                            Informacion
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                            </svg>
+                            </p>
+                        </th>
+                        <th
+                            class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                            <p
+                            class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+                            Pago Incripción
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                            </svg>
+                            </p>
+                        </th>
+                        <th
+                            class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                            <p
+                            class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+                            Documentación
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                            </svg>
+                            </p>
+                        </th>
+                        <th
+                            class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                            <p
+                            class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+                            Declaración Jurada
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                            </svg>
+                            </p>
+                        </th>
+                        <th
+                            class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                            <p
+                            class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+                            Acción
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                            </svg>
+                            </p>
+                        </th>
 
                     </tr>
                 </thead>
                     <tbody>
                         @foreach ($postulantes as $post)
                             <tr>
-                                <td class="p-4 border-b border-slate-200">
+                                {{-- <td class="p-4 border-b border-slate-200">
                                     <input type="checkbox" class="w-4 h-4 text-blue-700 rounded focus:ring-blue-700" />
-                                </td>
-
+                                </td> --}}
                                 <td class="p-4 border-b border-slate-200">
                                     <div class="flex items-center gap-3">
                                         <img src="https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg"
@@ -197,7 +196,11 @@
                                 {{-- Estado Declaración Jurada --}}
                                 <td class="p-4 border-b border-slate-200">
                                     <div class="w-max">
-                                        @if ($post->estado_dj === 1)
+                                        @if($post->estado_docs === 2)
+                                            <span class="relative grid items-center px-2 py-1 text-xs font-bold text-blue-900 bg-blue-300/20 rounded-md uppercase">
+                                                Documentos Completos
+                                            </span>
+                                        @elseif($post->estado_dj === 1)
                                             <span class="relative grid items-center px-2 py-1 text-xs font-bold text-green-900 bg-green-500/20 rounded-md uppercase">
                                                 Declaración OK
                                             </span>
@@ -258,14 +261,14 @@
 
 <div id="modal-documentos" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm flex items-center justify-center">
     <div class="bg-white w-full max-w-3xl mx-auto p-6 rounded-lg shadow-2xl relative">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">📁 Documentos Adjuntos</h2>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">📁 Documentos Adjuntos del postulante</h2>
 
         <label class="block mb-2 text-sm font-medium text-gray-700">Tipo de documento:</label>
         <select id="select-doc" onchange="mostrarDocumento()" class="w-full mb-4 p-2 border rounded">
             <option value="" disabled selected>Seleccione un documento</option>
         </select>
 
-        <div id="preview-doc" class="h-[500px] bg-gray-50 rounded p-4 flex items-center justify-center text-gray-500 border">
+        <div id="preview-doc" class="h-[400px] bg-gray-50 rounded p-4 flex items-center justify-center text-gray-500 border-gray-700">
             <span>Selecciona un documento para visualizar</span>
         </div>
 
@@ -307,20 +310,6 @@
         document.getElementById('modal-documentos').classList.add('hidden');
     }
 
-    // function mostrarDocumento() {
-    //     const ruta = document.getElementById('select-doc').value;
-    //     const ext = ruta.split('.').pop().toLowerCase();
-    //     const container = document.getElementById('preview-doc');
-    //     const dni = document.getElementById('select-doc').getAttribute('data-dni');
-
-    //     const fullRuta = `/storage/postulantes/${dni}/${ruta}`;
-
-    //     if (['pdf'].includes(ext)) {
-    //         container.innerHTML = `<iframe src="${fullRuta}" class="w-full h-96 border rounded" frameborder="0"></iframe>`;
-    //     } else {
-    //         container.innerHTML = `<a href="${fullRuta}" target="_blank" class="text-blue-600 underline">Ver/descargar documento</a>`;
-    //     }
-    // }
     function mostrarDocumento() {
     const select = document.getElementById('select-doc');
     const ruta = select.value;

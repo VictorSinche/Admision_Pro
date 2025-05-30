@@ -90,7 +90,7 @@
 <!-- Fuente de información -->
 <div class="mt-4 mx-2">
   <select name="id_tab_alu_contact" class="{{ $inputClass }}">
-      <option value="" disabled selected>¿Cómo se enteró del proceso de admisión?</option>
+      <option value="O" selected>¿Cómo se enteró del proceso de admisión?</option>
       <option value="TV" {{ ($data->id_tab_alu_contact ?? '') == 'TV' ? 'selected' : '' }} >TELEVISIÓN</option>
       <option value="PANE" {{ ($data->id_tab_alu_contact ?? '') == 'PANE' ? 'selected' : '' }} >PANELES</option>
       <option value="WEB" {{ ($data->id_tab_alu_contact ?? '') == 'WEB' ? 'selected' : '' }} >INTERNET</option>
