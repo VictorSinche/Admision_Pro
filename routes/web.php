@@ -48,6 +48,8 @@ Route::get('/listusers', fn() => view('auth.listyPermisos.listuser'))->name('use
 Route::get('/osar', fn() => view('osar.listado'))->name('osar.listado');
 Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.listado');
 
+//se cambioooooo
+
 /*
 |--------------------------------------------------------------------------
 | Rutas de Permisos
