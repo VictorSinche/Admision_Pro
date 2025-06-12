@@ -75,6 +75,15 @@ Route::middleware('auth.postulante')->group(function () {
     Route::get('/subirdocumentos/{c_numdoc}', [InfoPostulanteController::class, 'vistaDocumentos'])->name('student.subirdocumentos');
     Route::post('/subirdocumentos/{c_numdoc}', [InfoPostulanteController::class, 'guardarDocumentos'])->name('student.guardar.documentos');
     Route::get('/verhorario', fn() => view('student.verhorario'))->name('student.verhorario');
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas de Declaración Jurada
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
+    Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');
+    Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])->name('declaracionJurada.descargar');
+
 });
 
 /*
