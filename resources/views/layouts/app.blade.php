@@ -9,6 +9,17 @@
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 
+@php
+  use App\Models\InfoPostulante;
+
+  $numeroDocumento = session('c_numdoc');
+  $estadoConfirmado = false;
+
+  if ($numeroDocumento) {
+      $postulante = InfoPostulante::where('c_numdoc', $numeroDocumento)->first();
+      $estadoConfirmado = $postulante && $postulante->estado === 1;
+  }
+@endphp
 
 <!-- Loader Global con Imagen -->
 <div id="loader-wrapper" class="hidden fixed inset-0 z-[9999] bg-white/80 flex flex-col justify-center items-center">
@@ -23,28 +34,27 @@
 </div>
 
 <style>
-.loader {
-  width: 120px;
-  height: 22px;
-  border-radius: 20px;
-  color: #e72352;
-  border: 2px solid;
-  position: relative;
-}
-.loader::before {
-  content: "";
-  position: absolute;
-  margin: 2px;
-  inset: 0 100% 0 0;
-  border-radius: inherit;
-  background: currentColor;
-  animation: l6 2s infinite;
-}
-@keyframes l6 {
-  100% { inset: 0 }
-}
+  .loader {
+    width: 120px;
+    height: 22px;
+    border-radius: 20px;
+    color: #e72352;
+    border: 2px solid;
+    position: relative;
+  }
+  .loader::before {
+    content: "";
+    position: absolute;
+    margin: 2px;
+    inset: 0 100% 0 0;
+    border-radius: inherit;
+    background: currentColor;
+    animation: l6 2s infinite;
+  }
+  @keyframes l6 {
+    100% { inset: 0 }
+  }
 </style>
-
 
 <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
@@ -107,7 +117,7 @@
           <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-user" data-collapse-toggle="submenu-user">
               
-              <i class="fa-solid fa-user-tie fa-lg text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+              <i class="fa-solid fa-users-gear text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
               
               <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Gestion de usuarios</span>
               
@@ -119,9 +129,9 @@
             <ul id="submenu-user" class="py-2 space-y-2 {{ Request::routeIs('user.*') ? '' : 'hidden' }}">
               @if(tienePermisoGlobal('PER.1'))
                 <li>
-                  <a href="{{ route('user.list') }}" 
+                  <a href="{{ route('usuarios') }}" 
                     class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                    {{ Request::routeIs('user.list') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    {{ Request::routeIs('usuarios') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                     Lista de usuarios
                   </a>              
                 </li>              
@@ -139,19 +149,6 @@
             </ul>            
           </li>
           @endif
-
-
-        @php
-          use App\Models\InfoPostulante;
-
-          $numeroDocumento = session('c_numdoc');
-          $estadoConfirmado = false;
-
-          if ($numeroDocumento) {
-              $postulante = InfoPostulante::where('c_numdoc', $numeroDocumento)->first();
-              $estadoConfirmado = $postulante && $postulante->estado === 1;
-          }
-        @endphp
 
           @if(tieneAlgunPermisoGlobal(['POS.1', 'POS.2', 'POS.3']))
             <li>
@@ -223,9 +220,8 @@
             <li>
               <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-admision" data-collapse-toggle="submenu-admision">
                 <!-- ícono -->
-                  <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
-                </svg>
+                <i class="fa-solid fa-file-signature text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+
                 <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Admisión</span>
                 <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
@@ -287,7 +283,7 @@
             <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-coa" data-collapse-toggle="submenu-coa">
               
-              <i class="fa-solid fa-laptop-file text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+              <i class="fa-solid fa-folder-tree text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
               
               <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Coa</span>
               
@@ -314,7 +310,7 @@
             <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-osar" data-collapse-toggle="submenu-osar">
               
-              <i class="fa-solid fa-file text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+              <i class="fa-solid fa-file-lines text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
               
               <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Osar</span>
               
@@ -341,7 +337,7 @@
             <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-tesoreria" data-collapse-toggle="submenu-tesoreria">
               
-              <i class="fa-solid fa-credit-card text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+              <i class="fa-solid fa-wallet text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
               
               <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Tesoreria</span>
               

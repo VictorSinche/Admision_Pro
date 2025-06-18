@@ -44,7 +44,7 @@ Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class,
 |--------------------------------------------------------------------------
 */
 Route::get('/coa', fn() => view('coa.listado'))->name('coa.listado');
-Route::get('/listusers', fn() => view('auth.listyPermisos.listuser'))->name('user.list');
+// Route::get('/listusers', fn() => view('auth.listyPermisos.listuser'))->name('user.list');
 Route::get('/osar', fn() => view('osar.listado'))->name('osar.listado');
 Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.listado');
 
@@ -55,9 +55,11 @@ Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.lis
 | Rutas de Permisos
 |--------------------------------------------------------------------------
 */
+Route::get('/usuarios-admin', [PostulanteLoginController::class, 'viewUser'])->name('usuarios');
 Route::get('/listPermisos', [PermisoPostulanteController::class, 'index'])->name('user.listPermisos');
 Route::post('/listPermisos', [PermisoPostulanteController::class, 'update'])->name('user.updatePermisos');
 });
+Route::post('/usuarios-admin/store', [PostulanteLoginController::class, 'createUpdateUser'])->name('usuarios.admin.store');
 /*
 |--------------------------------------------------------------------------
 | Rutas del Postulante
