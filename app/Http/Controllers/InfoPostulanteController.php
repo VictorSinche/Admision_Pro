@@ -254,6 +254,8 @@ class InfoPostulanteController extends Controller
                 return back()->with('error', 'Postulante no encontrado.');
             }
 
+            $accessToken = session('microsoft_token');
+
             $documentosPorModalidad = [
                 'B' => ['formulario', 'pago', 'constancia', 'merito', 'dni', 'seguro', 'foto'],
                 'A' => ['formulario', 'pago', 'constancia', 'dni', 'seguro', 'foto'],
@@ -284,6 +286,13 @@ class InfoPostulanteController extends Controller
                         }
                         $nombre = now()->format('Ymd_His') . '_' . $campo . '.' . $archivo->getClientOriginalExtension();
                         $ruta = $archivo->storeAs('postulantes/' . $postulante->c_numdoc, $nombre, 'public');
+                        // SUBIR A ONEDRIVE
+                        try {
+                            $respuesta = $this->subirAOneDrive('postulantes/' . $postulante->c_numdoc . '/' . $nombre, $nombre, session('microsoft_token'));
+                            Log::info("📤 Subido a OneDrive: " . json_encode($respuesta));
+                        } catch (\Exception $ex) {
+                            Log::error("❌ Error al subir a OneDrive: " . $ex->getMessage());
+                        }
                         Log::info("📂 Subido archivo: $nombre a $ruta");
                         $registro->$campo = $nombre;
                     } else {
@@ -636,6 +645,28 @@ class InfoPostulanteController extends Controller
             Log::error("❌ Error documentosJson: " . $e->getMessage());
             return response()->json(['error' => 'No se pudo cargar los documentos'], 500);
         }
+    }
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Funcion para subir a OneDirver
+    |--------------------------------------------------------------------------
+    */
+    public function subirAOneDrive($rutaLocal, $nombreArchivo, $accessToken)
+    {
+        $cliente = new \GuzzleHttp\Client();
+
+        $contenido = Storage::disk('public')->get($rutaLocal); // Lee desde storage/public
+
+        $response = $cliente->put("https://graph.microsoft.com/v1.0/me/drive/root:/UMA-Postulantes/$nombreArchivo:/content", [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $accessToken,
+                'Content-Type'  => 'application/octet-stream',
+            ],
+            'body' => $contenido,
+        ]);
+
+        return json_decode($response->getBody()->getContents(), true);
     }
 
 }

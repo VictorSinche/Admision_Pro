@@ -84,6 +84,16 @@ Route::middleware('auth.postulante')->group(function () {
     Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');
     Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])->name('declaracionJurada.descargar');
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas para Libro de reclamciones
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/auth/microsoft', [App\Http\Controllers\Auth\MicrosoftController::class, 'redirectToMicrosoft']);
+    Route::get('/callback/microsoft', [App\Http\Controllers\Auth\MicrosoftController::class, 'handleMicrosoftCallback']);
+
 });
 
 /*
@@ -94,9 +104,5 @@ Route::middleware('auth.postulante')->group(function () {
 Route::get('/crear-postulante', [CreatePostulanteController::class, 'mostrarFormulario'])->name('register.registro');
 Route::post('/crear-postulante', [CreatePostulanteController::class, 'registrarPostulante']);
 
-/*
-|--------------------------------------------------------------------------
-| Rutas para Libro de reclamciones
-|--------------------------------------------------------------------------
-*/
+
 
