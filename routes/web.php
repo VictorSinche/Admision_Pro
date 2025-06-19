@@ -19,47 +19,50 @@ Route::post('/login-postulante', [PostulanteLoginController::class, 'login'])->n
 Route::post('/logout', [PostulanteLoginController::class, 'logout'])->name('logout');
 
 Route::middleware('auth.admin')->group(function () {
-/*
-|--------------------------------------------------------------------------
-| Rutas de Administración
-|--------------------------------------------------------------------------
-*/
-Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('director.convalidacion');
-Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesConDJ'])->name('admision.historialDj');
-Route::get('/listpostulante', [InfoPostulanteController::class, 'resumenEstados'])->name('admision.listpostulante');
-Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas de Permisos
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/usuarios-admin', [PostulanteLoginController::class, 'viewUser'])->name('usuarios');
+    Route::get('/listPermisos', [PermisoPostulanteController::class, 'index'])->name('user.listPermisos');
+    Route::post('/listPermisos', [PermisoPostulanteController::class, 'update'])->name('user.updatePermisos');
+    Route::post('/usuarios-admin/store', [PostulanteLoginController::class, 'createUpdateUser'])->name('usuarios.admin.store');
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas de Administración
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('director.convalidacion');
+    Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesConDJ'])->name('admision.historialDj');
+    Route::get('/listpostulante', [InfoPostulanteController::class, 'resumenEstados'])->name('admision.listpostulante');
+    Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
 
-/*
-|--------------------------------------------------------------------------
-| Rutas de Declaración Jurada
-|--------------------------------------------------------------------------
-*/
-Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
-Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');
-Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])->name('declaracionJurada.descargar');
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas de Declaración Jurada
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
+    Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');
+    Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])->name('declaracionJurada.descargar');
 
-/*
-|--------------------------------------------------------------------------
-| Rutas de Menús y Submenús
-|--------------------------------------------------------------------------
-*/
-Route::get('/coa', fn() => view('coa.listado'))->name('coa.listado');
-// Route::get('/listusers', fn() => view('auth.listyPermisos.listuser'))->name('user.list');
-Route::get('/osar', fn() => view('osar.listado'))->name('osar.listado');
-Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.listado');
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas de Menús y Submenús
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/coa', fn() => view('coa.listado'))->name('coa.listado');
+    // Route::get('/listusers', fn() => view('auth.listyPermisos.listuser'))->name('user.list');
+    Route::get('/osar', fn() => view('osar.listado'))->name('osar.listado');
+    Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.listado');
 
-//se cambioooooo
+    //se cambioooooo
+    Route::get('/validar-responsable', fn() => view('admision.validarDocs.validardocpostulanteresponsable'))->name('admision.responsable');
+    Route::get('/validar', fn() => view('admision.validarDocs.validardocpostulantes'))->name('admision.validar');
 
-/*
-|--------------------------------------------------------------------------
-| Rutas de Permisos
-|--------------------------------------------------------------------------
-*/
-Route::get('/usuarios-admin', [PostulanteLoginController::class, 'viewUser'])->name('usuarios');
-Route::get('/listPermisos', [PermisoPostulanteController::class, 'index'])->name('user.listPermisos');
-Route::post('/listPermisos', [PermisoPostulanteController::class, 'update'])->name('user.updatePermisos');
 });
-Route::post('/usuarios-admin/store', [PostulanteLoginController::class, 'createUpdateUser'])->name('usuarios.admin.store');
+
 /*
 |--------------------------------------------------------------------------
 | Rutas del Postulante
@@ -95,7 +98,6 @@ Route::middleware('auth.postulante')->group(function () {
 
     Route::get('/auth/microsoft', [App\Http\Controllers\Auth\MicrosoftController::class, 'redirectToMicrosoft']);
     Route::get('/callback/microsoft', [App\Http\Controllers\Auth\MicrosoftController::class, 'handleMicrosoftCallback']);
-
 });
 
 /*
