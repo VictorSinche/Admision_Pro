@@ -231,7 +231,23 @@
                                 >
                             </div>
                         </td>
-                    
+                        <td class="p-4 border-b border-slate-200">
+                                <!-- Botón Validado -->
+                                <a class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-green-600 rounded hover:bg-green-700 transition">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </a>
+
+                                <!-- Botón No válido -->
+                                <a 
+                                    class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700 transition"
+                                    data-modal-target="modalNoValido"
+                                    data-modal-toggle="modalNoValido"
+                                    href="javascript:void(0);">
+                                    <i class="fa-solid fa-circle-xmark"></i>
+                                </a>
+                            </div>
+                        </td>
+
                 </tbody>
             </table>
         </div>
@@ -254,4 +270,63 @@
             </div>
         </div>
 </div>
+
+<!-- Modal -->
+    <div id="modalNoValido" class="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+        <!-- Cabecera -->
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-gray-900">Especificar documentos no válidos</h3>
+            <button onclick="cerrarModal()" class="text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Campo de texto -->
+        <div class="mb-4">
+            <label for="motivo" class="block text-sm font-medium text-gray-700 mb-1">Motivo / documentos no válidos:</label>
+            <textarea id="motivo" rows="4" class="w-full p-2 border rounded border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+        </div>
+
+        <!-- Botón Notificar -->
+        <div class="text-right">
+            <button onclick="enviarNotificacion()" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition">
+                <i class="fa-solid fa-paper-plane"></i>
+                Notificar
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Mostrar el modal
+    document.querySelectorAll('[data-modal-toggle]').forEach(button => {
+        button.addEventListener('click', () => {
+            const modalId = button.getAttribute('data-modal-target');
+            document.getElementById(modalId).classList.remove('hidden');
+        });
+    });
+
+    // Cerrar el modal
+    function cerrarModal() {
+        document.getElementById('modalNoValido').classList.add('hidden');
+    }
+
+    // Lógica de notificación
+    function enviarNotificacion() {
+        const motivo = document.getElementById('motivo').value;
+        if (motivo.trim() === '') {
+            alert('Por favor, especifica qué documentos no son válidos.');
+            return;
+        }
+
+        // Aquí puedes usar AJAX o redirigir a una ruta para enviar la notificación
+        console.log("Notificando: " + motivo);
+        cerrarModal();
+        alert('Notificación enviada correctamente.');
+    }
+</script>
+
+
 @endsection
