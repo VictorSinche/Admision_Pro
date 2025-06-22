@@ -19,4 +19,9 @@ class InfoPostulante extends Model
         return $this->hasOne(\App\Models\DocumentoPostulante::class, 'info_postulante_id');
     }
 
+    public function verificacion()
+    {
+        return $this->hasOne(\App\Models\VerificacionDocumento::class, 'info_postulante_id');
+    }
+
 }

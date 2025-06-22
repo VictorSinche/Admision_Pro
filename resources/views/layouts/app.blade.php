@@ -242,16 +242,16 @@
                   <li>
                     <a href="{{ route('admision.responsable') }}" 
                       class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                      {{ Request::routeIs('admision.listpostulante') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                      {{ Request::routeIs('admision.responsable') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                       Validar Docs. Postulantes R.
                     </a>              
                   </li>
                 @endif
                 @if(tienePermisoGlobal('ADM.3'))                  
                   <li>
-                    <a href="{{ route('admision.validar') }}" 
+                    <a href="{{ route('admision.verificar') }}" 
                       class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                      {{ Request::routeIs('admision.listpostulante') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                      {{ Request::routeIs('admision.verificar') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                       Validar Docs. Postulantes
                     </a>              
                   </li>

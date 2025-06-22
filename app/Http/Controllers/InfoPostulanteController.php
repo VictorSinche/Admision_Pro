@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\InfoPostulante;
 use App\Models\DeclaracionJurada;
 use App\Models\DocumentoPostulante;
+use App\Models\VerificacionDocumento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -627,29 +628,81 @@ class InfoPostulanteController extends Controller
     public function documentosJson($dni)
     {
         try {
-            $postulante = \App\Models\InfoPostulante::where('c_numdoc', $dni)->firstOrFail();
-            $documentos = \App\Models\DocumentoPostulante::where('info_postulante_id', $postulante->id)->first();
+            $postulante = InfoPostulante::where('c_numdoc', $dni)->firstOrFail();
+            $documentos  = DocumentoPostulante::where('info_postulante_id', $postulante->id)->first();
 
+            // Si no hay ningún documento subido todavía
             if (!$documentos) {
-                return response()->json([]);
+                $documentosFiltrados = collect();
+            } else {
+                // Solo dejamos los campos que contienen rutas
+                $documentosFiltrados = collect($documentos->getAttributes())
+                    ->filter(fn ($valor, $campo) =>
+                        $campo !== 'estado' &&
+                        !in_array($campo, ['id','info_postulante_id','created_at','updated_at']) &&
+                        $valor
+                    );
             }
 
-            // Devuelve solo campos con ruta
-            $documentosFiltrados = collect($documentos->getAttributes())
-                ->filter(function ($valor, $campo) {
-                    return $campo !== 'estado' && !in_array($campo, ['id', 'info_postulante_id', 'created_at', 'updated_at']) && $valor;
-                });
+            /* ➕ Verificamos si existe declaración jurada */
+            $tieneDJ = DeclaracionJurada::whereHas('infoPostulante', function ($q) use ($dni) {
+                            $q->where('c_numdoc', $dni);
+                    })->exists();
+
+            if ($tieneDJ) {
+                // Valor true para que el front sepa que existe
+                $documentosFiltrados['declaracion_jurada'] = true;
+            }
 
             return response()->json($documentosFiltrados);
+
         } catch (\Exception $e) {
-            Log::error("❌ Error documentosJson: " . $e->getMessage());
+            Log::error("❌ Error documentosJson: ".$e->getMessage());
             return response()->json(['error' => 'No se pudo cargar los documentos'], 500);
         }
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Funcion para validar documentos
+    |--------------------------------------------------------------------------
+    */
+    public function listarPostulantes()
+    {
+        $postulantes = InfoPostulante::with('verificacion')->get();
+        $postulantes = InfoPostulante::paginate(10);
+
+        return view('admision.validarDocs.validardocpostulantes', compact('postulantes'));
+    }
+
+    public function guardar(Request $request)
+    {
+        $request->validate([
+            'info_postulante_id' => 'required|exists:info_postulante,id',
+        ]);
+
+        $postulanteId = $request->input('info_postulante_id');
+
+        $registro = VerificacionDocumento::firstOrNew([
+            'info_postulante_id' => $postulanteId
+        ]);
+
+        $registro->formulario = $request->has('formulario') ? 1 : 0;
+        $registro->pago = $request->has('pago') ? 1 : 0;
+        $registro->dni = $request->has('dni') ? 1 : 0;
+        $registro->dj = $request->has('dj') ? 1 : 0;
+        $registro->foto = $request->has('foto') ? 1 : 0;
+
+        $registro->confirmado_por = null;
+
+        $registro->save();
+
+        return back()->with('success', '✅ Verificación guardada correctamente.');
     }
     
     /*
     |--------------------------------------------------------------------------
-    | Funcion para subir a OneDirver
+    | Funcion para subir a OneDrive
     |--------------------------------------------------------------------------
     */
     public function subirAOneDrive($rutaLocal, $nombreArchivo, $accessToken)

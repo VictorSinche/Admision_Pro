@@ -11,7 +11,7 @@
         <div class="relative mx-4 mt-4 overflow-hidden text-slate-700 bg-white rounded-none bg-clip-border">
             <div class="flex items-center justify-between ">
                 <div>
-                    <h3 class="text-lg font-semibold text-slate-800">Lista de usurios</h3>
+                    <h3 class="text-lg font-semibold text-slate-800">Lista de usuarios</h3>
                     <p class="text-slate-500">Revisar a cada persona antes de editar</p>
                 </div>
                 <div class="flex flex-col gap-2 shrink-0 sm:flex-row">

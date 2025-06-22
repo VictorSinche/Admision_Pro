@@ -61,7 +61,9 @@ public function descargarDeclaracionJuradaPDF($dni = null)
 
     Log::info('✅ PDF generado correctamente para ' . $dni);
 
-    return $pdf->download('declaracion-jurada-' . $dni . '.pdf');
+    return $pdf->stream('declaracion-jurada-' . $dni . '.pdf', [
+        'Attachment' => false,
+    ]);
 }
 
 }

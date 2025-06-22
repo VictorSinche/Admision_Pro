@@ -37,6 +37,10 @@ Route::middleware('auth.admin')->group(function () {
     Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesConDJ'])->name('admision.historialDj');
     Route::get('/listpostulante', [InfoPostulanteController::class, 'resumenEstados'])->name('admision.listpostulante');
     Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
+    Route::get('/admision/postulantes/verificar', [InfoPostulanteController::class, 'listarPostulantes'])->name('admision.verificar');
+
+    Route::post('/verificacion/guardar', [InfoPostulanteController::class, 'guardar'])->name('verificacion.guardar');
+
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +86,7 @@ Route::middleware('auth.postulante')->group(function () {
     Route::get('/verhorario', fn() => view('student.verhorario'))->name('student.verhorario');
     /*
     |--------------------------------------------------------------------------
-    | Rutas de Declaración Jurada
+    | Rutas de Declaración Jurada postulante
     |--------------------------------------------------------------------------
     */
     Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
