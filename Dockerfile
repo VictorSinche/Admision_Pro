@@ -31,18 +31,18 @@ ENV COMPOSER_MEMORY_LIMIT=-1
 # Instalar dependencias PHP (sin ejecutar scripts aún)
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts
 
-# Copiar .env y modificar DB_CONNECTION para evitar errores durante build
-RUN cp .env.example .env \
-    && sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=sqlite/' .env \
-    && php artisan key:generate --ansi || echo "⚠️ key:generate falló, probablemente por entorno incompleto (normal en build)"
+# 🔥 Evitamos sobrescribir el .env de Railway y saltamos config específica local
+# RUN cp .env.example .env \
+#     && sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=sqlite/' .env \
+#     && php artisan key:generate --ansi || echo "⚠️ key:generate falló"
 
-# Ejecutar scripts manuales ahora que APP_KEY existe
+# Ejecutar autodiscovery de paquetes (no crítico si falla)
 RUN php artisan package:discover --ansi || echo "⚠️ package:discover falló"
 
 # Instalar dependencias JS y compilar assets
 RUN npm install --legacy-peer-deps && npm run build
 
-# Cache de Laravel
+# Cache de Laravel (sin migraciones aquí)
 RUN php artisan config:clear \
     && php artisan config:cache \
     && php artisan route:cache \
