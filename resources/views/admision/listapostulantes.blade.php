@@ -311,32 +311,32 @@
     }
 
     function mostrarDocumento() {
-    const select = document.getElementById('select-doc');
-    const ruta = select.value;
-    const dni = select.getAttribute('data-dni');
-    const ext = ruta.split('.').pop().toLowerCase();
-    const container = document.getElementById('preview-doc');
+        const select = document.getElementById('select-doc');
+        const ruta = select.value;
+        const dni = select.getAttribute('data-dni');
+        const ext = ruta.split('.').pop().toLowerCase();
+        const container = document.getElementById('preview-doc');
 
-    const fullRuta = `/storage/postulantes/${dni}/${ruta}`;
+        const fullRuta = `/storage/postulantes/${dni}/${ruta}`;
 
-    // Limpia el contenedor
-    container.innerHTML = '';
+        // Limpia el contenedor
+        container.innerHTML = '';
 
-    if (ext === 'pdf') {
-        container.innerHTML = `
-            <iframe src="${fullRuta}" class="w-full h-96 border rounded" frameborder="0"></iframe>
-        `;
-    } else if (['jpg', 'jpeg', 'png'].includes(ext)) {
-        container.innerHTML = `
-            <img src="${fullRuta}" alt="Documento" class="max-w-full max-h-[400px] mx-auto rounded shadow" />
-        `;
-    } else {
-        container.innerHTML = `
-            <a href="${fullRuta}" target="_blank" class="text-blue-600 underline">
-                Ver/descargar documento
-            </a>
-        `;
+        if (ext === 'pdf') {
+            container.innerHTML = `
+                <iframe src="${fullRuta}" class="w-full h-96 border rounded" frameborder="0"></iframe>
+            `;
+        } else if (['jpg', 'jpeg', 'png'].includes(ext)) {
+            container.innerHTML = `
+                <img src="${fullRuta}" alt="Documento" class="max-w-full max-h-[400px] mx-auto rounded shadow" />
+            `;
+        } else {
+            container.innerHTML = `
+                <a href="${fullRuta}" target="_blank" class="text-blue-600 underline">
+                    Ver/descargar documento
+                </a>
+            `;
+        }
     }
-}
 
 </script>

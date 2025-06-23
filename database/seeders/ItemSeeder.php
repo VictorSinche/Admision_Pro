@@ -25,6 +25,8 @@ class ItemSeeder extends Seeder
             // Admisión
             ['module_codigo' => 'ADM', 'nombre' => 'Lista de postulantes', 'codigo' => 'ADM.1'],
             ['module_codigo' => 'ADM', 'nombre' => 'Historial declaración jurada', 'codigo' => 'ADM.2'],
+            ['module_codigo' => 'ADM', 'nombre' => 'Validar docs.', 'codigo' => 'ADM.3'],
+            ['module_codigo' => 'ADM', 'nombre' => 'Validar docs. Responsable', 'codigo' => 'ADM.4'],
 
             // Director
             ['module_codigo' => 'DIR', 'nombre' => 'Convalidación', 'codigo' => 'DIR.1'],

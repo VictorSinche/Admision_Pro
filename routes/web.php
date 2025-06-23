@@ -19,45 +19,54 @@ Route::post('/login-postulante', [PostulanteLoginController::class, 'login'])->n
 Route::post('/logout', [PostulanteLoginController::class, 'logout'])->name('logout');
 
 Route::middleware('auth.admin')->group(function () {
-/*
-|--------------------------------------------------------------------------
-| Rutas de Administración
-|--------------------------------------------------------------------------
-*/
-Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('director.convalidacion');
-Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesConDJ'])->name('admision.historialDj');
-Route::get('/listpostulante', [InfoPostulanteController::class, 'resumenEstados'])->name('admision.listpostulante');
-Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas de Permisos
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/usuarios-admin', [PostulanteLoginController::class, 'viewUser'])->name('usuarios');
+    Route::get('/listPermisos', [PermisoPostulanteController::class, 'index'])->name('user.listPermisos');
+    Route::post('/listPermisos', [PermisoPostulanteController::class, 'update'])->name('user.updatePermisos');
+    Route::post('/usuarios-admin/store', [PostulanteLoginController::class, 'createUpdateUser'])->name('usuarios.admin.store');
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas de Administración
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('director.convalidacion');
+    Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesConDJ'])->name('admision.historialDj');
+    Route::get('/listpostulante', [InfoPostulanteController::class, 'resumenEstados'])->name('admision.listpostulante');
+    Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
+    Route::get('/admision/postulantes/verificar', [InfoPostulanteController::class, 'listarPostulantes'])->name('admision.verificar');
 
-/*
-|--------------------------------------------------------------------------
-| Rutas de Declaración Jurada
-|--------------------------------------------------------------------------
-*/
-Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
-Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');
-Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])->name('declaracionJurada.descargar');
+    Route::post('/verificacion/guardar', [InfoPostulanteController::class, 'guardar'])->name('verificacion.guardar');
 
-/*
-|--------------------------------------------------------------------------
-| Rutas de Menús y Submenús
-|--------------------------------------------------------------------------
-*/
-Route::get('/coa', fn() => view('coa.listado'))->name('coa.listado');
-Route::get('/listusers', fn() => view('auth.listyPermisos.listuser'))->name('user.list');
-Route::get('/osar', fn() => view('osar.listado'))->name('osar.listado');
-Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.listado');
 
-//se cambioooooo
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas de Declaración Jurada
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
+    Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');
+    Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])->name('declaracionJurada.descargar');
 
-/*
-|--------------------------------------------------------------------------
-| Rutas de Permisos
-|--------------------------------------------------------------------------
-*/
-Route::get('/listPermisos', [PermisoPostulanteController::class, 'index'])->name('user.listPermisos');
-Route::post('/listPermisos', [PermisoPostulanteController::class, 'update'])->name('user.updatePermisos');
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas de Menús y Submenús
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/coa', fn() => view('coa.listado'))->name('coa.listado');
+    // Route::get('/listusers', fn() => view('auth.listyPermisos.listuser'))->name('user.list');
+    Route::get('/osar', fn() => view('osar.listado'))->name('osar.listado');
+    Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.listado');
+
+    //se cambioooooo
+    Route::get('/validar-responsable', fn() => view('admision.validarDocs.validardocpostulanteresponsable'))->name('admision.responsable');
+    Route::get('/validar', fn() => view('admision.validarDocs.validardocpostulantes'))->name('admision.validar');
+
 });
+
 /*
 |--------------------------------------------------------------------------
 | Rutas del Postulante
@@ -77,13 +86,22 @@ Route::middleware('auth.postulante')->group(function () {
     Route::get('/verhorario', fn() => view('student.verhorario'))->name('student.verhorario');
     /*
     |--------------------------------------------------------------------------
-    | Rutas de Declaración Jurada
+    | Rutas de Declaración Jurada postulante
     |--------------------------------------------------------------------------
     */
     Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
     Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');
     Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])->name('declaracionJurada.descargar');
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas para Libro de reclamciones
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/auth/microsoft', [App\Http\Controllers\Auth\MicrosoftController::class, 'redirectToMicrosoft']);
+    Route::get('/callback/microsoft', [App\Http\Controllers\Auth\MicrosoftController::class, 'handleMicrosoftCallback']);
 });
 
 /*
@@ -94,9 +112,5 @@ Route::middleware('auth.postulante')->group(function () {
 Route::get('/crear-postulante', [CreatePostulanteController::class, 'mostrarFormulario'])->name('register.registro');
 Route::post('/crear-postulante', [CreatePostulanteController::class, 'registrarPostulante']);
 
-/*
-|--------------------------------------------------------------------------
-| Rutas para Libro de reclamciones
-|--------------------------------------------------------------------------
-*/
+
 
