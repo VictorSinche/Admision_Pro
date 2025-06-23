@@ -19,8 +19,9 @@ class CreateVerificacionDocumentosTable extends Migration
             $table->boolean('formulario')->default(0);
             $table->boolean('pago')->default(0);
             $table->boolean('dni')->default(0);
-            $table->boolean('dj')->default(0);
+            $table->boolean('seguro')->default(0);
             $table->boolean('foto')->default(0);
+            $table->boolean('dj')->default(0);
 
             // Confirmado por (usuario responsable)
             $table->string('confirmado_por')->nullable();

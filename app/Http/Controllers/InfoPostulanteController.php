@@ -6,6 +6,7 @@ use App\Models\InfoPostulante;
 use App\Models\DeclaracionJurada;
 use App\Models\DocumentoPostulante;
 use App\Models\VerificacionDocumento;
+use App\Models\HistorialVerificacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -670,31 +671,81 @@ class InfoPostulanteController extends Controller
         return view('admision.validarDocs.validardocpostulantes', compact('postulantes'));
     }
 
-    public function guardar(Request $request)
+    // public function guardar(Request $request)
+    // {
+    //     $request->validate([
+    //         'info_postulante_id' => 'required|exists:info_postulante,id',
+    //     ]);
+
+    //     $postulanteId = $request->input('info_postulante_id');
+
+    //     $registro = VerificacionDocumento::firstOrNew([
+    //         'info_postulante_id' => $postulanteId
+    //     ]);
+
+    //     $registro->formulario = $request->has('formulario') ? 1 : 0;
+    //     $registro->pago = $request->has('pago') ? 1 : 0;
+    //     $registro->dni = $request->has('dni') ? 1 : 0;
+    //     $registro->seguro = $request->has('seguro') ? 1 : 0;
+    //     $registro->foto = $request->has('foto') ? 1 : 0;
+    //     $registro->dj = $request->has('dj') ? 1 : 0;
+
+    //     $registro->confirmado_por = null;
+
+    //     $registro->save();
+
+    //     return back()->with('success', '✅ Verificación guardada correctamente.');
+    // }
+
+    // public function validarCampo(Request $request)
+    // {
+    //     $request->validate([
+    //         'dni' => 'required|string',
+    //         'campo' => 'required|in:formulario,pago,dni,seguro,foto,dj',
+    //         'estado' => 'required|in:0,1',
+    //     ]);
+
+    //     $postulante = InfoPostulante::where('c_numdoc', $request->dni)->firstOrFail();
+
+    //     $verificacion = VerificacionDocumento::firstOrNew([
+    //         'info_postulante_id' => $postulante->id
+    //     ]);
+
+    //     $verificacion->{$request->campo} = $request->estado;
+    //     $verificacion->save();
+
+    //     return response()->json(['message' => 'Validación guardada']);
+    // }
+
+    public function validarCampo(Request $request)
     {
         $request->validate([
-            'info_postulante_id' => 'required|exists:info_postulante,id',
+            'dni' => 'required|string',
+            'campo' => 'required|in:formulario,pago,dni,seguro,foto,dj',
+            'estado' => 'required|in:0,1',
         ]);
 
-        $postulanteId = $request->input('info_postulante_id');
+        $postulante = InfoPostulante::where('c_numdoc', $request->dni)->firstOrFail();
 
-        $registro = VerificacionDocumento::firstOrNew([
-            'info_postulante_id' => $postulanteId
+        // 1. Guardar o actualizar la verificación actual
+        $verificacion = VerificacionDocumento::firstOrNew([
+            'info_postulante_id' => $postulante->id
         ]);
 
-        $registro->formulario = $request->has('formulario') ? 1 : 0;
-        $registro->pago = $request->has('pago') ? 1 : 0;
-        $registro->dni = $request->has('dni') ? 1 : 0;
-        $registro->dj = $request->has('dj') ? 1 : 0;
-        $registro->foto = $request->has('foto') ? 1 : 0;
+        $verificacion->{$request->campo} = $request->estado;
+        $verificacion->save();
 
-        $registro->confirmado_por = null;
+        // 2. Guardar en el historial
+        HistorialVerificacion::create([
+            'info_postulante_id' => $postulante->id,
+            'campo' => $request->campo,
+            'estado' => $request->estado,
+            // 'actualizado_por' => auth()->user()->name ?? 'Sistema',
+        ]);
 
-        $registro->save();
-
-        return back()->with('success', '✅ Verificación guardada correctamente.');
+        return response()->json(['message' => 'Validación guardada']);
     }
-    
+
     /*
     |--------------------------------------------------------------------------
     | Funcion para subir a OneDrive

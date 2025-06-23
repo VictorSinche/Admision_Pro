@@ -39,7 +39,9 @@ Route::middleware('auth.admin')->group(function () {
     Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
     Route::get('/admision/postulantes/verificar', [InfoPostulanteController::class, 'listarPostulantes'])->name('admision.verificar');
 
-    Route::post('/verificacion/guardar', [InfoPostulanteController::class, 'guardar'])->name('verificacion.guardar');
+    // Route::post('/verificacion/guardar', [InfoPostulanteController::class, 'guardar'])->name('verificacion.guardar');
+    Route::post('/validar-documento', [InfoPostulanteController::class, 'validarCampo'])->name('verificacion.campo');
+
 
 
     /*

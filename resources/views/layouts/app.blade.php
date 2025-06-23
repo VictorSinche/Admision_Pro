@@ -3,6 +3,7 @@
 @endphp
 
 <link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/css/app.css']['file']) }}">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <script type="module" src="{{ asset('build/' . $manifest['resources/js/app.js']['file']) }}"></script>
 
 <link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">

@@ -16,12 +16,16 @@ class InfoPostulante extends Model
 
     public function documentos()
     {
-        return $this->hasOne(\App\Models\DocumentoPostulante::class, 'info_postulante_id');
+        return $this->hasOne(DocumentoPostulante::class, 'info_postulante_id');
     }
 
     public function verificacion()
     {
-        return $this->hasOne(\App\Models\VerificacionDocumento::class, 'info_postulante_id');
+        return $this->hasOne(VerificacionDocumento::class, 'info_postulante_id');
     }
 
+    public function historial()
+    {
+        return $this->hasMany(HistorialVerificacion::class, 'info_postulante_id');
+    }
 }

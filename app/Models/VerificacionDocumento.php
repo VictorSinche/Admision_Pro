@@ -16,8 +16,9 @@ class VerificacionDocumento extends Model
         'formulario',
         'pago',
         'dni',
-        'dj',
+        'seguro',
         'foto',
+        'dj',
         'confirmado_por',
     ];
 

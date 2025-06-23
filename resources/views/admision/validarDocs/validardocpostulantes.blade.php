@@ -120,7 +120,7 @@
                         class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                         <p
                         class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        DJ
+                        Seguro
                         </svg>
                         </p>
                     </th>
@@ -136,6 +136,14 @@
                         class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                         <p
                         class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+                        DJ
+                        </svg>
+                        </p>
+                    </th>
+                    <th
+                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                        <p
+                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
                         Acciones
                         </p>
                     </th>
@@ -143,9 +151,9 @@
                 </thead>
                 <tbody>
                     @foreach($postulantes as $i => $postulante)
-                    <form method="POST" action="{{ route('verificacion.guardar') }}" id="form-{{ $postulante->id }}">
-                        @csrf
-                        <input type="hidden" name="info_postulante_id" value="{{ $postulante->id }}">
+                    {{-- <form method="POST" action="{{ route('verificacion.guardar') }}" id="form-{{ $postulante->id }}">
+                        @csrf --}}
+                        {{-- <input type="hidden" name="info_postulante_id" value="{{ $postulante->id }}"> --}}
 
                         <tr data-dni="{{ $postulante->c_numdoc }}">
                             <td class="p-4 border-b border-slate-200">
@@ -182,28 +190,60 @@
 
                             @php $verif = $postulante->verificacion; @endphp
 
-                            <td class="p-4 border-b border-slate-200 text-center"><input type="checkbox" name="formulario" value="1" {{ $verif && $verif->formulario ? 'checked' : '' }}></td>
-                            <td class="p-4 border-b border-slate-200 text-center"><input type="checkbox" name="pago" value="1" {{ $verif && $verif->pago ? 'checked' : '' }}></td>
-                            <td class="p-4 border-b border-slate-200 text-center"><input type="checkbox" name="dni" value="1" {{ $verif && $verif->dni ? 'checked' : '' }}></td>
-                            <td class="p-4 border-b border-slate-200 text-center"><input type="checkbox" name="dj" value="1" {{ $verif && $verif->dj ? 'checked' : '' }}></td>
-                            <td class="p-4 border-b border-slate-200 text-center"><input type="checkbox" name="foto" value="1" {{ $verif && $verif->foto ? 'checked' : '' }}></td>
+                            @php
+                            function mostrarIconoVerificacion($estado)
+                            {
+                                switch ($estado) {
+                                    case 1:
+                                        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-green-700 bg-green-100 px-3 py-1">
+                                                    <i class=\'fa-solid fa-check-circle\'></i>
+                                                </span>';
+                                    case 0:
+                                        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-red-700 bg-red-100 px-3 py-1">
+                                                    <i class=\'fa-solid fa-xmark-circle\'></i>
+                                                </span>';
+                                    default:
+                                        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-gray-600 bg-gray-100 px-3 py-1">
+                                                    <i class=\'fa-solid fa-clock\'></i>
+                                                </span>';
+                                }
+                            }
+                            @endphp
 
+                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->formulario ?? 'null' }}" data-campo="formulario">
+                                {!! mostrarIconoVerificacion($verif->formulario ?? null) !!}
+                            </td>
+                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->pago ?? 'null' }}" data-campo="pago">
+                                {!! mostrarIconoVerificacion($verif->pago ?? null) !!}
+                            </td>
+                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->dni ?? 'null' }}" data-campo="dni">
+                                {!! mostrarIconoVerificacion($verif->dni ?? null) !!}
+                            </td>
+                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->seguro ?? 'null' }}" data-campo="seguro">
+                                {!! mostrarIconoVerificacion($verif->seguro ?? null) !!}
+                            </td>
+                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->foto ?? 'null' }}" data-campo="foto">
+                                {!! mostrarIconoVerificacion($verif->foto ?? null) !!}
+                            </td>
+                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->dj ?? 'null' }}" data-campo="dj">
+                                {!! mostrarIconoVerificacion($verif->dj ?? null) !!}
+                            </td>
                             <td class="p-4 border-b border-slate-200 text-center">
                                 <div class="flex gap-2 justify-center">
-                                    <button type="button" onclick="confirmarValidacion('form-{{ $postulante->id }}')" class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-green-600 rounded hover:bg-green-700 transition">
+                                    {{-- <button type="button" onclick="confirmarValidacion('form-{{ $postulante->id }}')" class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-green-600 rounded hover:bg-green-700 transition">
                                         <i class="fa-solid fa-circle-check"></i>
-                                    </button>
+                                    </button> --}}
 
-                                    <a href="javascript:void(0);"
+                                    {{-- <a href="javascript:void(0);"
                                         data-modal-target="modalNoValido"
                                         data-modal-toggle="modalNoValido"
                                         class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700 transition">
                                         <i class="fa-solid fa-circle-xmark"></i>
-                                    </a>
+                                    </a> --}}
                                 </div>
                             </td>
                         </tr>
-                    </form>
+                    {{-- </form> --}}
                     @endforeach
                 </tbody>
             </table>
@@ -412,19 +452,56 @@
     // ✅ Ahora la función validarDocumento está fuera y es accesible globalmente
     function validarDocumento(valido) {
         const select = document.getElementById('select-doc');
-        const campo = select.options[select.selectedIndex].text.toLowerCase().trim(); // ejemplo: "dni"
+        const campo = select.options[select.selectedIndex].text.toLowerCase().trim();
         const dni = select.getAttribute('data-dni');
 
         const fila = document.querySelector(`tr[data-dni="${dni}"]`);
         if (!fila) return;
 
-        const checkbox = fila.querySelector(`input[name="${campo}"]`);
-        if (!checkbox) return;
+        const celda = Array.from(fila.querySelectorAll('td')).find(td => td.dataset.campo === campo);
+        if (!celda) return;
 
-        checkbox.checked = valido;
+        // Actualizar el ícono visual
+        const estado = valido ? 1 : 0;
+        celda.setAttribute('data-estado', estado);
 
-        // Opcional: cerrar el modal luego de marcar
-        // cerrarModalDocumentos();
+        let iconHtml = '';
+        if (estado === 1) {
+            iconHtml = `<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-green-700 bg-green-100 px-3 py-1">
+                        <i class="fa-solid fa-check-circle"></i>
+                        </span>`;
+        } else {
+            iconHtml = `<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-red-700 bg-red-100 px-3 py-1">
+                        <i class="fa-solid fa-xmark-circle"></i>
+                        </span>`;
+        }
+
+        celda.innerHTML = iconHtml;
+
+        // Enviar al backend
+        fetch('/validar-documento', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                dni,
+                campo,
+                estado
+            })
+        })
+        .then(res => res.json())
+        .then(() => {
+            cerrarModalDocumentos();
+            // ✅ Confirmación opcional
+            // alert('Validación registrada correctamente.');
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Error al validar el documento.');
+        });
     }
 
 </script>

@@ -39,18 +39,21 @@
 
   <!-- Columna derecha: Validación -->
 <div class="w-full md:w-1/3">
-  <div class="flex items-center gap-6 mt-2 md:mt-0">
-    <label class="inline-flex items-center gap-1 text-sm text-gray-700">
-      <input type="radio" name="validacion_{{ $campo }}" value="1"
-              {{ $estado === 1 ? 'checked' : '' }} disabled />
-      ✅ Válido
-    </label>
-    <label class="inline-flex items-center gap-1 text-sm text-gray-700">
-      <input type="radio" name="validacion_{{ $campo }}" value="0"
-              {{ $estado === 0 ? 'checked' : '' }} disabled />
-      ❌ No válido
-    </label>
-  </div>
+<div class="w-full md:w-1/3 mt-2 md:mt-0">
+  @if ($estado === 1)
+    <span class="inline-flex items-center gap-2 text-sm font-medium text-green-700 bg-green-100 px-3 py-1 rounded-full">
+      <i class="fa-solid fa-check-circle"></i> Válido
+    </span>
+  @elseif ($estado === 0)
+    <span class="inline-flex items-center gap-2 text-sm font-medium text-red-700 bg-red-100 px-3 py-1 rounded-full">
+      <i class="fa-solid fa-xmark-circle"></i> No válido
+    </span>
+  @else
+    <span class="inline-flex items-center gap-2 text-sm font-medium text-white bg-white px-3 py-1 rounded-full">
+    </span>
+  @endif
+</div>
+
 </div>
 </div>
 @endforeach
