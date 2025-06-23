@@ -148,10 +148,32 @@
                         <input type="hidden" name="info_postulante_id" value="{{ $postulante->id }}">
 
                         <tr data-dni="{{ $postulante->c_numdoc }}">
-                            <td class="p-4 border-b border-slate-200">{{ $i + 1 }}</td>
-                            <td class="p-4 border-b border-slate-200">{{ $postulante->c_numdoc }}</td>
-                            <td class="p-4 border-b border-slate-200">{{ Str::title($postulante->c_nombres . ' ' . $postulante->c_apepat . ' ' . $postulante->c_apemat) }}</td>
-                            <td class="p-4 border-b border-slate-200">{{ $postulante->nomesp }}</td>
+                            <td class="p-4 border-b border-slate-200">
+                                <div class="flex flex-col">
+                                    <p class="text-sm font-semibold text-slate-700">
+                                        {{ $i + 1 }}
+                                    </p>
+                                </div>
+                            </td>
+                            <td class="p-4 border-b border-slate-200">
+                                <div class="flex flex-col">
+                                    <p class="text-sm font-semibold text-slate-700">
+                                        {{ $postulante->c_numdoc }}</td>
+                                    </p>
+                                </div>
+                            <td class="p-4 border-b border-slate-200">
+                                <div class="flex flex-col">
+                                    <p class="text-sm font-semibold text-slate-700">
+                                        {{ Str::title($postulante->c_nombres . ' ' . $postulante->c_apepat . ' ' . $postulante->c_apemat) }}</td>
+                                    </p>
+                                </div>
+                            <td class="p-4 border-b border-slate-200">
+                                <div class="flex flex-col">
+                                    <p class="text-sm font-semibold text-slate-700">
+                                        {{ $postulante->nomesp }}
+                                    </p>
+                                </div>
+                            </td>
                             <td class="p-4 border-b border-slate-200 text-center">
                                 <a href="javascript:void(0);" onclick="abrirModalDocumentos('{{ $postulante->c_numdoc }}')" class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700 transition">
                                     <i class="fa-solid fa-eye"></i>

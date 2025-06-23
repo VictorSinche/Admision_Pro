@@ -215,7 +215,7 @@ class InfoPostulanteController extends Controller
             abort(403, 'No tienes permiso para acceder a esta pagina');
         }
 
-        $postulante = InfoPostulante::with('documentos')->where('c_numdoc', $c_numdoc)->firstOrFail();
+        $postulante = InfoPostulante::with('documentos', 'verificacion')->where('c_numdoc', $c_numdoc)->firstOrFail();
         
         $mapaModalidades = [
             'B' => 'primeros_puestos',
@@ -454,11 +454,6 @@ class InfoPostulanteController extends Controller
         }
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | funciones de Declarción Jurada
-    |--------------------------------------------------------------------------
-    */
     public function listarPostulantesConDJ()
     {
         // Solo traer postulantes que tienen declaración jurada (dj.id no nulo)

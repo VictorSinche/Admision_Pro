@@ -1,6 +1,6 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Campo 1 -->
-    <div>
+    {{-- <div>
       <label for="formulario" class="block text-sm font-medium text-gray-900 mb-1">
         Formulario de inscripción
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Formulario de inscripción virtual, debidamente llenado."></i>
@@ -21,9 +21,9 @@
               Ver documento actual
           </a>
       @endif
-    </div>
+    </div> --}}
     <!-- Campo 2 -->
-    <div>
+    {{-- <div>
       <label for="pago" class="block text-sm font-medium text-gray-900 mb-1">
         Comprobante de pago
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Copia del comprobante de Pago por Derechos de Inscripción al Concurso de Admisión."></i>
@@ -44,8 +44,7 @@
               Ver documento actual
             </a>
         @endif
-    </div>
-
+    </div> --}}
 
     <!-- Campo 3 -->
     <div>
@@ -73,7 +72,7 @@
     </div>
 
     <!-- Campo 4 -->
-    <div>
+    {{-- <div>
       <label for="dni" class="block text-sm font-medium text-gray-900 mb-1">
         DNI del postulante/apoderado
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Copia del D.N.I. y de su representante, de ser el caso de menores de edad."></i>
@@ -94,10 +93,10 @@
           Ver documento actual
         </a>
       @endif
-    </div>
+    </div> --}}
 
     <!-- Campo 5 -->
-    <div>
+    {{-- <div>
       <label for="seguro" class="block text-sm font-medium text-gray-900 mb-1">
         Seguro de salud
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Constancia de seguro de salud (ESSALUD, SIS, seguro particular)."></i>
@@ -118,10 +117,10 @@
           Ver documento actual
         </a>
       @endif
-    </div>
+    </div> --}}
 
     <!-- Campo 6 -->
-    <div>
+    {{-- <div>
       <label for="foto" class="block text-sm font-medium text-gray-900 mb-1">
         Foto tamaño carné
         <i class="fa-solid fa-circle-info text-blue-500 ml-1 cursor-pointer" title="Fotografía tamaño carné sobre fondo blanco."></i>
@@ -142,5 +141,10 @@
           Ver documento actual
         </a>
       @endif
-    </div>
+    </div> --}}
+
+    {{-- @include('student.documentos.partials.documentos_comunes') --}}
+  </div>
+  <div class="mt-5">
+    @include('student.documentos.partials.documentos_comunes')
   </div>
