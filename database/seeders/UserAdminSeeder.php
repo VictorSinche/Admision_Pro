@@ -16,6 +16,7 @@ class UserAdminSeeder extends Seeder
         UserAdmin::updateOrCreate(
             ['email' => 'ti@uma.edu.pe'], // condición de búsqueda
             [
+                'cod_user'  => 'admin001', // código único para el admin
                 'nombre'    => 'Super',
                 'apellidos' => 'Administrador',
                 'genero'    => 'Masculino',

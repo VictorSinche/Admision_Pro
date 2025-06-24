@@ -12,6 +12,7 @@ class UserAdmin extends Authenticatable
     protected $table = 'users_admin'; // nombre real de tu tabla
 
     protected $fillable = [
+        'cod_user',
         'nombre',
         'apellidos',
         'email',

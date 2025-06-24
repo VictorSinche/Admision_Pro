@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use App\Models\UserAdmin;
 class PostulanteLoginController extends Controller
 {
@@ -17,7 +18,6 @@ class PostulanteLoginController extends Controller
     public function viewUser()
     {
         $usuarios = UserAdmin::all();
-        // $areas = Area::all();
         return view('auth.listyPermisos.listuser', compact('usuarios'));
     }
 
@@ -56,12 +56,11 @@ class PostulanteLoginController extends Controller
                     'nombre_completo' => $admin->nombre . ' ' . $admin->apellidos,
                     'correo'          => $admin->email,
                     'rol'             => 'admin',
+                    'cod_user'        => $admin->cod_user,
                 ]);
                 Log::info('📥 Datos del administrador:', (array) $admin);
-
                 return redirect()->route('dashboard.dashboard');
             }
-
             return back()->with('error', '❌ Credenciales inválidas (admin).');
         } else {
             // 🔐 POSTULANTE: buscar por DNI
@@ -129,34 +128,46 @@ class PostulanteLoginController extends Controller
             'email'     => 'required|email|unique:users_admin,email,' . $request->id,
             'genero'    => 'required',
             'grado'     => 'nullable|string',
-            // 'area_id'   => 'required|exists:areas,id',
-            'password'  => $request->id ? 'nullable|min:6' : 'required|min:6', // requerido solo si es nuevo
+            'password'  => $request->id ? 'nullable|min:6' : 'required|min:6',
         ]);
 
-        $data = [
-            'nombre'    => $request->nombre,
-            'apellidos' => $request->apellidos,
-            'email'     => $request->email,
-            'genero'    => $request->genero,
-            'grado'     => $request->grado,
-            // 'area_id'   => $request->area_id,
-        ];
+        if ($request->id) {
+            // 🔁 ACTUALIZAR
+            $usuario = \App\Models\UserAdmin::findOrFail($request->id);
+            $usuario->nombre    = $request->nombre;
+            $usuario->apellidos = $request->apellidos;
+            $usuario->email     = $request->email;
+            $usuario->genero    = $request->genero;
+            $usuario->grado     = $request->grado;
 
-        if ($request->filled('password')) {
-            $data['password'] = bcrypt($request->password);
+            if ($request->filled('password')) {
+                $usuario->password = bcrypt($request->password);
+            }
+
+            $usuario->save();
+            $mensaje = '✅ Usuario actualizado correctamente.';
+
+        } else {
+            // 🆕 CREAR
+            $codigo = strtoupper(substr($request->nombre, 0, 1) . substr($request->apellidos, 0, 2));
+            $rand   = substr(Str::uuid(), 0, 5);
+            $cod_user = "{$codigo}{$rand}";
+
+            UserAdmin::create([
+                'cod_user'  => $cod_user,
+                'nombre'    => $request->nombre,
+                'apellidos' => $request->apellidos,
+                'email'     => $request->email,
+                'genero'    => $request->genero,
+                'grado'     => $request->grado,
+                'password'  => bcrypt($request->password),
+            ]);
+
+            $mensaje = '✅ Usuario creado correctamente.';
         }
-
-        // Si existe ID, actualiza. Si no, crea.
-        $usuario = \App\Models\UserAdmin::updateOrCreate(
-            ['id' => $request->id],
-            $data
-        );
-
-        $mensaje = $request->id ? '✅ Usuario actualizado correctamente.' : '✅ Usuario creado correctamente.';
 
         return back()->with('success', $mensaje);
     }
-
 
     public function logout(Request $request){
         session()->flush();

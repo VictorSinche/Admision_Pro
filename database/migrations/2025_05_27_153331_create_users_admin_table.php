@@ -10,12 +10,13 @@ return new class extends Migration
     {
         Schema::create('users_admin', function (Blueprint $table) {
             $table->id();
+            $table->string('cod_user')->unique();
             $table->string('nombre');
             $table->string('apellidos');
             $table->string('email')->unique();
             $table->enum('genero', ['Masculino', 'Femenino', 'Otro']);
             $table->string('grado')->nullable(); // ejem: Lic., Ing., Dra.
-            $table->boolean('estado')->default(true); // true = activo, false = inactivo
+            $table->boolean('estado')->default(true); // activo = 1, inactivo = 0
             $table->string('password');
             $table->timestamps();
         });

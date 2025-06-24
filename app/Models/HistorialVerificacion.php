@@ -12,7 +12,8 @@ class HistorialVerificacion extends Model
         'info_postulante_id',
         'campo',
         'estado',
-        // 'actualizado_por',
+        'cod_user',
+        'actualizado_por',
     ];
 
     public function postulante()

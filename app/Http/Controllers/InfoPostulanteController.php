@@ -626,12 +626,9 @@ class InfoPostulanteController extends Controller
         try {
             $postulante = InfoPostulante::where('c_numdoc', $dni)->firstOrFail();
             $documentos  = DocumentoPostulante::where('info_postulante_id', $postulante->id)->first();
-
-            // Si no hay ningún documento subido todavía
             if (!$documentos) {
                 $documentosFiltrados = collect();
             } else {
-                // Solo dejamos los campos que contienen rutas
                 $documentosFiltrados = collect($documentos->getAttributes())
                     ->filter(fn ($valor, $campo) =>
                         $campo !== 'estado' &&
@@ -639,19 +636,13 @@ class InfoPostulanteController extends Controller
                         $valor
                     );
             }
-
-            /* ➕ Verificamos si existe declaración jurada */
             $tieneDJ = DeclaracionJurada::whereHas('infoPostulante', function ($q) use ($dni) {
                             $q->where('c_numdoc', $dni);
                     })->exists();
-
             if ($tieneDJ) {
-                // Valor true para que el front sepa que existe
                 $documentosFiltrados['declaracion_jurada'] = true;
             }
-
             return response()->json($documentosFiltrados);
-
         } catch (\Exception $e) {
             Log::error("❌ Error documentosJson: ".$e->getMessage());
             return response()->json(['error' => 'No se pudo cargar los documentos'], 500);
@@ -671,52 +662,6 @@ class InfoPostulanteController extends Controller
         return view('admision.validarDocs.validardocpostulantes', compact('postulantes'));
     }
 
-    // public function guardar(Request $request)
-    // {
-    //     $request->validate([
-    //         'info_postulante_id' => 'required|exists:info_postulante,id',
-    //     ]);
-
-    //     $postulanteId = $request->input('info_postulante_id');
-
-    //     $registro = VerificacionDocumento::firstOrNew([
-    //         'info_postulante_id' => $postulanteId
-    //     ]);
-
-    //     $registro->formulario = $request->has('formulario') ? 1 : 0;
-    //     $registro->pago = $request->has('pago') ? 1 : 0;
-    //     $registro->dni = $request->has('dni') ? 1 : 0;
-    //     $registro->seguro = $request->has('seguro') ? 1 : 0;
-    //     $registro->foto = $request->has('foto') ? 1 : 0;
-    //     $registro->dj = $request->has('dj') ? 1 : 0;
-
-    //     $registro->confirmado_por = null;
-
-    //     $registro->save();
-
-    //     return back()->with('success', '✅ Verificación guardada correctamente.');
-    // }
-
-    // public function validarCampo(Request $request)
-    // {
-    //     $request->validate([
-    //         'dni' => 'required|string',
-    //         'campo' => 'required|in:formulario,pago,dni,seguro,foto,dj',
-    //         'estado' => 'required|in:0,1',
-    //     ]);
-
-    //     $postulante = InfoPostulante::where('c_numdoc', $request->dni)->firstOrFail();
-
-    //     $verificacion = VerificacionDocumento::firstOrNew([
-    //         'info_postulante_id' => $postulante->id
-    //     ]);
-
-    //     $verificacion->{$request->campo} = $request->estado;
-    //     $verificacion->save();
-
-    //     return response()->json(['message' => 'Validación guardada']);
-    // }
-
     public function validarCampo(Request $request)
     {
         $request->validate([
@@ -727,7 +672,6 @@ class InfoPostulanteController extends Controller
 
         $postulante = InfoPostulante::where('c_numdoc', $request->dni)->firstOrFail();
 
-        // 1. Guardar o actualizar la verificación actual
         $verificacion = VerificacionDocumento::firstOrNew([
             'info_postulante_id' => $postulante->id
         ]);
@@ -735,12 +679,12 @@ class InfoPostulanteController extends Controller
         $verificacion->{$request->campo} = $request->estado;
         $verificacion->save();
 
-        // 2. Guardar en el historial
         HistorialVerificacion::create([
             'info_postulante_id' => $postulante->id,
             'campo' => $request->campo,
             'estado' => $request->estado,
-            // 'actualizado_por' => auth()->user()->name ?? 'Sistema',
+            'cod_user' => session('cod_user') ?? '',
+            'actualizado_por' => session('nombre_completo') ?? 'Sistema',
         ]);
 
         return response()->json(['message' => 'Validación guardada']);

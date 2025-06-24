@@ -191,23 +191,31 @@
                             @php $verif = $postulante->verificacion; @endphp
 
                             @php
-                            function mostrarIconoVerificacion($estado)
-                            {
-                                switch ($estado) {
-                                    case 1:
-                                        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-green-700 bg-green-100 px-3 py-1">
-                                                    <i class=\'fa-solid fa-check-circle\'></i>
-                                                </span>';
-                                    case 0:
-                                        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-red-700 bg-red-100 px-3 py-1">
-                                                    <i class=\'fa-solid fa-xmark-circle\'></i>
-                                                </span>';
-                                    default:
+                                function mostrarIconoVerificacion($estado)
+                                {
+                                    if (!isset($estado)) {
                                         return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-gray-600 bg-gray-100 px-3 py-1">
-                                                    <i class=\'fa-solid fa-clock\'></i>
+                                                    <i class="fa-solid fa-clock"></i>
                                                 </span>';
+                                    }
+
+                                    if ((int)$estado === 1) {
+                                        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-green-700 bg-green-100 px-3 py-1">
+                                                    <i class="fa-solid fa-check-circle"></i>
+                                                </span>';
+                                    }
+
+                                    if ((int)$estado === 0) {
+                                        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-red-700 bg-red-100 px-3 py-1">
+                                                    <i class="fa-solid fa-xmark-circle"></i>
+                                                </span>';
+                                    }
+
+                                    // Por si acaso
+                                    return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-gray-600 bg-gray-100 px-3 py-1">
+                                                <i class="fa-solid fa-clock"></i>
+                                            </span>';
                                 }
-                            }
                             @endphp
 
                             <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->formulario ?? 'null' }}" data-campo="formulario">
@@ -328,7 +336,6 @@
                 <i class="fa-solid fa-xmark mr-1"></i> No válido
             </button>
         </div>
-
 
         <button onclick="cerrarModalDocumentos()" class="absolute top-4 right-4 text-gray-600 hover:text-red-600">
             <i class="fa-solid fa-xmark text-2xl"></i>
@@ -494,9 +501,11 @@
         })
         .then(res => res.json())
         .then(() => {
-            cerrarModalDocumentos();
-            // ✅ Confirmación opcional
-            // alert('Validación registrada correctamente.');
+            Swal.fire({
+            title: "¡Validación registrada correctamente!",
+            icon: "success",
+            draggable: true
+            });
         })
         .catch(err => {
             console.error(err);
