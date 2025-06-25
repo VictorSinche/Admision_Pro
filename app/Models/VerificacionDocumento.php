@@ -19,7 +19,7 @@ class VerificacionDocumento extends Model
         'seguro',
         'foto',
         'dj',
-        'confirmado_por',
+        'notificado',
     ];
 
     /**

@@ -6,6 +6,7 @@ use App\Http\Controllers\PostulanteLoginController;
 use App\Http\Controllers\CreatePostulanteController;
 use App\Http\Controllers\DeclaracionJuradaController;
 use App\Http\Controllers\PermisoPostulanteController;
+use App\Http\Controllers\NotificacionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,11 +40,9 @@ Route::middleware('auth.admin')->group(function () {
     Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
     Route::get('/admision/postulantes/verificar', [InfoPostulanteController::class, 'listarPostulantes'])->name('admision.verificar');
 
-    // Route::post('/verificacion/guardar', [InfoPostulanteController::class, 'guardar'])->name('verificacion.guardar');
     Route::post('/validar-documento', [InfoPostulanteController::class, 'validarCampo'])->name('verificacion.campo');
 
-
-
+    // Route::post('/notificar-rechazo-documentos', [NotificacionController::class, 'rechazoDocumentos']);
     /*
     |--------------------------------------------------------------------------
     | Rutas de Declaración Jurada
@@ -59,7 +58,6 @@ Route::middleware('auth.admin')->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/coa', fn() => view('coa.listado'))->name('coa.listado');
-    // Route::get('/listusers', fn() => view('auth.listyPermisos.listuser'))->name('user.list');
     Route::get('/osar', fn() => view('osar.listado'))->name('osar.listado');
     Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.listado');
 
@@ -94,8 +92,14 @@ Route::middleware('auth.postulante')->group(function () {
     Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
     Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');
     Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])->name('declaracionJurada.descargar');
-
-
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas de notificaciones
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/listNotificaciones', fn() => view('Notificaciones.bandejaentrada'))->name('notificaciones.list');
+    Route::post('/notificar-rechazo-documentos', [NotificacionController::class, 'rechazoDocumentos']);
+    Route::post('/notificaciones/reset', [NotificacionController::class, 'resetNotificacion'])->name('notificaciones.reset');
     /*
     |--------------------------------------------------------------------------
     | Rutas para Libro de reclamciones

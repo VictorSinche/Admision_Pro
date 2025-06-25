@@ -84,6 +84,8 @@
     </button>
   </form>
 
+
+
   @if ($documentosCompletos)
     {{-- ✅ Documentos completos, no necesita declaración jurada --}}
     <div class="bg-green-100 border-l-4 border-green-600 text-green-800 p-4 rounded shadow-sm mt-6">
@@ -98,26 +100,35 @@
             </div>
         </div>
     </div>
-  @elseif($declaracionExiste)
-    {{-- ✅ Ya tiene declaración jurada, mostramos solo botón de descarga --}}
-    <div class="mt-8 bg-green-100 border-l-4 border-green-600 text-green-800 p-4 rounded-lg shadow-sm">
-      <div class="flex items-start">
-        <i class="fa-solid fa-circle-check text-green-600 mt-1 mr-3"></i>
-        <div>
-          <h3 class="font-semibold text-base mb-1">Ya enviaste tu declaración jurada</h3>
-          <p class="text-sm leading-relaxed">
-            Puedes descargar una copia en PDF si lo necesitas.
-          </p>
-          <div class="mt-3">
-              <a href="{{ route('declaracionJurada.descargar',['dni' => $postulante->c_numdoc]) }}" target="_blank"
-              class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-md shadow hover:bg-green-700 transition">
-              <i class="fa-solid fa-file-pdf mr-2"></i> Descargar declaración jurada
-            </a>
+    @elseif($declaracionExiste)
+      {{-- ✅ Ya tiene declaración jurada, mostramos solo botón de descarga --}}
+      <div class="mt-8 bg-green-100 border-l-4 border-green-600 text-green-800 p-4 rounded-lg shadow-sm">
+        <div class="flex items-start">
+          <i class="fa-solid fa-circle-check text-green-600 mt-1 mr-3"></i>
+          <div>
+            <h3 class="font-semibold text-base mb-1">Ya enviaste tu declaración jurada</h3>
+            <p class="text-sm leading-relaxed">
+              Puedes descargar una copia en PDF si lo necesitas.
+            </p>
+              <div class="mt-3 flex items-center gap-4 flex-wrap">
+                <a href="{{ route('declaracionJurada.descargar',['dni' => $postulante->c_numdoc]) }}" target="_blank"
+                  class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-md shadow hover:bg-green-700 transition">
+                  <i class="fa-solid fa-file-pdf mr-2"></i> Descargar declaración jurada
+                </a>
+
+                {{-- Estado de validación --}}
+                @if(!is_null($djValidado))
+                  <span class="inline-flex items-center gap-2 px-3 py-1 rounded-3xl 
+                              {{ $djValidado === 1 ? 'bg-green-300 text-green-800' : 'bg-red-100 text-red-800' }}">
+                    <i class="fa-solid {{ $djValidado === 1 ? 'fa-check-circle' : 'fa-xmark-circle' }}"></i>
+                    {{ $djValidado === 1 ? 'Válido' : 'No válido' }}
+                  </span>
+                @endif
+              </div>
           </div>
         </div>
       </div>
-    </div>
-  @else
+    @else
     {{-- ⚠️ Aún no tiene declaración, mostrar mensaje normal --}}
     <div class="col-span-1 md:col-span-2 mt-8 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-sm">
       <div class="flex items-start">

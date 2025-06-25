@@ -72,6 +72,61 @@
           </a>
         </div>
         <div class="flex items-center">
+          <!-- Botón de notificaciones -->
+          @php
+
+            $c_numdoc = session('c_numdoc');
+            $notificaciones = [];
+
+            if ($c_numdoc) {
+                $postulante = InfoPostulante::with('verificacion')->where('c_numdoc', $c_numdoc)->first();
+
+                if ($postulante && $postulante->verificacion && $postulante->verificacion->notificado) {
+                    $notificaciones[] = (object) [
+                        'mensaje' => '📬 Se encontraron observaciones en tus documentos. Revisa y vuelve a subirlos.',
+                    ];
+                }
+            }
+
+            $cantidadNotificaciones = count($notificaciones);
+          @endphp
+
+          <div class="flex items-center me-3">
+            <div class="relative">
+              <button type="button"
+                      class="relative inline-flex items-center p-3 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                      data-dropdown-toggle="dropdown-notificaciones">
+                <i class="fa-solid fa-bell"></i>
+                <span class="sr-only">Notificaciones</span>
+
+                @if($cantidadNotificaciones > 0)
+                  <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2">
+                    {{ $cantidadNotificaciones }}
+                  </div>
+                @endif
+              </button>
+
+              <!-- Dropdown -->
+              <div id="dropdown-notificaciones" class="absolute right-0 z-50 hidden mt-2 w-72 text-sm text-gray-700 bg-white border border-gray-200 rounded-md shadow-lg dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700">
+                <div class="p-4 font-semibold border-b border-gray-200 dark:border-gray-600">
+                  Notificaciones
+                </div>
+                <ul class="max-h-64 overflow-y-auto">
+                  @forelse($notificaciones as $notificacion)
+                    <li class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                      {{ $notificacion->mensaje }}
+                    </li>
+                  @empty
+                    <li class="px-4 py-2 text-gray-500 dark:text-gray-400">
+                      No tienes nuevas notificaciones.
+                    </li>
+                  @endforelse
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Menú de usuario -->
           <div class="relative ms-3">
             <div>
               <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
@@ -79,7 +134,6 @@
                 <img class="w-8 h-8 rounded-full" src="{{ asset('uma/img/students.png') }}" alt="user photo">
               </button>
             </div>
-            <!-- Menú de usuario -->
             <div id="dropdown-user" class="absolute right-0 z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow dark:bg-gray-700 dark:divide-gray-600">
               <div class="px-4 py-3" role="none">
                 <p class="text-sm text-gray-900 dark:text-white" role="none">
@@ -359,11 +413,8 @@
           @if (tieneAlgunPermisoGlobal(['TES.1']))
             <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-tesoreria" data-collapse-toggle="submenu-tesoreria">
-              
               <i class="fa-solid fa-wallet text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
-              
               <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Tesoreria</span>
-              
               <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
               </svg>
@@ -383,6 +434,29 @@
           </li>
           @endif
 
+          @if (tieneAlgunPermisoGlobal(['NT.1']))
+            <li>
+            <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-notificaciones" data-collapse-toggle="submenu-notificaciones">
+              <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"/>
+              </svg>
+              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Inbox</span>
+                <span class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
+            </button>
+          
+            <ul id="submenu-notificaciones" class="py-2 space-y-2 {{ Request::routeIs('notificaciones.*') ? '' : 'hidden' }}">
+              @if (tienePermisoGlobal('NT.1'))
+                <li>
+                <a href="{{ route('notificaciones.list') }}" 
+                  class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                  {{ Request::routeIs('notificaciones.list') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                  Bandeja de entrada
+                </a>              
+              </li>
+              @endif
+            </ul>
+          </li>
+          @endif
         </ul>
     </div>
   </aside>
@@ -458,3 +532,29 @@
       });
     });
   </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const btnNotificaciones = document.querySelector('[data-dropdown-toggle="dropdown-notificaciones"]');
+    
+    if (btnNotificaciones) {
+      btnNotificaciones.addEventListener('click', () => {
+        fetch("{{ route('notificaciones.reset') }}", {
+          method: "POST",
+          headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(res => res.json())
+        .then(data => {
+          console.log("🔄 Notificación reseteada:", data.message);
+          // Opcional: ocultar el contador
+          const contador = btnNotificaciones.querySelector('div.absolute');
+          if (contador) contador.remove();
+        });
+      });
+    }
+  });
+</script>
+

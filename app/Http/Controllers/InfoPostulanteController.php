@@ -243,8 +243,9 @@ class InfoPostulanteController extends Controller
         $documentosCompletos = $registraDoc && $registraDoc->estado == 2;
 
         $declaracionExiste = \App\Models\DeclaracionJurada::where('info_postulante_id', $postulante->id)->exists();
+        $djValidado = optional($postulante->verificacion)->dj;
 
-        return view('student.subirdocument', compact('postulante', 'modalidad', 'nombreModalidad', 'documentosCompletos', 'declaracionExiste'));
+        return view('student.subirdocument', compact('postulante', 'modalidad', 'nombreModalidad', 'documentosCompletos', 'declaracionExiste', 'djValidado'));
     }
 
     public function guardarDocumentos(Request $request)
@@ -667,7 +668,7 @@ class InfoPostulanteController extends Controller
         $request->validate([
             'dni' => 'required|string',
             'campo' => 'required|in:formulario,pago,dni,seguro,foto,dj',
-            'estado' => 'required|in:0,1',
+            'estado' => 'required|in:0,1,2',
         ]);
 
         $postulante = InfoPostulante::where('c_numdoc', $request->dni)->firstOrFail();

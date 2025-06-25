@@ -17,6 +17,7 @@ class ModuleSeeder extends Seeder
             ['nombre' => 'OSAR', 'codigo' => 'OSA'],
             ['nombre' => 'Director', 'codigo' => 'DIR'],
             ['nombre' => 'Tesorería', 'codigo' => 'TES'],
+            ['nombre' => 'Notificaciones', 'codigo' => 'NT'],
         ];
 
         foreach ($modules as $modulo) {

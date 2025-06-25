@@ -22,10 +22,7 @@ class CreateVerificacionDocumentosTable extends Migration
             $table->boolean('seguro')->default(0);
             $table->boolean('foto')->default(0);
             $table->boolean('dj')->default(0);
-
-            // Confirmado por (usuario responsable)
-            $table->string('confirmado_por')->nullable();
-
+            $table->boolean('notificado')->default(0);
             $table->timestamps();
         });
     }

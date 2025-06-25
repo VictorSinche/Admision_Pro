@@ -39,6 +39,9 @@ class ItemSeeder extends Seeder
 
             // Tesorería
             ['module_codigo' => 'TES', 'nombre' => 'Listado Tesorería', 'codigo' => 'TES.1'],
+
+            // Notificaciones
+            ['module_codigo' => 'NT', 'nombre' => 'Bandeja de entrada', 'codigo' => 'NT.1'],
         ];
 
         foreach ($items as $item) {

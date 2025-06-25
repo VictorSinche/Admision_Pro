@@ -5,6 +5,13 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+<!-- Loader Global con Imagen -->
+<div id="loader-wrapper" class="hidden fixed inset-0 z-[9999] bg-white/80 flex flex-col justify-center items-center">
+    <img src="/uma/img/logo-uma.png" alt="Cargando UMA" class="w-16 h-16 mb-4 animate-pulse" />
+    <div class="loader"></div>
+    <p class="text-sm text-gray-700 mt-2">Cargando, por favor espera...</p>
+</div>
+
 <!-- component -->
 <div class="max-w-[100%] mx-auto">
     <div class="relative flex flex-col w-full h-full text-slate-700 bg-white shadow-md rounded-xl bg-clip-border">
@@ -151,10 +158,6 @@
                 </thead>
                 <tbody>
                     @foreach($postulantes as $i => $postulante)
-                    {{-- <form method="POST" action="{{ route('verificacion.guardar') }}" id="form-{{ $postulante->id }}">
-                        @csrf --}}
-                        {{-- <input type="hidden" name="info_postulante_id" value="{{ $postulante->id }}"> --}}
-
                         <tr data-dni="{{ $postulante->c_numdoc }}">
                             <td class="p-4 border-b border-slate-200">
                                 <div class="flex flex-col">
@@ -183,13 +186,11 @@
                                 </div>
                             </td>
                             <td class="p-4 border-b border-slate-200 text-center">
-                                <a href="javascript:void(0);" onclick="abrirModalDocumentos('{{ $postulante->c_numdoc }}')" class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700 transition">
-                                    <i class="fa-solid fa-eye"></i>
+                                <a href="javascript:void(0);" onclick="abrirModalDocumentos('{{ $postulante->c_numdoc }}')" class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-yellow-600 rounded hover:bg-yellow-700 transition">
+                                    <i class="fa-solid fa-folder-open"></i>
                                 </a>
                             </td>
-
                             @php $verif = $postulante->verificacion; @endphp
-
                             @php
                                 function mostrarIconoVerificacion($estado)
                                 {
@@ -199,13 +200,13 @@
                                                 </span>';
                                     }
 
-                                    if ((int)$estado === 1) {
+                                    if ((int)$estado === 2) {
                                         return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-green-700 bg-green-100 px-3 py-1">
                                                     <i class="fa-solid fa-check-circle"></i>
                                                 </span>';
                                     }
 
-                                    if ((int)$estado === 0) {
+                                    if ((int)$estado === 1) {
                                         return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-red-700 bg-red-100 px-3 py-1">
                                                     <i class="fa-solid fa-xmark-circle"></i>
                                                 </span>';
@@ -217,7 +218,6 @@
                                             </span>';
                                 }
                             @endphp
-
                             <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->formulario ?? 'null' }}" data-campo="formulario">
                                 {!! mostrarIconoVerificacion($verif->formulario ?? null) !!}
                             </td>
@@ -236,20 +236,26 @@
                             <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->dj ?? 'null' }}" data-campo="dj">
                                 {!! mostrarIconoVerificacion($verif->dj ?? null) !!}
                             </td>
-                            <td class="p-4 border-b border-slate-200 text-center">
-                                <div class="flex gap-2 justify-center">
-                                    {{-- <button type="button" onclick="confirmarValidacion('form-{{ $postulante->id }}')" class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-green-600 rounded hover:bg-green-700 transition">
-                                        <i class="fa-solid fa-circle-check"></i>
-                                    </button> --}}
-
-                                    {{-- <a href="javascript:void(0);"
-                                        data-modal-target="modalNoValido"
-                                        data-modal-toggle="modalNoValido"
-                                        class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-red-600 rounded hover:bg-red-700 transition">
-                                        <i class="fa-solid fa-circle-xmark"></i>
-                                    </a> --}}
-                                </div>
-                            </td>
+                                <td class="p-4 border-b border-slate-200 text-center">
+                                    <div class="flex gap-2 justify-center">
+                                        @if($postulante->verificacion && $postulante->verificacion->notificado)
+                                            <a href="javascript:void(0);"
+                                                title="Reenviar notificación"
+                                                onclick="confirmarReenvio('{{ $postulante->c_numdoc }}')"
+                                                class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-yellow-500 rounded hover:bg-yellow-600 transition">
+                                                <i class="fa-solid fa-envelope-circle-check"></i>
+                                            </a>
+                                        @else
+                                            <a href="javascript:void(0);"
+                                                onclick="abrirModalNotificacion('{{ $postulante->c_numdoc }}')"
+                                                data-accion="notificar"
+                                                title="Notificar"
+                                                class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition">
+                                                <i class="fa-solid fa-paper-plane" data-icono></i>
+                                            </a>
+                                        @endif
+                                    </div>
+                                </td>
                         </tr>
                     {{-- </form> --}}
                     @endforeach
@@ -289,7 +295,7 @@
 </div>
 
 <!-- Modal -->
-<div id="modalNoValido" class="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 hidden">
+<div id="modalnotificacion" class="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
         <!-- Cabecera -->
         <div class="flex justify-between items-center mb-4">
@@ -344,28 +350,24 @@
 </div>
 
 <script>
-    function confirmarValidacion(formId) {
+    function confirmarReenvio(dni) {
         Swal.fire({
-            title: '¿Estás seguro?',
-            text: "Se marcarán como válidos los documentos seleccionados.",
-            icon: 'question',
+            title: 'Ya se envió una notificación',
+            text: '¿Deseas enviar una nueva notificación a este postulante?',
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#16a34a',
+            confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, validar',
+            confirmButtonText: 'Sí, reenviar',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                const form = document.getElementById(formId);
-                if (form) {
-                    form.submit();
-                } else {
-                    console.error("Formulario no encontrado con ID: " + formId);
-                }
+                abrirModalNotificacion(dni);
             }
         });
     }
 </script>
+
 
 <script>
     document.querySelectorAll('[data-modal-toggle]').forEach(button => {
@@ -375,17 +377,92 @@
         });
     });
     function cerrarModal() {
-        document.getElementById('modalNoValido').classList.add('hidden');
+        document.getElementById('modalnotificacion').classList.add('hidden');
     }
+    // function enviarNotificacion() {
+    //     const motivo = document.getElementById('motivo').value;
+    //     if (motivo.trim() === '') {
+    //         alert('Por favor, especifica qué documentos no son válidos.');
+    //         return;
+    //     }
+    //     console.log("Notificando: " + motivo);
+    //     cerrarModal();
+    //     alert('Notificación enviada correctamente.');
+    // }
+</script>
+
+<script>
+    let dniActualParaNotificacion = null;
+
+    function abrirModalNotificacion(dni) {
+        dniActualParaNotificacion = dni;
+        document.getElementById('motivo').value = '';
+        document.getElementById('modalnotificacion').classList.remove('hidden');
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalnotificacion').classList.add('hidden');
+    }
+
     function enviarNotificacion() {
-        const motivo = document.getElementById('motivo').value;
-        if (motivo.trim() === '') {
-            alert('Por favor, especifica qué documentos no son válidos.');
+        // Mostrar loader
+        document.getElementById('loader-wrapper').classList.remove('hidden');
+
+        const fila = document.querySelector(`tr[data-dni="${dniActualParaNotificacion}"]`);
+        if (!fila) {
+            Swal.fire("❌ Error: No se encontró la fila del postulante");
+            document.getElementById('loader-wrapper').classList.add('hidden');
             return;
         }
-        console.log("Notificando: " + motivo);
-        cerrarModal();
-        alert('Notificación enviada correctamente.');
+
+        // Obtener todos los campos inválidos
+        const documentosInvalidos = Array.from(fila.querySelectorAll('td[data-estado="0"], td[data-estado="1"]'))
+            .map(td => td.getAttribute('data-campo'));
+
+        if (documentosInvalidos.length === 0) {
+            Swal.fire("✅ No hay documentos inválidos", "Todos están validados", "info");
+            document.getElementById('loader-wrapper').classList.add('hidden');
+            return;
+        }
+
+        // Motivo opcional
+        const motivo = document.getElementById('motivo').value.trim();
+
+        fetch('/notificar-rechazo-documentos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                dni: dniActualParaNotificacion,
+                motivo,
+                documentos: documentosInvalidos
+            })
+        })
+        .then(res => res.json())
+        .then(res => {
+            cerrarModal();
+            Swal.fire("📬 Notificación enviada", res.message, "success");
+            // Marcar visualmente como notificado en la tabla
+            const celdaNotificar = fila.querySelector('[data-accion="notificar"]')?.parentElement;
+            if (celdaNotificar) {
+                celdaNotificar.innerHTML = `
+                    <a href="javascript:void(0);"
+                    onclick="confirmarReenvio('${dniActualParaNotificacion}')"
+                    class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-yellow-500 rounded hover:bg-yellow-600 transition">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                    </a>
+                `;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            Swal.fire("❌ Error al enviar notificación");
+        })
+        .finally(() => {
+            document.getElementById('loader-wrapper').classList.add('hidden');
+        });
     }
 </script>
 
@@ -403,6 +480,7 @@
                         const option = document.createElement('option');
                         option.value = ruta;
                         option.text  = campo.toUpperCase();
+                        option.setAttribute('data-campo', campo);
                         select.appendChild(option);
                     }
                 });
@@ -412,6 +490,7 @@
                     const option  = document.createElement('option');
                     option.value  = rutaDJ;
                     option.text   = 'DECLARACIÓN JURADA';
+                    option.setAttribute('data-campo', 'dj');
                     select.appendChild(option);
                 }
 
@@ -459,7 +538,7 @@
     // ✅ Ahora la función validarDocumento está fuera y es accesible globalmente
     function validarDocumento(valido) {
         const select = document.getElementById('select-doc');
-        const campo = select.options[select.selectedIndex].text.toLowerCase().trim();
+        const campo = select.options[select.selectedIndex].getAttribute('data-campo');
         const dni = select.getAttribute('data-dni');
 
         const fila = document.querySelector(`tr[data-dni="${dni}"]`);
@@ -469,11 +548,11 @@
         if (!celda) return;
 
         // Actualizar el ícono visual
-        const estado = valido ? 1 : 0;
+        const estado = valido ? 2 : 1;
         celda.setAttribute('data-estado', estado);
 
         let iconHtml = '';
-        if (estado === 1) {
+        if (estado === 2) {
             iconHtml = `<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-green-700 bg-green-100 px-3 py-1">
                         <i class="fa-solid fa-check-circle"></i>
                         </span>`;
