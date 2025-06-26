@@ -74,23 +74,18 @@
         <div class="flex items-center">
           <!-- Botón de notificaciones -->
           @php
-
             $c_numdoc = session('c_numdoc');
             $notificaciones = [];
-
             if ($c_numdoc) {
                 $postulante = InfoPostulante::with('verificacion')->where('c_numdoc', $c_numdoc)->first();
-
                 if ($postulante && $postulante->verificacion && $postulante->verificacion->notificado) {
                     $notificaciones[] = (object) [
                         'mensaje' => '📬 Se encontraron observaciones en tus documentos. Revisa y vuelve a subirlos.',
                     ];
                 }
             }
-
             $cantidadNotificaciones = count($notificaciones);
           @endphp
-
           <div class="flex items-center me-3">
             <div class="relative">
               <button type="button"
@@ -105,7 +100,6 @@
                   </div>
                 @endif
               </button>
-
               <!-- Dropdown -->
               <div id="dropdown-notificaciones" class="absolute right-0 z-50 hidden mt-2 w-72 text-sm text-gray-700 bg-white border border-gray-200 rounded-md shadow-lg dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700">
                 <div class="p-4 font-semibold border-b border-gray-200 dark:border-gray-600">

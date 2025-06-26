@@ -16,9 +16,9 @@
   <h1 class="text-2xl font-bold text-black mb-6">Adjunta tus documentos</h1>
 
   <p class="text-gray-600 text-base mb-6">
-    Documentos requeridos para la modalidad 
+    Documentos requeridos para la modalidad.
     <span class="font-semibold text-[#e72352]">{{ $nombreModalidad }}</span>
-    Pasa el mouse sobre <i class="fa-solid fa-circle-info text-blue-500"></i> para más detalles.
+    Una vez que los hayas subido, no podrás volver a cargarlos.
   </p>
 
   <hr class="my-4 border-t border-gray-300" />
@@ -78,7 +78,7 @@
 </div> --}}
 
   
-    <button type="submit" class="mt-4 px-4 py-2 bg-[#e72352] text-white rounded-lg cursor-pointer hover:bg-[#c91e45] transition duration-200">
+    <button type="submit" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg cursor-pointer hover:bg-green-700 transition duration-200">
       <i class="fa-solid fa-file-upload mr-2"></i>	
       Guardar Documentos
     </button>
