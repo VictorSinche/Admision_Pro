@@ -90,42 +90,43 @@ class InfoPostulanteController extends Controller
             );
 
             // Guardar en base externa
-            DB::connection('mysql_sigu_permits')
-                ->table('sga_tb_adm_cliente')
-                ->updateOrInsert(
-                    ['c_numdoc' => $validated['c_numdoc']],
-                    [
-                        'id_mod_ing'     => $validated['id_mod_ing'],
-                        'c_apepat'       => $validated['c_apepat'],
-                        'c_apemat'       => $validated['c_apemat'],
-                        'c_nombres'      => $validated['c_nombres'],
-                        'c_tipdoc'       => $validated['c_tipdoc'],
-                        'c_email'        => $validated['c_email'],
-                        'c_dir'          => $validated['c_dir'],
-                        'c_sexo'         => $validated['c_sexo'],
-                        'd_fecnac'       => $validated['d_fecnac'] ?? now(),
-                        'c_celu'         => $validated['c_celu'],
-                        'id_proceso'     => $validated['id_proceso'],
-                        'c_codesp1'      => $validated['c_codesp1'],
-                        'c_codfac1'      => $c_codfac ?? null, // 👈 NUEVO campo asignado
-                        'c_sedcod'       => $validated['c_sedcod'] ?? '',
-                        'c_dptodom'      => $c_dptodom,
-                        'c_provdom'      => $c_provdom,
-                        'c_distdom'      => $c_distdom,
-                        'c_colg_ubicacion' => $validated['c_colg_ubicacion'] ?? '',
-                        'c_dniapo'       => $validated['c_dniapo'],
-                        'c_nomapo'       => $validated['c_nomapo'],
-                        'c_celuapo'      => $validated['c_celuapo'],
-                        'c_fonoapo'      => $validated['c_fonoapo'],
-                        'c_procedencia'  => $validated['c_procedencia'],
-                        'c_anoegreso'    => $validated['c_anoegreso'],
-                        'c_tippro'       => $validated['c_tippro'],
-                        'id_tab_alu_contact' => $validated['id_tab_alu_contact'],
-                        'id_tab_turno'   => $validated['id_tab_turno'],
-                    ]
-                );
+            // DB::connection('mysql_sigu_permits')
+                // ->table('sga_tb_adm_cliente')
+                // ->updateOrInsert(
+                    // ['c_numdoc' => $validated['c_numdoc']],
+                    // [
+                        // 'id_mod_ing'     => $validated['id_mod_ing'],
+                        // 'c_apepat'       => $validated['c_apepat'],
+                        // 'c_apemat'       => $validated['c_apemat'],
+                        // 'c_nombres'      => $validated['c_nombres'],
+                        // 'c_tipdoc'       => $validated['c_tipdoc'],
+                        // 'c_email'        => $validated['c_email'],
+                        // 'c_dir'          => $validated['c_dir'],
+                        // 'c_sexo'         => $validated['c_sexo'],
+                        // 'd_fecnac'       => $validated['d_fecnac'] ?? now(),
+                        // 'c_celu'         => $validated['c_celu'],
+                        // 'id_proceso'     => $validated['id_proceso'],
+                        // 'c_codesp1'      => $validated['c_codesp1'],
+                        // 'c_codfac1'      => $c_codfac ?? null, // 👈 NUEVO campo asignado
+                        // 'c_sedcod'       => $validated['c_sedcod'] ?? '',
+                        // 'c_dptodom'      => $c_dptodom,
+                        // 'c_provdom'      => $c_provdom,
+                        // 'c_distdom'      => $c_distdom,
+                        // 'c_colg_ubicacion' => $validated['c_colg_ubicacion'] ?? '',
+                        // 'c_dniapo'       => $validated['c_dniapo'],
+                        // 'c_nomapo'       => $validated['c_nomapo'],
+                        // 'c_celuapo'      => $validated['c_celuapo'],
+                        // 'c_fonoapo'      => $validated['c_fonoapo'],
+                        // 'c_procedencia'  => $validated['c_procedencia'],
+                        // 'c_anoegreso'    => $validated['c_anoegreso'],
+                        // 'c_tippro'       => $validated['c_tippro'],
+                        // 'id_tab_alu_contact' => $validated['id_tab_alu_contact'],
+                        // 'id_tab_turno'   => $validated['id_tab_turno'],
+                    // ]
+                // );
 
-            // Guardar en sesión
+            
+                // Guardar en sesión
             session(['c_numdoc' => $validated['c_numdoc']]);
 
             // Logging de cambios
