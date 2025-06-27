@@ -12,6 +12,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_mysql gd mbstring exif pcntl bcmath zip xml \
     && rm -rf /var/lib/apt/lists/*
 
+# ✅ Copiar configuraciones personalizadas de PHP
+COPY ./docker/php.ini /usr/local/etc/php/conf.d/uploads.ini
+
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
