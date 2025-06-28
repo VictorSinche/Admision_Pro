@@ -59,7 +59,7 @@ class PostulanteLoginController extends Controller
                     'cod_user'        => $admin->cod_user,
                 ]);
                 Log::info('📥 Datos del administrador:', (array) $admin);
-                return redirect()->route('dashboard.dashboard');
+                return redirect()->route('dashboardPost.dashboard');
             }
             return back()->with('error', '❌ Credenciales inválidas (admin).');
         } else {

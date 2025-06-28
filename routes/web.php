@@ -7,6 +7,7 @@ use App\Http\Controllers\CreatePostulanteController;
 use App\Http\Controllers\DeclaracionJuradaController;
 use App\Http\Controllers\PermisoPostulanteController;
 use App\Http\Controllers\NotificacionController;
+use App\http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,12 @@ Route::post('/login-postulante', [PostulanteLoginController::class, 'login'])->n
 Route::post('/logout', [PostulanteLoginController::class, 'logout'])->name('logout');
 
 Route::middleware('auth.admin')->group(function () {
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas de Permisos
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/dashboard-admin',[DashboardController::class, 'index'])->name('dashboard.dashboard');
     /*
     |--------------------------------------------------------------------------
     | Rutas de Permisos
@@ -42,7 +49,6 @@ Route::middleware('auth.admin')->group(function () {
 
     Route::post('/validar-documento', [InfoPostulanteController::class, 'validarCampo'])->name('verificacion.campo');
 
-    // Route::post('/notificar-rechazo-documentos', [NotificacionController::class, 'rechazoDocumentos']);
     /*
     |--------------------------------------------------------------------------
     | Rutas de Declaración Jurada
@@ -74,7 +80,8 @@ Route::middleware('auth.admin')->group(function () {
 */
 Route::middleware('auth.postulante')->group(function () {
 
-    Route::get('/dashboard', fn() => view('dashboard.dashboard'))->name('dashboard.dashboard');
+    Route::get('/dashboard-postulante', [DashboardController::class, 'resumenEstados'])->name('dashboardPost.dashboard');
+
     Route::get('/documentos-json/{dni}', [InfoPostulanteController::class, 'documentosJson']);
 
     Route::get('/especialidades-por-facultad', [InfoPostulanteController::class, 'getEspecialidades'])->name('especialidades.por.facultad');

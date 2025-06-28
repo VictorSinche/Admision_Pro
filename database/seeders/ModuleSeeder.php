@@ -10,6 +10,7 @@ class ModuleSeeder extends Seeder
     public function run(): void
     {
         $modules = [
+            ['nombre' => 'Dashboard', 'codigo' => 'DASH'],
             ['nombre' => 'Permisos', 'codigo' => 'PER'],
             ['nombre' => 'Postulante', 'codigo' => 'POS'],
             ['nombre' => 'Admisión', 'codigo' => 'ADM'],

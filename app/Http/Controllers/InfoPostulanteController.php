@@ -125,7 +125,6 @@ class InfoPostulanteController extends Controller
                     // ]
                 // );
 
-            
                 // Guardar en sesión
             session(['c_numdoc' => $validated['c_numdoc']]);
 
