@@ -188,7 +188,7 @@
                       Aún no se ha registrado el pago correspondiente.
                   </p>
 
-                  <!-- Estado -->
+                  <!-- Estado color-->
                   <div class="mb-4">
                       <span class="inline-flex items-center px-3 py-1 rounded-full bg-red-100 text-red-700 text-sm font-medium">
                           <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" stroke-width="2"
