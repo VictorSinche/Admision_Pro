@@ -116,14 +116,28 @@
                   <i class="fa-solid fa-file-pdf mr-2"></i> Descargar declaración jurada
                 </a>
 
-                {{-- Estado de validación --}}
-                @if(!is_null($djValidado))
-                  <span class="inline-flex items-center gap-2 px-3 py-1 rounded-3xl 
-                              {{ $djValidado === 1 ? 'bg-green-300 text-green-800' : 'bg-red-100 text-red-800' }}">
-                    <i class="fa-solid {{ $djValidado === 1 ? 'fa-check-circle' : 'fa-xmark-circle' }}"></i>
-                    {{ $djValidado === 1 ? 'Válido' : 'No válido' }}
-                  </span>
-                @endif
+                  {{-- Estado de validación --}}
+                  @if(!is_null($djValidado))
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-3xl
+                                @switch($djValidado)
+                                  @case(0) bg-gray-100 text-gray-800 @break
+                                  @case(1) bg-red-100 text-red-800 @break
+                                  @case(2) bg-green-300 text-green-800 @break
+                                @endswitch">
+                      <i class="fa-solid
+                                @switch($djValidado)
+                                  @case(0) fa-clock @break
+                                  @case(1) fa-xmark-circle @break
+                                  @case(2) fa-check-circle @break
+                                @endswitch"></i>
+                      @switch($djValidado)
+                        @case(0) Pendiente @break
+                        @case(1) No válido @break
+                        @case(2) Válido @break
+                      @endswitch
+                    </span>
+                  @endif
+
               </div>
           </div>
         </div>

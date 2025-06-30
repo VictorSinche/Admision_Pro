@@ -257,7 +257,7 @@ class InfoPostulanteController extends Controller
             $documentosRequeridos = $documentosPorModalidad[$codigo] ?? [];
 
             // Traer o crear el registro único por postulante
-            $registro = \App\Models\DocumentoPostulante::firstOrNew([
+            $registro = DocumentoPostulante::firstOrNew([
                 'info_postulante_id' => $postulante->id,
             ]);
 
@@ -592,6 +592,7 @@ class InfoPostulanteController extends Controller
             ->leftJoin('info_postulante as ip', 'ip.c_numdoc', '=', 'p.dni')
             ->leftJoin('documentos_postulante as dp', 'dp.info_postulante_id', '=', 'ip.id')
             ->leftJoin('declaracion_jurada as dj', 'dj.info_postulante_id', '=', 'ip.id')
+            ->leftJoin('verificacion_documentos as vd', 'vd.info_postulante_id', '=', 'ip.id') // <- nuevo join
             ->select(
                 'p.id',
                 'ip.c_numdoc',
@@ -599,7 +600,8 @@ class InfoPostulanteController extends Controller
                 'p.email',
                 'ip.estado as estado_info',
                 'dp.estado as estado_docs',
-                'dj.estado as estado_dj'
+                'dj.estado as estado_dj',
+                'vd.estado as estado_verificacion' // <- nuevo campo
             )
             ->orderBy('p.id', 'asc')
             ->get();
@@ -657,12 +659,23 @@ class InfoPostulanteController extends Controller
         ]);
 
         $postulante = InfoPostulante::where('c_numdoc', $request->dni)->firstOrFail();
-
         $verificacion = VerificacionDocumento::firstOrNew([
             'info_postulante_id' => $postulante->id
         ]);
 
         $verificacion->{$request->campo} = $request->estado;
+        $verificacion->save();
+        $camposRequeridos = ['formulario', 'pago', 'dni', 'seguro', 'dj'];
+        $valores = collect($camposRequeridos)->map(fn($campo) => $verificacion->{$campo});
+
+        if ($valores->every(fn($v) => $v === 2)) {
+            $verificacion->estado = 2; // Completado
+        } elseif ($valores->contains(0)) {
+            $verificacion->estado = 0; // Pendiente
+        } else {
+            $verificacion->estado = 1; // Incompleto (pero ya revisado)
+        }
+
         $verificacion->save();
 
         HistorialVerificacion::create([
@@ -673,8 +686,9 @@ class InfoPostulanteController extends Controller
             'actualizado_por' => session('nombre_completo') ?? 'Sistema',
         ]);
 
-        return response()->json(['message' => 'Validación guardada']);
+        return response()->json(['message' => 'Validación guardada y estado actualizado correctamente']);
     }
+
 
     /*
     |--------------------------------------------------------------------------
