@@ -17,7 +17,7 @@ class VerificacionDocumento extends Model
         'pago',
         'dni',
         'seguro',
-        'foto',
+        // 'foto',
         'dj',
         'notificado',
     ];

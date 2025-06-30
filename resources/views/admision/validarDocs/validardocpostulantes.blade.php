@@ -131,14 +131,14 @@
                         </svg>
                         </p>
                     </th>
-                    <th
+                    {{-- <th
                         class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                         <p
                         class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
                         Foto
                         </svg>
                         </p>
-                    </th>
+                    </th> --}}
                     <th
                         class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                         <p
@@ -230,8 +230,8 @@
                             <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->seguro ?? 'null' }}" data-campo="seguro">
                                 {!! mostrarIconoVerificacion($verif->seguro ?? null) !!}
                             </td>
-                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->foto ?? 'null' }}" data-campo="foto">
-                                {!! mostrarIconoVerificacion($verif->foto ?? null) !!}
+                            {{-- <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->foto ?? 'null' }}" data-campo="foto">
+                                {!! mostrarIconoVerificacion($verif->foto ?? null) !!} --}}
                             </td>
                             <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->dj ?? 'null' }}" data-campo="dj">
                                 {!! mostrarIconoVerificacion($verif->dj ?? null) !!}

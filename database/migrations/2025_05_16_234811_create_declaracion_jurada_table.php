@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('certificado_estudios')->nullable();
             $table->string('copia_dni')->nullable();
             $table->string('seguro_salud')->nullable();
-            $table->string('foto_carnet')->nullable();
+            // $table->string('foto_carnet')->nullable();
             $table->string('certificado_notas_original')->nullable();
             $table->string('constancia_primera_matricula')->nullable();
             $table->string('syllabus_visados')->nullable();

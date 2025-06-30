@@ -90,40 +90,25 @@ class InfoPostulanteController extends Controller
             );
 
             // Guardar en base externa
-            // DB::connection('mysql_sigu_permits')
-                // ->table('sga_tb_adm_cliente')
-                // ->updateOrInsert(
-                    // ['c_numdoc' => $validated['c_numdoc']],
-                    // [
-                        // 'id_mod_ing'     => $validated['id_mod_ing'],
-                        // 'c_apepat'       => $validated['c_apepat'],
-                        // 'c_apemat'       => $validated['c_apemat'],
-                        // 'c_nombres'      => $validated['c_nombres'],
-                        // 'c_tipdoc'       => $validated['c_tipdoc'],
-                        // 'c_email'        => $validated['c_email'],
-                        // 'c_dir'          => $validated['c_dir'],
-                        // 'c_sexo'         => $validated['c_sexo'],
-                        // 'd_fecnac'       => $validated['d_fecnac'] ?? now(),
-                        // 'c_celu'         => $validated['c_celu'],
-                        // 'id_proceso'     => $validated['id_proceso'],
-                        // 'c_codesp1'      => $validated['c_codesp1'],
-                        // 'c_codfac1'      => $c_codfac ?? null, // 👈 NUEVO campo asignado
-                        // 'c_sedcod'       => $validated['c_sedcod'] ?? '',
-                        // 'c_dptodom'      => $c_dptodom,
-                        // 'c_provdom'      => $c_provdom,
-                        // 'c_distdom'      => $c_distdom,
-                        // 'c_colg_ubicacion' => $validated['c_colg_ubicacion'] ?? '',
-                        // 'c_dniapo'       => $validated['c_dniapo'],
-                        // 'c_nomapo'       => $validated['c_nomapo'],
-                        // 'c_celuapo'      => $validated['c_celuapo'],
-                        // 'c_fonoapo'      => $validated['c_fonoapo'],
-                        // 'c_procedencia'  => $validated['c_procedencia'],
-                        // 'c_anoegreso'    => $validated['c_anoegreso'],
-                        // 'c_tippro'       => $validated['c_tippro'],
-                        // 'id_tab_alu_contact' => $validated['id_tab_alu_contact'],
-                        // 'id_tab_turno'   => $validated['id_tab_turno'],
-                    // ]
-                // );
+            DB::connection('mysql_sigu_permits')
+                ->table('sga_tb_adm_cliente')
+                ->updateOrInsert(
+                    ['c_numdoc' => $validated['c_numdoc']],
+                    [
+                        'id_mod_ing'     => $validated['id_mod_ing'],
+                        'c_apepat'       => $validated['c_apepat'],
+                        'c_apemat'       => $validated['c_apemat'],
+                        'c_nombres'      => $validated['c_nombres'],
+                        'c_email'        => $validated['c_email'],
+                        'c_dir'          => $validated['c_dir'],
+                        'c_sexo'         => $validated['c_sexo'],
+                        'd_fecnac'       => $validated['d_fecnac'] ?? now(),
+                        'c_celu'         => $validated['c_celu'],
+                        'c_dptodom'      => $c_dptodom,
+                        'c_provdom'      => $c_provdom,
+                        'c_distdom'      => $c_distdom,
+                    ]
+                );
 
                 // Guardar en sesión
             session(['c_numdoc' => $validated['c_numdoc']]);
@@ -260,12 +245,12 @@ class InfoPostulanteController extends Controller
             $accessToken = session('microsoft_token');
 
             $documentosPorModalidad = [
-                'B' => ['formulario', 'pago', 'constancia', 'merito', 'dni', 'seguro', 'foto'],
-                'A' => ['formulario', 'pago', 'constancia', 'dni', 'seguro', 'foto'],
-                'D' => ['formulario', 'pago', 'constancianotas', 'constmatricula', 'syllabus', 'dni', 'seguro', 'foto'],
-                'O' => ['formulario', 'pago', 'constancia', 'merito', 'dni', 'seguro', 'foto'],
-                'E' => ['formulario', 'pago', 'constancianotas', 'constmatricula', 'certprofesional', 'syllabus', 'dni', 'seguro', 'foto'],
-                'C' => ['formulario', 'pago', 'constancia', 'dni', 'seguro', 'foto'],
+                'A' => ['formulario', 'pago', 'seguro', 'dni', 'constancia' ],
+                'C' => ['formulario', 'pago', 'seguro', 'dni', 'constancia' ],
+                'B' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito' ],
+                'O' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito' ],
+                'D' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'constmatricula', 'syllabus' ],
+                'E' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'constmatricula', 'syllabus', 'certprofesional' ],
             ];
 
             $codigo = $postulante->id_mod_ing;
@@ -430,7 +415,7 @@ class InfoPostulanteController extends Controller
                     'certificado_estudios' => $request->input('certificado_estudios', 0),
                     'copia_dni' => $request->input('copia_dni', 0),
                     'seguro_salud' => $request->input('seguro_salud', 0),
-                    'foto_carnet' => $request->input('foto_carnet', 0),
+                    // 'foto_carnet' => $request->input('foto_carnet', 0),
                     'certificado_notas_original' => $request->input('certificado_notas_original', 0),
                     'constancia_primera_matricula' => $request->input('constancia_primera_matricula', 0),
                     'syllabus_visados' => $request->input('syllabus_visados', 0),
@@ -667,7 +652,7 @@ class InfoPostulanteController extends Controller
     {
         $request->validate([
             'dni' => 'required|string',
-            'campo' => 'required|in:formulario,pago,dni,seguro,foto,dj',
+            'campo' => 'required|in:formulario,pago,dni,seguro,dj',
             'estado' => 'required|in:0,1,2',
         ]);
 

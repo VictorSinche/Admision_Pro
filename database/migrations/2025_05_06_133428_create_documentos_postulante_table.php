@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('constancianotas')->nullable();
             $table->string('dni')->nullable();
             $table->string('seguro')->nullable();
-            $table->string('foto')->nullable();
+            // $table->string('foto')->nullable();
             $table->string('constmatricula')->nullable();
             $table->string('certprofecional')->nullable();
             $table->string('syllabus')->nullable();

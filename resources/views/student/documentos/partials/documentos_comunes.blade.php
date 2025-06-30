@@ -5,7 +5,7 @@
       ['pago', 'Comprobante de pago', 'Copia del comprobante de pago por Derechos de Inscripción al Concurso.'],
       ['dni', 'DNI del postulante/apoderado', 'Copia del D.N.I. y de su representante, si es menor de edad.'],
       ['seguro', 'Seguro de salud', 'Constancia de seguro de salud (ESSALUD, SIS, privado).'],
-      ['foto', 'Foto tamaño carné', 'Fotografía tamaño carné sobre fondo blanco.']
+      // ['foto', 'Foto tamaño carné', 'Fotografía tamaño carné sobre fondo blanco.']
   ] as [$campo, $label, $tooltip])
 
   @php
@@ -51,6 +51,7 @@
       <div class="flex items-stretch w-full max-w-full rounded-md overflow-hidden border border-blue-600 bg-white">
         <input type="file" name="{{ $campo }}" id="{{ $campo }}"
               class="sr-only"
+              accept=".png, .jpg, .jpeg, .pdf"
               onchange="mostrarNombreArchivo(event, '{{ $campo }}')" />
         <label for="{{ $campo }}"
               class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-medium border-r border-blue-600 cursor-pointer hover:bg-blue-700 transition whitespace-nowrap">

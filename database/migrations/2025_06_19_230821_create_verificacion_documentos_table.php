@@ -20,7 +20,7 @@ class CreateVerificacionDocumentosTable extends Migration
             $table->boolean('pago')->default(0);
             $table->boolean('dni')->default(0);
             $table->boolean('seguro')->default(0);
-            $table->boolean('foto')->default(0);
+            // $table->boolean('foto')->default(0);
             $table->boolean('dj')->default(0);
             $table->boolean('notificado')->default(0);
             $table->timestamps();
