@@ -671,7 +671,7 @@ class InfoPostulanteController extends Controller
         if ($valores->every(fn($v) => $v === 2)) {
             $verificacion->estado = 2; // Completado
         } elseif ($valores->contains(0)) {
-            $verificacion->estado = 0; // Pendiente
+            $verificacion->estado = 1; // Pendiente
         } else {
             $verificacion->estado = 1; // Incompleto (pero ya revisado)
         }

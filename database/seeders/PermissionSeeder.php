@@ -11,7 +11,11 @@ class PermissionSeeder extends Seeder
     {
         $userId = 1;
 
-        $itemIds = DB::table('items')->pluck('id');
+        $excludeIds = [2, 5, 6, 7];
+
+        $itemIds = DB::table('items')
+            ->whereNotIn('id', $excludeIds)
+            ->pluck('id');
 
         foreach ($itemIds as $itemId) {
             DB::table('permissions')->updateOrInsert(

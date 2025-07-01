@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             ItemSeeder::class,
             PermissionSeeder::class,
             EstadosIngresoSeeder::class,
-            PermissionPostulanteSeeder::class,
+            // PermissionPostulanteSeeder::class,
         ]);
     }
 }

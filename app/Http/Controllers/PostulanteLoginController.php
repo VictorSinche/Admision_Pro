@@ -59,7 +59,7 @@ class PostulanteLoginController extends Controller
                     'cod_user'        => $admin->cod_user,
                 ]);
                 Log::info('📥 Datos del administrador:', (array) $admin);
-                return redirect()->route('dashboardPost.dashboard');
+                return redirect()->route('dashboard.dashboard');
             }
             return back()->with('error', '❌ Credenciales inválidas (admin).');
         } else {
@@ -95,12 +95,39 @@ class PostulanteLoginController extends Controller
                             'updated_at' => now()
                         ]);
 
-                        $moduloId = DB::table('modules')->where('codigo', 'POS')->value('id');
-                        $itemIds = DB::table('items')->where('module_id', $moduloId)->pluck('id');
+                        // Asignar todos los ítems del módulo POS
+                        $moduloPosId = DB::table('modules')->where('codigo', 'POS')->value('id');
+                        $itemPosIds = DB::table('items')->where('module_id', $moduloPosId)->pluck('id');
 
-                        foreach ($itemIds as $itemId) {
+                        foreach ($itemPosIds as $itemId) {
                             DB::table('permissions_postulantes')->updateOrInsert(
                                 ['postulante_id' => $postulanteId, 'item_id' => $itemId],
+                                [
+                                    'estado' => 'A',
+                                    'created_at' => now(),
+                                    'updated_at' => now()
+                                ]
+                            );
+                        }
+
+                        // Asignar el ítem dash.1
+                        $itemDash = DB::table('items')->where('codigo', 'dash.2')->first();
+                        if ($itemDash) {
+                            DB::table('permissions_postulantes')->updateOrInsert(
+                                ['postulante_id' => $postulanteId, 'item_id' => $itemDash->id],
+                                [
+                                    'estado' => 'A',
+                                    'created_at' => now(),
+                                    'updated_at' => now()
+                                ]
+                            );
+                        }
+
+                        // Asignar el ítem PET.1
+                        $itemPet = DB::table('items')->where('codigo', 'PET.1')->first();
+                        if ($itemPet) {
+                            DB::table('permissions_postulantes')->updateOrInsert(
+                                ['postulante_id' => $postulanteId, 'item_id' => $itemPet->id],
                                 [
                                     'estado' => 'A',
                                     'created_at' => now(),

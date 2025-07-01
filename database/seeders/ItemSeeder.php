@@ -23,7 +23,6 @@ class ItemSeeder extends Seeder
             ['module_codigo' => 'POS', 'nombre' => 'Informacion Personal', 'codigo' => 'POS.1'],
             ['module_codigo' => 'POS', 'nombre' => 'Pagos Incripcion', 'codigo' => 'POS.2'],
             ['module_codigo' => 'POS', 'nombre' => 'Adjuntar Documentos', 'codigo' => 'POS.3'],
-            ['module_codigo' => 'POS', 'nombre' => 'Ver Horario', 'codigo' => 'POS.4'],
             // Admisión
             ['module_codigo' => 'ADM', 'nombre' => 'Lista de postulantes', 'codigo' => 'ADM.1'],
             ['module_codigo' => 'ADM', 'nombre' => 'Historial declaración jurada', 'codigo' => 'ADM.2'],
@@ -37,8 +36,9 @@ class ItemSeeder extends Seeder
             ['module_codigo' => 'OSA', 'nombre' => 'Listado OSAR', 'codigo' => 'OSA.1'],
             // Tesorería
             ['module_codigo' => 'TES', 'nombre' => 'Listado Tesorería', 'codigo' => 'TES.1'],
-            // Notificaciones
-            ['module_codigo' => 'NT', 'nombre' => 'Bandeja de entrada', 'codigo' => 'NT.1'],
+            // Peticiones
+            ['module_codigo' => 'PET', 'nombre' => 'Peticiones postulantes', 'codigo' => 'PET.1'],
+            ['module_codigo' => 'PET', 'nombre' => 'Peticiones admin', 'codigo' => 'PET.2'],
         ];
 
         foreach ($items as $item) {

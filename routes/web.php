@@ -8,6 +8,7 @@ use App\Http\Controllers\DeclaracionJuradaController;
 use App\Http\Controllers\PermisoPostulanteController;
 use App\Http\Controllers\NotificacionController;
 use App\http\Controllers\DashboardController;
+use App\Http\Controllers\PeticionesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,8 @@ Route::middleware('auth.admin')->group(function () {
     Route::get('/osar', fn() => view('osar.listado'))->name('osar.listado');
     Route::get('/tesoreria', fn() => view('tesoreria.listado'))->name('tesoreria.listado');
 
+    // Route::get('/peti-admin', fn() => view('Peticiones.peticonesadmin'))->name('peticiones.admin');
+
     //se cambioooooo
     Route::get('/validar-responsable', fn() => view('admision.validarDocs.validardocpostulanteresponsable'))->name('admision.responsable');
     Route::get('/validar', fn() => view('admision.validarDocs.validardocpostulantes'))->name('admision.validar');
@@ -90,7 +93,7 @@ Route::middleware('auth.postulante')->group(function () {
     Route::post('/guardaroupdatear', [InfoPostulanteController::class, 'storeOrUpdate']);
     Route::get('/subirdocumentos/{c_numdoc}', [InfoPostulanteController::class, 'vistaDocumentos'])->name('student.subirdocumentos');
     Route::post('/subirdocumentos/{c_numdoc}', [InfoPostulanteController::class, 'guardarDocumentos'])->name('student.guardar.documentos');
-    Route::get('/verhorario', fn() => view('student.verhorario'))->name('student.verhorario');
+
     /*
     |--------------------------------------------------------------------------
     | Rutas de Declaración Jurada postulante
@@ -104,7 +107,6 @@ Route::middleware('auth.postulante')->group(function () {
     | Rutas de notificaciones
     |--------------------------------------------------------------------------
     */
-    Route::get('/listNotificaciones', fn() => view('Notificaciones.bandejaentrada'))->name('notificaciones.list');
     Route::post('/notificar-rechazo-documentos', [NotificacionController::class, 'rechazoDocumentos']);
     Route::post('/notificaciones/reset', [NotificacionController::class, 'resetNotificacion'])->name('notificaciones.reset');
     /*
@@ -112,9 +114,16 @@ Route::middleware('auth.postulante')->group(function () {
     | Rutas para Libro de reclamciones
     |--------------------------------------------------------------------------
     */
-
     Route::get('/auth/microsoft', [App\Http\Controllers\Auth\MicrosoftController::class, 'redirectToMicrosoft']);
     Route::get('/callback/microsoft', [App\Http\Controllers\Auth\MicrosoftController::class, 'handleMicrosoftCallback']);
+    /*
+    |--------------------------------------------------------------------------
+    | Rutas para peticiones
+    |--------------------------------------------------------------------------
+    */
+    // Route::get('/peti-postulante', fn() => view('Peticiones.peticionespos'))->name('peticionespos.postulante');
+    // Route::get('/habilitar-documentos/{c_numdoc}', [PeticionesController::class, 'verDocumentosRequeridos'])->name('peticionespos.postulante');
+    // Route::post('/solicitar-habilitacion', [PeticionesController::class, 'store'])->name('peticion.store');
 });
 
 /*
