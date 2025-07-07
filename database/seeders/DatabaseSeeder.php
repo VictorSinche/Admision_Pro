@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ControlDocumento;
 use App\Models\ModalidadIngreso;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
             ItemSeeder::class,
             PermissionSeeder::class,
             EstadosIngresoSeeder::class,
+            ControlDocumentosSeeder::class,
             // PermissionPostulanteSeeder::class,
         ]);
     }

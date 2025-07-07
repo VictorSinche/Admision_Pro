@@ -166,62 +166,64 @@
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
         <ul class="space-y-2 font-medium">
           @if(tieneAlgunPermisoGlobal(['DASH.1']))
-          <li>
-            <a href="{{ route('dashboard.dashboard') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-                  <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
-                  <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
-                </svg>
-                <span class="ms-3">Dashboard</span>
-            </a>
-          </li>
-        @endif
-        @if (tieneAlgunPermisoGlobal(['DASH.2']))
-          <li>
-            <a href="{{ route('dashboardPost.dashboard') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-                  <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
-                  <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
-                </svg>
-                <span class="ms-3">Dashboard</span>
-            </a>
-          </li>
-        @endif
+            <li>
+              <a href="{{ route('dashboard.dashboard') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                  <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                    <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
+                    <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
+                  </svg>
+                  <span class="ms-3">Dashboard</span>
+              </a>
+            </li>
+          @endif
+          
+          @if (tieneAlgunPermisoGlobal(['DASH.2']))
+            <li>
+              <a href="{{ route('dashboardPost.dashboard') }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                  <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                    <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
+                    <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
+                  </svg>
+                  <span class="ms-3">Dashboard</span>
+              </a>
+            </li>
+          @endif
+
           @if(tieneAlgunPermisoGlobal(['PER.1', 'PER.2']))
-          <li>
-            <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-user" data-collapse-toggle="submenu-user">
-              
-              <i class="fa-solid fa-users-gear text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
-              
-              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Gestion de usuarios</span>
-              
-              <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
-              </svg>
-            </button>
+            <li>
+              <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-user" data-collapse-toggle="submenu-user">
+                
+                <i class="fa-solid fa-users-gear text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                
+                <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Gestion de usuarios</span>
+                
+                <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
+                </svg>
+              </button>
 
-            <ul id="submenu-user" class="py-2 space-y-2 {{ Request::routeIs('user.*') ? '' : 'hidden' }}">
-              @if(tienePermisoGlobal('PER.1'))
-                <li>
-                  <a href="{{ route('usuarios') }}" 
+              <ul id="submenu-user" class="py-2 space-y-2 {{ Request::routeIs('user.*') ? '' : 'hidden' }}">
+                @if(tienePermisoGlobal('PER.1'))
+                  <li>
+                    <a href="{{ route('usuarios') }}" 
+                      class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                      {{ Request::routeIs('usuarios') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                      Lista de usuarios
+                    </a>              
+                  </li>              
+                @endif
+
+                @if(tienePermisoGlobal('PER.2'))
+                  <li>
+                  <a href="{{ route('user.listPermisos') }}" 
                     class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                    {{ Request::routeIs('usuarios') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                    Lista de usuarios
+                    {{ Request::routeIs('user.listPermisos') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    Lista de permisos
                   </a>              
-                </li>              
-              @endif
-
-              @if(tienePermisoGlobal('PER.2'))
-                <li>
-                <a href="{{ route('user.listPermisos') }}" 
-                  class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                  {{ Request::routeIs('user.listPermisos') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                  Lista de permisos
-                </a>              
-              </li>
-              @endif
-            </ul>            
-          </li>
+                </li>
+                @endif
+              </ul>            
+            </li>
           @endif
 
           @if(tieneAlgunPermisoGlobal(['POS.1', 'POS.2', 'POS.3']))
@@ -308,7 +310,7 @@
                     <a href="{{ route('admision.responsable') }}" 
                       class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
                       {{ Request::routeIs('admision.responsable') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                      Validar Docs. Postulantes R.
+                      Validar Docs. Post. R.
                     </a>              
                   </li>
                 @endif
@@ -317,7 +319,7 @@
                     <a href="{{ route('admision.verificar') }}" 
                       class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
                       {{ Request::routeIs('admision.verificar') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                      Validar Docs. Postulantes
+                      Validar Docs. Post
                     </a>              
                   </li>
                 @endif

@@ -191,33 +191,7 @@
                                 </a>
                             </td>
                             @php $verif = $postulante->verificacion; @endphp
-                            @php
-                                function mostrarIconoVerificacion($estado)
-                                {
-                                    if (!isset($estado)) {
-                                        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-gray-600 bg-gray-100 px-3 py-1">
-                                                    <i class="fa-solid fa-clock"></i>
-                                                </span>';
-                                    }
 
-                                    if ((int)$estado === 2) {
-                                        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-green-700 bg-green-100 px-3 py-1">
-                                                    <i class="fa-solid fa-check-circle"></i>
-                                                </span>';
-                                    }
-
-                                    if ((int)$estado === 1) {
-                                        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-red-700 bg-red-100 px-3 py-1">
-                                                    <i class="fa-solid fa-xmark-circle"></i>
-                                                </span>';
-                                    }
-
-                                    // Por si acaso
-                                    return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-gray-600 bg-gray-100 px-3 py-1">
-                                                <i class="fa-solid fa-clock"></i>
-                                            </span>';
-                                }
-                            @endphp
                             <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->formulario ?? 'null' }}" data-campo="formulario">
                                 {!! mostrarIconoVerificacion($verif->formulario ?? null) !!}
                             </td>
@@ -405,65 +379,70 @@
     }
 
     function enviarNotificacion() {
-        // Mostrar loader
-        document.getElementById('loader-wrapper').classList.remove('hidden');
+    // Mostrar loader
+    document.getElementById('loader-wrapper').classList.remove('hidden');
 
-        const fila = document.querySelector(`tr[data-dni="${dniActualParaNotificacion}"]`);
-        if (!fila) {
-            Swal.fire("❌ Error: No se encontró la fila del postulante");
-            document.getElementById('loader-wrapper').classList.add('hidden');
-            return;
-        }
-
-        // Obtener todos los campos inválidos
-        const documentosInvalidos = Array.from(fila.querySelectorAll('td[data-estado="0"], td[data-estado="1"]'))
-            .map(td => td.getAttribute('data-campo'));
-
-        if (documentosInvalidos.length === 0) {
-            Swal.fire("✅ No hay documentos inválidos", "Todos están validados", "info");
-            document.getElementById('loader-wrapper').classList.add('hidden');
-            return;
-        }
-
-        // Motivo opcional
-        const motivo = document.getElementById('motivo').value.trim();
-
-        fetch('/notificar-rechazo-documentos', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({
-                dni: dniActualParaNotificacion,
-                motivo,
-                documentos: documentosInvalidos
-            })
-        })
-        .then(res => res.json())
-        .then(res => {
-            cerrarModal();
-            Swal.fire("📬 Notificación enviada", res.message, "success");
-            // Marcar visualmente como notificado en la tabla
-            const celdaNotificar = fila.querySelector('[data-accion="notificar"]')?.parentElement;
-            if (celdaNotificar) {
-                celdaNotificar.innerHTML = `
-                    <a href="javascript:void(0);"
-                    onclick="confirmarReenvio('${dniActualParaNotificacion}')"
-                    class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-yellow-500 rounded hover:bg-yellow-600 transition">
-                        <i class="fa-solid fa-envelope-circle-check"></i>
-                    </a>
-                `;
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            Swal.fire("❌ Error al enviar notificación");
-        })
-        .finally(() => {
-            document.getElementById('loader-wrapper').classList.add('hidden');
-        });
+    const fila = document.querySelector(`tr[data-dni="${dniActualParaNotificacion}"]`);
+    if (!fila) {
+        Swal.fire("❌ Error: No se encontró la fila del postulante");
+        document.getElementById('loader-wrapper').classList.add('hidden');
+        return;
     }
+
+    // Obtener todos los campos inválidos
+    let documentosInvalidos = Array.from(fila.querySelectorAll('td[data-estado="0"], td[data-estado="1"]'))
+        .map(td => td.getAttribute('data-campo'));
+
+    // Si no hay documentos inválidos, agregar un marcador ficticio para cumplir con el backend
+    const sinInvalidos = documentosInvalidos.length === 0;
+    if (sinInvalidos) {
+        documentosInvalidos = ['todos_validados'];
+    }
+
+    const motivo = document.getElementById('motivo').value.trim();
+
+    fetch('/notificar-rechazo-documentos', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+            dni: dniActualParaNotificacion,
+            motivo,
+            documentos: documentosInvalidos
+        })
+    })
+    .then(res => res.json())
+    .then(res => {
+        cerrarModal();
+
+        Swal.fire(
+            "📬 Notificación enviada",
+            sinInvalidos ? "Todos los documentos están validados, pero se notificó igual." : res.message,
+            "success"
+        );
+
+        const celdaNotificar = fila.querySelector('[data-accion="notificar"]')?.parentElement;
+        if (celdaNotificar) {
+            celdaNotificar.innerHTML = `
+                <a href="javascript:void(0);"
+                onclick="confirmarReenvio('${dniActualParaNotificacion}')"
+                class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-yellow-500 rounded hover:bg-yellow-600 transition">
+                    <i class="fa-solid fa-envelope-circle-check"></i>
+                </a>
+            `;
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        Swal.fire("❌ Error al enviar notificación");
+    })
+    .finally(() => {
+        document.getElementById('loader-wrapper').classList.add('hidden');
+    });
+}
+
 </script>
 
 <script>
@@ -607,3 +586,28 @@
 </script>
 
 @endsection
+
+@php
+    function mostrarIconoVerificacion($estado)
+    {
+        if (!isset($estado)) {
+            return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-gray-600 bg-gray-100 px-3 py-1">
+                        <i class="fa-solid fa-clock"></i>
+                    </span>';
+        }
+        if ((int)$estado === 2) {
+            return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-green-700 bg-green-100 px-3 py-1">
+                        <i class="fa-solid fa-check-circle"></i>
+                    </span>';
+        }
+        if ((int)$estado === 1) {
+            return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-red-700 bg-red-100 px-3 py-1">
+                        <i class="fa-solid fa-xmark-circle"></i>
+                    </span>';
+        }
+        // Por si acaso
+        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-gray-600 bg-gray-100 px-3 py-1">
+                    <i class="fa-solid fa-clock"></i>
+                </span>';
+    }
+@endphp

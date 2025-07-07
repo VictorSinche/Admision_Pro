@@ -16,11 +16,17 @@ class DashboardController extends Controller
 
     public function resumenEstados()
     {
+        $dni = session('dni_postulante');
+
+        if (!$dni) {
+            abort(403, 'Acceso no autorizado');
+        }
+
         $postulantes = DB::table('postulantes as p')
             ->leftJoin('info_postulante as ip', 'ip.c_numdoc', '=', 'p.dni')
             ->leftJoin('documentos_postulante as dp', 'dp.info_postulante_id', '=', 'ip.id')
             ->leftJoin('declaracion_jurada as dj', 'dj.info_postulante_id', '=', 'ip.id')
-            ->leftJoin('verificacion_documentos as vd', 'vd.info_postulante_id', '=', 'ip.id') // <- nuevo join
+            ->leftJoin('verificacion_documentos as vd', 'vd.info_postulante_id', '=', 'ip.id')
             ->select(
                 'p.id',
                 'ip.c_numdoc',
@@ -29,9 +35,9 @@ class DashboardController extends Controller
                 'ip.estado as estado_info',
                 'dp.estado as estado_docs',
                 'dj.estado as estado_dj',
-                'vd.estado as estado_verificacion' // <- nuevo campo
+                'vd.estado as estado_verificacion'
             )
-            ->orderBy('p.id', 'asc')
+            ->where('p.dni', $dni)
             ->get();
 
         return view('dashboardPostulante.dashboard', compact('postulantes'));
