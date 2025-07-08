@@ -15,6 +15,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use App\Exports\PostulantesDJExport;
+use App\Models\ControlDocumentos;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InfoPostulanteController extends Controller
@@ -201,7 +202,7 @@ class InfoPostulanteController extends Controller
             abort(403, 'No tienes permiso para acceder a esta pagina');
         }
 
-        $postulante = InfoPostulante::with('documentos', 'verificacion')->where('c_numdoc', $c_numdoc)->firstOrFail();
+        $postulante = InfoPostulante::with('documentos', 'verificacion', 'controlDocumentos')->where('c_numdoc', $c_numdoc)->firstOrFail();
         
         $mapaModalidades = [
             'B' => 'primeros_puestos',
@@ -262,34 +263,42 @@ class InfoPostulanteController extends Controller
 
             $documentosSubidos = 0;
 
+            $control = ControlDocumentos::firstOrNew(['info_postulante_id' => $postulante->id]);
             // Subimos archivos requeridos como antes
             foreach ($documentosRequeridos as $campo) {
-                if ($request->hasFile($campo)) {
-                    $archivo = $request->file($campo);
-                    if ($archivo->isValid()) {
-                        if (!empty($registro->$campo)) {
-                            $rutaAnterior = 'postulantes/' . $postulante->c_numdoc . '/' . $registro->$campo;
-                            Storage::disk('public')->delete($rutaAnterior);
+                $bloqueado = optional($postulante->controlDocuementos)->$campo ?? false;
+                if($bloqueado) continue;
+
+                    if ($request->hasFile($campo)) {
+                        $archivo = $request->file($campo);
+                        if ($archivo->isValid()) {
+                            if (!empty($registro->$campo)) {
+                                $rutaAnterior = 'postulantes/' . $postulante->c_numdoc . '/' . $registro->$campo;
+                                Storage::disk('public')->delete($rutaAnterior);
+                            }
+                
+                            $nombre = now()->format('Ymd_His') . '_' . $campo . '.' . $archivo->getClientOriginalExtension();
+                            $ruta = $archivo->storeAs('postulantes/' . $postulante->c_numdoc, $nombre, 'public');
+                            // SUBIR A ONEDRIVE
+                            try {
+                                $respuesta = $this->subirAOneDrive('postulantes/' . $postulante->c_numdoc . '/' . $nombre, $nombre, session('microsoft_token'));
+                                Log::info("📤 Subido a OneDrive: " . json_encode($respuesta));
+                            } catch (\Exception $ex) {
+                                Log::error("❌ Error al subir a OneDrive: " . $ex->getMessage());
+                            }
+                            Log::info("📂 Subido archivo: $nombre a $ruta");
+                            $registro->$campo = $nombre;
+                            
+                            $control->$campo = true;
+                        } else {
+                            Log::warning("⚠️ Archivo inválido en campo: $campo");
                         }
-                        $nombre = now()->format('Ymd_His') . '_' . $campo . '.' . $archivo->getClientOriginalExtension();
-                        $ruta = $archivo->storeAs('postulantes/' . $postulante->c_numdoc, $nombre, 'public');
-                        // SUBIR A ONEDRIVE
-                        try {
-                            $respuesta = $this->subirAOneDrive('postulantes/' . $postulante->c_numdoc . '/' . $nombre, $nombre, session('microsoft_token'));
-                            Log::info("📤 Subido a OneDrive: " . json_encode($respuesta));
-                        } catch (\Exception $ex) {
-                            Log::error("❌ Error al subir a OneDrive: " . $ex->getMessage());
-                        }
-                        Log::info("📂 Subido archivo: $nombre a $ruta");
-                        $registro->$campo = $nombre;
-                    } else {
-                        Log::warning("⚠️ Archivo inválido en campo: $campo");
                     }
-                }
             }
 
             // Guardamos antes de contar
             $registro->save();
+            $control->save();
 
             // Recontar cuántos documentos requeridos ya están llenos (no null)
             $documentosSubidos = collect($documentosRequeridos)

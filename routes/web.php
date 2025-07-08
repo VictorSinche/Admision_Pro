@@ -8,6 +8,7 @@ use App\Http\Controllers\DeclaracionJuradaController;
 use App\Http\Controllers\PermisoPostulanteController;
 use App\Http\Controllers\NotificacionController;
 use App\http\Controllers\DashboardController;
+use App\Http\Controllers\EncargadoController;
 use App\Http\Controllers\PeticionesController;
 
 /*
@@ -49,6 +50,11 @@ Route::middleware('auth.admin')->group(function () {
     Route::get('/admision/postulantes/verificar', [InfoPostulanteController::class, 'listarPostulantes'])->name('admision.verificar');
 
     Route::post('/validar-documento', [InfoPostulanteController::class, 'validarCampo'])->name('verificacion.campo');
+
+    Route::get('/encargado/buscar-postulante', [EncargadoController::class, 'formularioBusqueda'])->name('encargado.buscar');
+    Route::get('/encargado/revisar-documentos', [EncargadoController::class, 'revisarDocumentos'])->name('encargado.revisar');
+    Route::put('/encargado/postulante/{id}/bloquear/{campo}', [EncargadoController::class, 'toggleBloqueo'])->name('documentos.bloqueo.toggle');
+
 
     /*
     |--------------------------------------------------------------------------

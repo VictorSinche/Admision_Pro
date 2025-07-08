@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
             ItemSeeder::class,
             PermissionSeeder::class,
             EstadosIngresoSeeder::class,
-            ControlDocumentosSeeder::class,
             // PermissionPostulanteSeeder::class,
         ]);
     }
