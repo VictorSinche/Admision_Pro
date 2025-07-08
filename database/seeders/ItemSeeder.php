@@ -28,6 +28,8 @@ class ItemSeeder extends Seeder
             ['module_codigo' => 'ADM', 'nombre' => 'Historial declaración jurada', 'codigo' => 'ADM.2'],
             ['module_codigo' => 'ADM', 'nombre' => 'Validar docs.', 'codigo' => 'ADM.3'],
             ['module_codigo' => 'ADM', 'nombre' => 'Validar docs. Responsable', 'codigo' => 'ADM.4'],
+            ['module_codigo' => 'ADM', 'nombre' => 'Control de documentos', 'codigo' => 'ADM.5'],
+
             // Director
             ['module_codigo' => 'DIR', 'nombre' => 'Convalidación', 'codigo' => 'DIR.1'],
             // COA
@@ -36,9 +38,6 @@ class ItemSeeder extends Seeder
             ['module_codigo' => 'OSA', 'nombre' => 'Listado OSAR', 'codigo' => 'OSA.1'],
             // Tesorería
             ['module_codigo' => 'TES', 'nombre' => 'Listado Tesorería', 'codigo' => 'TES.1'],
-            // Peticiones
-            ['module_codigo' => 'PET', 'nombre' => 'Peticiones postulantes', 'codigo' => 'PET.1'],
-            ['module_codigo' => 'PET', 'nombre' => 'Peticiones admin', 'codigo' => 'PET.2'],
         ];
 
         foreach ($items as $item) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ControlDocumentos;
+use App\Models\HistorialVerificacion;
 use Illuminate\Http\Request;
 use App\Models\InfoPostulante;
 
@@ -63,10 +64,31 @@ class EncargadoController extends Controller
             return back()->with('error', 'Campo no permitido.');
         }
 
-        $registro = ControlDocumentos::firstOrCreate(['info_postulante_id' => $id]);
-        $registro->$campo = !$registro->$campo;
+        // Obtener al postulante
+        $postulante = InfoPostulante::findOrFail($id);
+
+        // Obtener o crear registro de control
+        $registro = ControlDocumentos::firstOrCreate([
+            'info_postulante_id' => $postulante->id
+        ]);
+
+        // Alternar estado
+        $nuevoEstado = !$registro->$campo;
+        $registro->$campo = $nuevoEstado;
         $registro->save();
+
+        // Registrar historial
+        HistorialVerificacion::create([
+            'info_postulante_id' => $postulante->id,
+            'tabla' => 'control_documentos',
+            'campo' => $campo,
+            'estado' => $nuevoEstado,
+            'observacion' => $nuevoEstado ? 'Se bloqueó luego de revisión manual' : 'Se desbloqueó por decisión del encargado',
+            'actualizado_por' => session('nombre_completo') ?? 'Sistema',
+            'cod_user' => session('cod_user') ?? '',
+        ]);
 
         return back()->with('success', 'Estado de bloqueo actualizado correctamente.');
     }
+
 }

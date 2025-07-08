@@ -60,7 +60,7 @@
 
       @if ($bloqueado)
         <div class="mt-2 text-xs text-red-500 flex items-center gap-2">
-          <i class="fa-solid fa-lock"></i> Documento bloqueado por el encargado
+          <i class="fa-solid fa-lock"></i> Documento bloqueado
         </div>
       @endif
     </div>

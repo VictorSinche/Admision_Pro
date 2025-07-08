@@ -688,6 +688,7 @@ class InfoPostulanteController extends Controller
 
         HistorialVerificacion::create([
             'info_postulante_id' => $postulante->id,
+            'tabla' => 'verificacion_documentos',
             'campo' => $request->campo,
             'estado' => $request->estado,
             'cod_user' => session('cod_user') ?? '',

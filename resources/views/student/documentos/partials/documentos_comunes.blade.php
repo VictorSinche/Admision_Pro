@@ -57,16 +57,15 @@
               class="sr-only"
               accept=".png, .jpg, .jpeg, .pdf"
               onchange="mostrarNombreArchivo(event, '{{ $campo }}')"
-              data-existente="{{ $archivoExiste ? 1 : 0 }}"
-              {{ $bloqueado ? 'disable' : '' }}
-              />
+              data-existe="{{ $archivoExiste ? 1 : 0 }}"
+              {{ $bloqueado ? 'disabled' : '' }} />
 
         <label for="{{ $campo }}"
               class="inline-flex items-center justify-center px-4 py-2 text-white text-sm font-medium border-r transition whitespace-nowrap
                       {{ $bloqueado ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 cursor-pointer' }}">
           <i class="fa-solid fa-upload mr-2"></i> Subir archivo
         </label>
-        
+
         <span id="nombre-archivo-{{ $campo }}"
               class="flex items-center px-3 text-sm text-gray-800 truncate w-full">
           @if ($archivoExiste)
@@ -79,7 +78,7 @@
 
       @if ($bloqueado)
         <div class="mt-2 text-xs text-red-500 flex items-center gap-2">
-          <i class="fa-solid fa-lock"></i> Documento bloqueado por el encargado
+          <i class="fa-solid fa-lock"></i> Documento bloqueado
         </div>
       @endif
     </div>

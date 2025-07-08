@@ -13,8 +13,10 @@ return new class extends Migration
             $table->foreignId('info_postulante_id')
                 ->constrained('info_postulante')
                 ->onDelete('cascade');
+            $table->string('tabla')->nullable();
             $table->string('campo');
             $table->boolean('estado');
+            $table->string('observacion')->nullable();
             $table->string('actualizado_por')->nullable();
             $table->string('cod_user');
             $table->timestamps();

@@ -1,6 +1,7 @@
 @php
   $doc = $postulante->documentos;
   $verificacion = $postulante->verificacion;
+  $control = $postulante->controlDocumentos;
 @endphp
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -14,6 +15,7 @@
   @php
     $archivoExiste = !empty($doc?->$campo);
     $estado = $verificacion?->{$campo};
+    $bloqueado = optional($postulante->controlDocumentos)->$campo ?? false;
   @endphp
 
   <div class="relative bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-all duration-200 group">
@@ -33,12 +35,18 @@
     <div class="relative mt-5">
       <div class="flex items-stretch w-full max-w-full rounded-md overflow-hidden border border-blue-600 bg-white">
         <input type="file" name="{{ $campo }}" id="{{ $campo }}"
-               class="sr-only"
-               onchange="mostrarNombreArchivo(event, '{{ $campo }}')" />
+              class="sr-only"
+              accept=".png, .jpg, .jpeg, .pdf"
+              onchange="mostrarNombreArchivo(event, '{{ $campo }}')"
+              data-existe="{{ $archivoExiste ? 1 : 0 }}"
+              {{ $bloqueado ? 'disabled' : '' }} />
+
         <label for="{{ $campo }}"
-               class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-medium border-r border-blue-600 cursor-pointer hover:bg-blue-700 transition whitespace-nowrap">
+              class="inline-flex items-center justify-center px-4 py-2 text-white text-sm font-medium border-r transition whitespace-nowrap
+                      {{ $bloqueado ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 cursor-pointer' }}">
           <i class="fa-solid fa-upload mr-2"></i> Subir archivo
         </label>
+
         <span id="nombre-archivo-{{ $campo }}"
               class="flex items-center px-3 text-sm text-gray-800 truncate w-full">
           @if ($archivoExiste)
@@ -48,6 +56,12 @@
           @endif
         </span>
       </div>
+
+      @if ($bloqueado)
+        <div class="mt-2 text-xs text-red-500 flex items-center gap-2">
+          <i class="fa-solid fa-lock"></i> Documento bloqueado
+        </div>
+      @endif
     </div>
 
     <!-- Enlace -->

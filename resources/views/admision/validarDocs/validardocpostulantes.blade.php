@@ -96,6 +96,18 @@
                         class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                         <p
                         class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+                        Mod. Ingreso
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                        </svg>
+                        </p>
+                    </th>
+                    <th
+                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                        <p
+                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
                         Ver docs.
                         </p>
                     </th>
@@ -180,8 +192,26 @@
                                 </div>
                             <td class="p-4 border-b border-slate-200">
                                 <div class="flex flex-col">
+                                    <p class="text-sm font-semibold text-slate-700" title="{{ $postulante->nomesp }}">
+                                        {{ \Illuminate\Support\Str::limit($postulante->nomesp, 20, '...') }}
+                                    </p>
+                                </div>
+                            </td>
+                            @php
+                                $codigo = $postulante->id_mod_ing;
+                                $nombreModalidad = [
+                                    'B' => 'Primeros Puestos',
+                                    'A' => 'Ordinario',
+                                    'O' => 'Alto Rendimiento',
+                                    'D' => 'Traslado Externo',
+                                    'E' => 'Admisión para Técnicos',
+                                    'C' => 'Admisión Pre-UMA',
+                                ][$codigo] ?? 'Desconocida';
+                            @endphp
+                            <td class="p-4 border-b border-slate-200">
+                                <div class="flex flex-col">
                                     <p class="text-sm font-semibold text-slate-700">
-                                        {{ $postulante->nomesp }}
+                                        {{ $nombreModalidad }}
                                     </p>
                                 </div>
                             </td>
@@ -379,69 +409,69 @@
     }
 
     function enviarNotificacion() {
-    // Mostrar loader
-    document.getElementById('loader-wrapper').classList.remove('hidden');
+        // Mostrar loader
+        document.getElementById('loader-wrapper').classList.remove('hidden');
 
-    const fila = document.querySelector(`tr[data-dni="${dniActualParaNotificacion}"]`);
-    if (!fila) {
-        Swal.fire("❌ Error: No se encontró la fila del postulante");
-        document.getElementById('loader-wrapper').classList.add('hidden');
-        return;
-    }
-
-    // Obtener todos los campos inválidos
-    let documentosInvalidos = Array.from(fila.querySelectorAll('td[data-estado="0"], td[data-estado="1"]'))
-        .map(td => td.getAttribute('data-campo'));
-
-    // Si no hay documentos inválidos, agregar un marcador ficticio para cumplir con el backend
-    const sinInvalidos = documentosInvalidos.length === 0;
-    if (sinInvalidos) {
-        documentosInvalidos = ['todos_validados'];
-    }
-
-    const motivo = document.getElementById('motivo').value.trim();
-
-    fetch('/notificar-rechazo-documentos', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({
-            dni: dniActualParaNotificacion,
-            motivo,
-            documentos: documentosInvalidos
-        })
-    })
-    .then(res => res.json())
-    .then(res => {
-        cerrarModal();
-
-        Swal.fire(
-            "📬 Notificación enviada",
-            sinInvalidos ? "Todos los documentos están validados, pero se notificó igual." : res.message,
-            "success"
-        );
-
-        const celdaNotificar = fila.querySelector('[data-accion="notificar"]')?.parentElement;
-        if (celdaNotificar) {
-            celdaNotificar.innerHTML = `
-                <a href="javascript:void(0);"
-                onclick="confirmarReenvio('${dniActualParaNotificacion}')"
-                class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-yellow-500 rounded hover:bg-yellow-600 transition">
-                    <i class="fa-solid fa-envelope-circle-check"></i>
-                </a>
-            `;
+        const fila = document.querySelector(`tr[data-dni="${dniActualParaNotificacion}"]`);
+        if (!fila) {
+            Swal.fire("❌ Error: No se encontró la fila del postulante");
+            document.getElementById('loader-wrapper').classList.add('hidden');
+            return;
         }
-    })
-    .catch(err => {
-        console.error(err);
-        Swal.fire("❌ Error al enviar notificación");
-    })
-    .finally(() => {
-        document.getElementById('loader-wrapper').classList.add('hidden');
-    });
-}
+
+        // Obtener todos los campos inválidos
+        let documentosInvalidos = Array.from(fila.querySelectorAll('td[data-estado="0"], td[data-estado="1"]'))
+            .map(td => td.getAttribute('data-campo'));
+
+        // Si no hay documentos inválidos, agregar un marcador ficticio para cumplir con el backend
+        const sinInvalidos = documentosInvalidos.length === 0;
+        if (sinInvalidos) {
+            documentosInvalidos = ['todos_validados'];
+        }
+
+        const motivo = document.getElementById('motivo').value.trim();
+
+        fetch('/notificar-rechazo-documentos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                dni: dniActualParaNotificacion,
+                motivo,
+                documentos: documentosInvalidos
+            })
+        })
+        .then(res => res.json())
+        .then(res => {
+            cerrarModal();
+
+            Swal.fire(
+                "📬 Notificación enviada",
+                sinInvalidos ? "Todos los documentos están validados, pero se notificó igual." : res.message,
+                "success"
+            );
+
+            const celdaNotificar = fila.querySelector('[data-accion="notificar"]')?.parentElement;
+            if (celdaNotificar) {
+                celdaNotificar.innerHTML = `
+                    <a href="javascript:void(0);"
+                    onclick="confirmarReenvio('${dniActualParaNotificacion}')"
+                    class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-yellow-500 rounded hover:bg-yellow-600 transition">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
+                    </a>
+                `;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            Swal.fire("❌ Error al enviar notificación");
+        })
+        .finally(() => {
+            document.getElementById('loader-wrapper').classList.add('hidden');
+        });
+    }
 
 </script>
 

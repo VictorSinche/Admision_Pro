@@ -283,7 +283,7 @@
             </li>
           @endif
 
-          @if (tieneAlgunPermisoGlobal(['ADM.1', 'ADM.2', 'ADM.3', 'ADM.4']))
+          @if (tieneAlgunPermisoGlobal(['ADM.1', 'ADM.2', 'ADM.3', 'ADM.4', 'ADM.5']))
             <li>
               <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-admision" data-collapse-toggle="submenu-admision">
                 <!-- ícono -->
@@ -329,6 +329,15 @@
                       class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
                       {{ Request::routeIs('admision.historialDj') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                       Historial Declaración Jurada
+                    </a>            
+                  </li>
+                @endif
+                @if(tienePermisoGlobal('ADM.5'))
+                  <li>
+                    <a href="{{ route('admision.buscar') }}" 
+                      class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                      {{ Request::routeIs('admision.historialDj') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                      Control Documentos
                     </a>            
                   </li>
                 @endif
@@ -440,53 +449,6 @@
             </ul>
           </li>
           @endif
-
-          {{-- @if (tieneAlgunPermisoGlobal(['PET.1']))
-            <li>
-            <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-peticionespos" data-collapse-toggle="submenu-peticionespos">
-              <i class="fa-solid fa-paper-plane text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
-              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Peticiones</span>
-              <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
-              </svg>
-            </button>
-          
-            <ul id="submenu-peticionespos" class="py-2 space-y-2 {{ Request::routeIs('peticionespos.*') ? '' : 'hidden' }}">
-              @if (tienePermisoGlobal('PET.1'))
-                <li>
-                <a href="{{ route('peticionespos.postulante') }}" 
-                  class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                  {{ Request::routeIs('peticionespos.postulante') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                  Enviar petición                  
-                </a>              
-              </li>
-              @endif
-            </ul>
-          </li>
-          @endif
-          @if (tieneAlgunPermisoGlobal(['PET.2']))
-            <li>
-            <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-peticiones" data-collapse-toggle="submenu-peticiones">
-              <i class="fa-solid fa-folder-open text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
-              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Peticiones</span>
-              <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
-              </svg>
-            </button>
-          
-            <ul id="submenu-peticiones" class="py-2 space-y-2 {{ Request::routeIs('peticiones.*') ? '' : 'hidden' }}">
-              @if (tienePermisoGlobal('PET.2'))
-                <li>
-                <a href="{{ route('peticiones.admin') }}" 
-                  class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                  {{ Request::routeIs('peticiones.admin') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                  Peticiónes Postulantes
-                </a>
-              </li>
-              @endif
-            </ul>
-          </li>
-          @endif --}}
         </ul>
     </div>
   </aside>

@@ -16,7 +16,7 @@
     @foreach ($documentosRequeridos as $campo)
       @php
         $archivo = $postulante->documentos?->$campo;
-        $bloqueado = $postulante->controlDocumentos?->$campo ?? false;
+        $bloqueado = $postulante->controlDocumentos?->$campo ?? true;
         $label = ucfirst($campo); // Puedes mapearlo a nombres más bonitos si deseas
       @endphp
 
@@ -45,7 +45,7 @@
           @csrf
           @method('PUT')
           <button type="submit"
-                  class="px-4 py-1 text-xs rounded font-medium
+                  class="px-4 py-1 text-xs rounded font-medium cursor-pointer
                          {{ $bloqueado ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700' }}
                          text-white">
             <i class="fa-solid {{ $bloqueado ? 'fa-lock-open' : 'fa-lock' }} mr-1"></i>
