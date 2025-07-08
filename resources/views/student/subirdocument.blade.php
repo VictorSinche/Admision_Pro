@@ -30,54 +30,6 @@
     {{-- Se incluye la vista según modalidad --}}
     @includeIf('student.documentos.' . strtolower($modalidad))
 
-
-  {{-- <div class="mt-8">
-  <h3 class="text-lg font-semibold text-gray-800 mb-2">Resumen de documentos cargados</h3>
-  <table class="w-full border border-gray-300 text-sm text-center shadow-sm rounded-md overflow-hidden">
-    <thead class="bg-gray-100 text-gray-700">
-      <tr>
-        <th class="px-3 py-2 text-left">Documento</th>
-        <th class="px-3 py-2">¿Cargado?</th>
-        <th class="px-3 py-2">Enlace</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach ([
-          'formulario' => 'Formulario de inscripción',
-          'pago' => 'Comprobante de pago',
-          'dni' => 'DNI del postulante/apoderado',
-          'seguro' => 'Seguro de salud',
-          'foto' => 'Foto tamaño carné'
-      ] as $campo => $label)
-        @php
-          $archivo = $postulante->documentos?->$campo ?? null;
-          $cargado = !empty($archivo);
-        @endphp
-        <tr class="border-t hover:bg-gray-50">
-          <td class="text-left px-3 py-2">{{ $label }}</td>
-          <td class="px-3 py-2">
-            @if ($cargado)
-              <span class="text-green-600 font-medium">Sí</span>
-            @else
-              <span class="text-red-600 font-medium">No</span>
-            @endif
-          </td>
-          <td class="px-3 py-2">
-            @if ($cargado)
-              <a href="{{ asset('storage/postulantes/' . $postulante->c_numdoc . '/' . $archivo) }}"
-                 target="_blank"
-                 class="text-blue-600 underline">Ver</a>
-            @else
-              <span class="text-gray-400 italic">Sin archivo</span>
-            @endif
-          </td>
-        </tr>
-      @endforeach
-    </tbody>
-  </table>
-</div> --}}
-
-  
     <button type="submit" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg cursor-pointer hover:bg-green-700 transition duration-200">
       <i class="fa-solid fa-file-upload mr-2"></i>	
       Guardar Documentos
@@ -116,14 +68,28 @@
                   <i class="fa-solid fa-file-pdf mr-2"></i> Descargar declaración jurada
                 </a>
 
-                {{-- Estado de validación --}}
-                @if(!is_null($djValidado))
-                  <span class="inline-flex items-center gap-2 px-3 py-1 rounded-3xl 
-                              {{ $djValidado === 1 ? 'bg-green-300 text-green-800' : 'bg-red-100 text-red-800' }}">
-                    <i class="fa-solid {{ $djValidado === 1 ? 'fa-check-circle' : 'fa-xmark-circle' }}"></i>
-                    {{ $djValidado === 1 ? 'Válido' : 'No válido' }}
-                  </span>
-                @endif
+                  {{-- Estado de validación --}}
+                  @if(!is_null($djValidado))
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-3xl
+                                @switch($djValidado)
+                                  @case(0) bg-gray-100 text-gray-800 @break
+                                  @case(1) bg-red-100 text-red-800 @break
+                                  @case(2) bg-green-300 text-green-800 @break
+                                @endswitch">
+                      <i class="fa-solid
+                                @switch($djValidado)
+                                  @case(0) fa-clock @break
+                                  @case(1) fa-xmark-circle @break
+                                  @case(2) fa-check-circle @break
+                                @endswitch"></i>
+                      @switch($djValidado)
+                        @case(0) Pendiente @break
+                        @case(1) No válido @break
+                        @case(2) Válido @break
+                      @endswitch
+                    </span>
+                  @endif
+
               </div>
           </div>
         </div>

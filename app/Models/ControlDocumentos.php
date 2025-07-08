@@ -3,28 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class VerificacionDocumento extends Model
+class ControlDocumentos extends Model
 {
-    use HasFactory;
-
-    protected $table = 'verificacion_documentos';
+    protected $table = 'control_documentos';
 
     protected $fillable = [
         'info_postulante_id',
         'formulario',
         'pago',
+        'constancia',
+        'constancianotas',
         'dni',
         'seguro',
-        // 'foto',
-        'dj',
-        'notificado',
+        'constmatricula',
+        'certprofesional',
+        'syllabus',
+        'merito',
     ];
 
-    /**
-     * Relación con el postulante
-     */
     public function postulante()
     {
         return $this->belongsTo(InfoPostulante::class, 'info_postulante_id');

@@ -96,6 +96,18 @@
                         class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                         <p
                         class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
+                        Mod. Ingreso
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
+                        </svg>
+                        </p>
+                    </th>
+                    <th
+                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
+                        <p
+                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
                         Ver docs.
                         </p>
                     </th>
@@ -131,14 +143,14 @@
                         </svg>
                         </p>
                     </th>
-                    <th
+                    {{-- <th
                         class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                         <p
                         class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
                         Foto
                         </svg>
                         </p>
-                    </th>
+                    </th> --}}
                     <th
                         class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                         <p
@@ -180,8 +192,26 @@
                                 </div>
                             <td class="p-4 border-b border-slate-200">
                                 <div class="flex flex-col">
+                                    <p class="text-sm font-semibold text-slate-700" title="{{ $postulante->nomesp }}">
+                                        {{ \Illuminate\Support\Str::limit($postulante->nomesp, 20, '...') }}
+                                    </p>
+                                </div>
+                            </td>
+                            @php
+                                $codigo = $postulante->id_mod_ing;
+                                $nombreModalidad = [
+                                    'B' => 'Primeros Puestos',
+                                    'A' => 'Ordinario',
+                                    'O' => 'Alto Rendimiento',
+                                    'D' => 'Traslado Externo',
+                                    'E' => 'Admisión para Técnicos',
+                                    'C' => 'Admisión Pre-UMA',
+                                ][$codigo] ?? 'Desconocida';
+                            @endphp
+                            <td class="p-4 border-b border-slate-200">
+                                <div class="flex flex-col">
                                     <p class="text-sm font-semibold text-slate-700">
-                                        {{ $postulante->nomesp }}
+                                        {{ $nombreModalidad }}
                                     </p>
                                 </div>
                             </td>
@@ -191,33 +221,7 @@
                                 </a>
                             </td>
                             @php $verif = $postulante->verificacion; @endphp
-                            @php
-                                function mostrarIconoVerificacion($estado)
-                                {
-                                    if (!isset($estado)) {
-                                        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-gray-600 bg-gray-100 px-3 py-1">
-                                                    <i class="fa-solid fa-clock"></i>
-                                                </span>';
-                                    }
 
-                                    if ((int)$estado === 2) {
-                                        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-green-700 bg-green-100 px-3 py-1">
-                                                    <i class="fa-solid fa-check-circle"></i>
-                                                </span>';
-                                    }
-
-                                    if ((int)$estado === 1) {
-                                        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-red-700 bg-red-100 px-3 py-1">
-                                                    <i class="fa-solid fa-xmark-circle"></i>
-                                                </span>';
-                                    }
-
-                                    // Por si acaso
-                                    return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-gray-600 bg-gray-100 px-3 py-1">
-                                                <i class="fa-solid fa-clock"></i>
-                                            </span>';
-                                }
-                            @endphp
                             <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->formulario ?? 'null' }}" data-campo="formulario">
                                 {!! mostrarIconoVerificacion($verif->formulario ?? null) !!}
                             </td>
@@ -230,8 +234,8 @@
                             <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->seguro ?? 'null' }}" data-campo="seguro">
                                 {!! mostrarIconoVerificacion($verif->seguro ?? null) !!}
                             </td>
-                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->foto ?? 'null' }}" data-campo="foto">
-                                {!! mostrarIconoVerificacion($verif->foto ?? null) !!}
+                            {{-- <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->foto ?? 'null' }}" data-campo="foto">
+                                {!! mostrarIconoVerificacion($verif->foto ?? null) !!} --}}
                             </td>
                             <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->dj ?? 'null' }}" data-campo="dj">
                                 {!! mostrarIconoVerificacion($verif->dj ?? null) !!}
@@ -416,16 +420,15 @@
         }
 
         // Obtener todos los campos inválidos
-        const documentosInvalidos = Array.from(fila.querySelectorAll('td[data-estado="0"], td[data-estado="1"]'))
+        let documentosInvalidos = Array.from(fila.querySelectorAll('td[data-estado="0"], td[data-estado="1"]'))
             .map(td => td.getAttribute('data-campo'));
 
-        if (documentosInvalidos.length === 0) {
-            Swal.fire("✅ No hay documentos inválidos", "Todos están validados", "info");
-            document.getElementById('loader-wrapper').classList.add('hidden');
-            return;
+        // Si no hay documentos inválidos, agregar un marcador ficticio para cumplir con el backend
+        const sinInvalidos = documentosInvalidos.length === 0;
+        if (sinInvalidos) {
+            documentosInvalidos = ['todos_validados'];
         }
 
-        // Motivo opcional
         const motivo = document.getElementById('motivo').value.trim();
 
         fetch('/notificar-rechazo-documentos', {
@@ -443,8 +446,13 @@
         .then(res => res.json())
         .then(res => {
             cerrarModal();
-            Swal.fire("📬 Notificación enviada", res.message, "success");
-            // Marcar visualmente como notificado en la tabla
+
+            Swal.fire(
+                "📬 Notificación enviada",
+                sinInvalidos ? "Todos los documentos están validados, pero se notificó igual." : res.message,
+                "success"
+            );
+
             const celdaNotificar = fila.querySelector('[data-accion="notificar"]')?.parentElement;
             if (celdaNotificar) {
                 celdaNotificar.innerHTML = `
@@ -464,6 +472,7 @@
             document.getElementById('loader-wrapper').classList.add('hidden');
         });
     }
+
 </script>
 
 <script>
@@ -607,3 +616,28 @@
 </script>
 
 @endsection
+
+@php
+    function mostrarIconoVerificacion($estado)
+    {
+        if (!isset($estado)) {
+            return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-gray-600 bg-gray-100 px-3 py-1">
+                        <i class="fa-solid fa-clock"></i>
+                    </span>';
+        }
+        if ((int)$estado === 2) {
+            return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-green-700 bg-green-100 px-3 py-1">
+                        <i class="fa-solid fa-check-circle"></i>
+                    </span>';
+        }
+        if ((int)$estado === 1) {
+            return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-red-700 bg-red-100 px-3 py-1">
+                        <i class="fa-solid fa-xmark-circle"></i>
+                    </span>';
+        }
+        // Por si acaso
+        return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-gray-600 bg-gray-100 px-3 py-1">
+                    <i class="fa-solid fa-clock"></i>
+                </span>';
+    }
+@endphp

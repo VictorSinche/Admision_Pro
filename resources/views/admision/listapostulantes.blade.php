@@ -183,7 +183,7 @@
                                             </span>
                                         @elseif ($post->estado_docs === 1)
                                             <span class="relative grid items-center px-2 py-1 text-xs font-bold text-yellow-500 bg-yellow-500/20 rounded-md uppercase">
-                                                Incompleto
+                                                Incompleto falta declaracion jurada
                                             </span>
                                         @else
                                             <span class="relative grid items-center px-2 py-1 text-xs font-bold text-slate-400 bg-slate-300/20 rounded-md uppercase">

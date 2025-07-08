@@ -10,9 +10,11 @@ class HistorialVerificacion extends Model
 
     protected $fillable = [
         'info_postulante_id',
+        'tabla',
         'campo',
         'estado',
         'cod_user',
+        'observacion',
         'actualizado_por',
     ];
 

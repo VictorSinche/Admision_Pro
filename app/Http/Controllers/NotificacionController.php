@@ -22,7 +22,7 @@ public function rechazoDocumentos(Request $request)
     try {
         $postulante = InfoPostulante::where('c_numdoc', $request->dni)->firstOrFail();
 
-        $todosLosCampos = ['formulario', 'pago', 'dni', 'seguro', 'foto', 'dj'];
+        $todosLosCampos = ['formulario', 'pago', 'dni', 'seguro', 'dj'];
         $verificacion = $postulante->verificacion;
         $estados = [];
 

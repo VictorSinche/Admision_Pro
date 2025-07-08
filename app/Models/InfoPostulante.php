@@ -28,4 +28,9 @@ class InfoPostulante extends Model
     {
         return $this->hasMany(HistorialVerificacion::class, 'info_postulante_id');
     }
+
+    public function controlDocumentos()
+    {
+        return $this->hasOne(ControlDocumentos::class, 'info_postulante_id');
+    }
 }

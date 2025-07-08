@@ -15,6 +15,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use App\Exports\PostulantesDJExport;
+use App\Models\ControlDocumentos;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InfoPostulanteController extends Controller
@@ -91,43 +92,27 @@ class InfoPostulanteController extends Controller
 
             // Guardar en base externa
             // DB::connection('mysql_sigu_permits')
-                // ->table('sga_tb_adm_cliente')
-                // ->updateOrInsert(
-                    // ['c_numdoc' => $validated['c_numdoc']],
-                    // [
-                        // 'id_mod_ing'     => $validated['id_mod_ing'],
-                        // 'c_apepat'       => $validated['c_apepat'],
-                        // 'c_apemat'       => $validated['c_apemat'],
-                        // 'c_nombres'      => $validated['c_nombres'],
-                        // 'c_tipdoc'       => $validated['c_tipdoc'],
-                        // 'c_email'        => $validated['c_email'],
-                        // 'c_dir'          => $validated['c_dir'],
-                        // 'c_sexo'         => $validated['c_sexo'],
-                        // 'd_fecnac'       => $validated['d_fecnac'] ?? now(),
-                        // 'c_celu'         => $validated['c_celu'],
-                        // 'id_proceso'     => $validated['id_proceso'],
-                        // 'c_codesp1'      => $validated['c_codesp1'],
-                        // 'c_codfac1'      => $c_codfac ?? null, // 👈 NUEVO campo asignado
-                        // 'c_sedcod'       => $validated['c_sedcod'] ?? '',
-                        // 'c_dptodom'      => $c_dptodom,
-                        // 'c_provdom'      => $c_provdom,
-                        // 'c_distdom'      => $c_distdom,
-                        // 'c_colg_ubicacion' => $validated['c_colg_ubicacion'] ?? '',
-                        // 'c_dniapo'       => $validated['c_dniapo'],
-                        // 'c_nomapo'       => $validated['c_nomapo'],
-                        // 'c_celuapo'      => $validated['c_celuapo'],
-                        // 'c_fonoapo'      => $validated['c_fonoapo'],
-                        // 'c_procedencia'  => $validated['c_procedencia'],
-                        // 'c_anoegreso'    => $validated['c_anoegreso'],
-                        // 'c_tippro'       => $validated['c_tippro'],
-                        // 'id_tab_alu_contact' => $validated['id_tab_alu_contact'],
-                        // 'id_tab_turno'   => $validated['id_tab_turno'],
-                    // ]
-                // );
+            //     ->table('sga_tb_adm_cliente')
+            //     ->updateOrInsert(
+            //         ['c_numdoc' => $validated['c_numdoc']],
+            //         [
+            //             'id_mod_ing'     => $validated['id_mod_ing'],
+            //             'c_apepat'       => $validated['c_apepat'],
+            //             'c_apemat'       => $validated['c_apemat'],
+            //             'c_nombres'      => $validated['c_nombres'],
+            //             'c_email'        => $validated['c_email'],
+            //             'c_dir'          => $validated['c_dir'],
+            //             'c_sexo'         => $validated['c_sexo'],
+            //             'd_fecnac'       => $validated['d_fecnac'] ?? now(),
+            //             'c_celu'         => $validated['c_celu'],
+            //             'c_dptodom'      => $c_dptodom,
+            //             'c_provdom'      => $c_provdom,
+            //             'c_distdom'      => $c_distdom,
+            //         ]
+            //     );
 
-            
-                // Guardar en sesión
-            session(['c_numdoc' => $validated['c_numdoc']]);
+            //     // Guardar en sesión
+            // session(['c_numdoc' => $validated['c_numdoc']]);
 
             // Logging de cambios
             if ($postulante->wasRecentlyCreated) {
@@ -217,7 +202,7 @@ class InfoPostulanteController extends Controller
             abort(403, 'No tienes permiso para acceder a esta pagina');
         }
 
-        $postulante = InfoPostulante::with('documentos', 'verificacion')->where('c_numdoc', $c_numdoc)->firstOrFail();
+        $postulante = InfoPostulante::with('documentos', 'verificacion', 'controlDocumentos')->where('c_numdoc', $c_numdoc)->firstOrFail();
         
         $mapaModalidades = [
             'B' => 'primeros_puestos',
@@ -227,7 +212,6 @@ class InfoPostulanteController extends Controller
             'E' => 'admision_tecnicos',
             'C' => 'admision_pre_uma',
         ];
-
 
         $codigo = $postulante->id_mod_ing;
         $modalidad = $mapaModalidades[$codigo] ?? 'default';
@@ -261,52 +245,60 @@ class InfoPostulanteController extends Controller
             $accessToken = session('microsoft_token');
 
             $documentosPorModalidad = [
-                'B' => ['formulario', 'pago', 'constancia', 'merito', 'dni', 'seguro', 'foto'],
-                'A' => ['formulario', 'pago', 'constancia', 'dni', 'seguro', 'foto'],
-                'D' => ['formulario', 'pago', 'constancianotas', 'constmatricula', 'syllabus', 'dni', 'seguro', 'foto'],
-                'O' => ['formulario', 'pago', 'constancia', 'merito', 'dni', 'seguro', 'foto'],
-                'E' => ['formulario', 'pago', 'constancianotas', 'constmatricula', 'certprofesional', 'syllabus', 'dni', 'seguro', 'foto'],
-                'C' => ['formulario', 'pago', 'constancia', 'dni', 'seguro', 'foto'],
+                'A' => ['formulario', 'pago', 'seguro', 'dni', 'constancia' ],
+                'C' => ['formulario', 'pago', 'seguro', 'dni', 'constancia' ],
+                'B' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito' ],
+                'O' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito' ],
+                'D' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'constmatricula', 'syllabus' ],
+                'E' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'constmatricula', 'syllabus', 'certprofesional' ],
             ];
 
             $codigo = $postulante->id_mod_ing;
             $documentosRequeridos = $documentosPorModalidad[$codigo] ?? [];
 
             // Traer o crear el registro único por postulante
-            $registro = \App\Models\DocumentoPostulante::firstOrNew([
+            $registro = DocumentoPostulante::firstOrNew([
                 'info_postulante_id' => $postulante->id,
             ]);
 
             $documentosSubidos = 0;
 
+            $control = ControlDocumentos::firstOrNew(['info_postulante_id' => $postulante->id]);
             // Subimos archivos requeridos como antes
             foreach ($documentosRequeridos as $campo) {
-                if ($request->hasFile($campo)) {
-                    $archivo = $request->file($campo);
-                    if ($archivo->isValid()) {
-                        if (!empty($registro->$campo)) {
-                            $rutaAnterior = 'postulantes/' . $postulante->c_numdoc . '/' . $registro->$campo;
-                            Storage::disk('public')->delete($rutaAnterior);
+                $bloqueado = optional($postulante->controlDocuementos)->$campo ?? false;
+                if($bloqueado) continue;
+
+                    if ($request->hasFile($campo)) {
+                        $archivo = $request->file($campo);
+                        if ($archivo->isValid()) {
+                            if (!empty($registro->$campo)) {
+                                $rutaAnterior = 'postulantes/' . $postulante->c_numdoc . '/' . $registro->$campo;
+                                Storage::disk('public')->delete($rutaAnterior);
+                            }
+                
+                            $nombre = now()->format('Ymd_His') . '_' . $campo . '.' . $archivo->getClientOriginalExtension();
+                            $ruta = $archivo->storeAs('postulantes/' . $postulante->c_numdoc, $nombre, 'public');
+                            // SUBIR A ONEDRIVE
+                            try {
+                                $respuesta = $this->subirAOneDrive('postulantes/' . $postulante->c_numdoc . '/' . $nombre, $nombre, session('microsoft_token'));
+                                Log::info("📤 Subido a OneDrive: " . json_encode($respuesta));
+                            } catch (\Exception $ex) {
+                                Log::error("❌ Error al subir a OneDrive: " . $ex->getMessage());
+                            }
+                            Log::info("📂 Subido archivo: $nombre a $ruta");
+                            $registro->$campo = $nombre;
+                            
+                            $control->$campo = true;
+                        } else {
+                            Log::warning("⚠️ Archivo inválido en campo: $campo");
                         }
-                        $nombre = now()->format('Ymd_His') . '_' . $campo . '.' . $archivo->getClientOriginalExtension();
-                        $ruta = $archivo->storeAs('postulantes/' . $postulante->c_numdoc, $nombre, 'public');
-                        // SUBIR A ONEDRIVE
-                        try {
-                            $respuesta = $this->subirAOneDrive('postulantes/' . $postulante->c_numdoc . '/' . $nombre, $nombre, session('microsoft_token'));
-                            Log::info("📤 Subido a OneDrive: " . json_encode($respuesta));
-                        } catch (\Exception $ex) {
-                            Log::error("❌ Error al subir a OneDrive: " . $ex->getMessage());
-                        }
-                        Log::info("📂 Subido archivo: $nombre a $ruta");
-                        $registro->$campo = $nombre;
-                    } else {
-                        Log::warning("⚠️ Archivo inválido en campo: $campo");
                     }
-                }
             }
 
             // Guardamos antes de contar
             $registro->save();
+            $control->save();
 
             // Recontar cuántos documentos requeridos ya están llenos (no null)
             $documentosSubidos = collect($documentosRequeridos)
@@ -431,7 +423,7 @@ class InfoPostulanteController extends Controller
                     'certificado_estudios' => $request->input('certificado_estudios', 0),
                     'copia_dni' => $request->input('copia_dni', 0),
                     'seguro_salud' => $request->input('seguro_salud', 0),
-                    'foto_carnet' => $request->input('foto_carnet', 0),
+                    // 'foto_carnet' => $request->input('foto_carnet', 0),
                     'certificado_notas_original' => $request->input('certificado_notas_original', 0),
                     'constancia_primera_matricula' => $request->input('constancia_primera_matricula', 0),
                     'syllabus_visados' => $request->input('syllabus_visados', 0),
@@ -608,6 +600,7 @@ class InfoPostulanteController extends Controller
             ->leftJoin('info_postulante as ip', 'ip.c_numdoc', '=', 'p.dni')
             ->leftJoin('documentos_postulante as dp', 'dp.info_postulante_id', '=', 'ip.id')
             ->leftJoin('declaracion_jurada as dj', 'dj.info_postulante_id', '=', 'ip.id')
+            ->leftJoin('verificacion_documentos as vd', 'vd.info_postulante_id', '=', 'ip.id') // <- nuevo join
             ->select(
                 'p.id',
                 'ip.c_numdoc',
@@ -615,7 +608,8 @@ class InfoPostulanteController extends Controller
                 'p.email',
                 'ip.estado as estado_info',
                 'dp.estado as estado_docs',
-                'dj.estado as estado_dj'
+                'dj.estado as estado_dj',
+                'vd.estado as estado_verificacion' // <- nuevo campo
             )
             ->orderBy('p.id', 'asc')
             ->get();
@@ -668,29 +662,42 @@ class InfoPostulanteController extends Controller
     {
         $request->validate([
             'dni' => 'required|string',
-            'campo' => 'required|in:formulario,pago,dni,seguro,foto,dj',
+            'campo' => 'required|in:formulario,pago,dni,seguro,dj',
             'estado' => 'required|in:0,1,2',
         ]);
 
         $postulante = InfoPostulante::where('c_numdoc', $request->dni)->firstOrFail();
-
         $verificacion = VerificacionDocumento::firstOrNew([
             'info_postulante_id' => $postulante->id
         ]);
 
         $verificacion->{$request->campo} = $request->estado;
         $verificacion->save();
+        $camposRequeridos = ['formulario', 'pago', 'dni', 'seguro', 'dj'];
+        $valores = collect($camposRequeridos)->map(fn($campo) => $verificacion->{$campo});
+
+        if ($valores->every(fn($v) => $v === 2)) {
+            $verificacion->estado = 2; // Completado
+        } elseif ($valores->contains(0)) {
+            $verificacion->estado = 1; // Pendiente
+        } else {
+            $verificacion->estado = 1; // Incompleto (pero ya revisado)
+        }
+
+        $verificacion->save();
 
         HistorialVerificacion::create([
             'info_postulante_id' => $postulante->id,
+            'tabla' => 'verificacion_documentos',
             'campo' => $request->campo,
             'estado' => $request->estado,
             'cod_user' => session('cod_user') ?? '',
             'actualizado_por' => session('nombre_completo') ?? 'Sistema',
         ]);
 
-        return response()->json(['message' => 'Validación guardada']);
+        return response()->json(['message' => 'Validación guardada y estado actualizado correctamente']);
     }
+
 
     /*
     |--------------------------------------------------------------------------

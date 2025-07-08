@@ -10,6 +10,7 @@ class ModuleSeeder extends Seeder
     public function run(): void
     {
         $modules = [
+            ['nombre' => 'Dashboard', 'codigo' => 'DASH'],
             ['nombre' => 'Permisos', 'codigo' => 'PER'],
             ['nombre' => 'Postulante', 'codigo' => 'POS'],
             ['nombre' => 'Admisión', 'codigo' => 'ADM'],
@@ -17,7 +18,8 @@ class ModuleSeeder extends Seeder
             ['nombre' => 'OSAR', 'codigo' => 'OSA'],
             ['nombre' => 'Director', 'codigo' => 'DIR'],
             ['nombre' => 'Tesorería', 'codigo' => 'TES'],
-            ['nombre' => 'Notificaciones', 'codigo' => 'NT'],
+            ['nombre' => 'Peticiones', 'codigo' => 'PET'],
+
         ];
 
         foreach ($modules as $modulo) {

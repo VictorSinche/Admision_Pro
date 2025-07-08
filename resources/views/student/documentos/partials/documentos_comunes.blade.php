@@ -1,17 +1,21 @@
-@php $doc = $postulante->documentos; @endphp
+@php 
+  $doc = $postulante->documentos;
+  $control = $postulante->controDocumentos;
+@endphp
 
   @foreach ([
       ['formulario', 'Formulario de inscripción', 'Formulario de inscripción virtual, debidamente llenado.'],
       ['pago', 'Comprobante de pago', 'Copia del comprobante de pago por Derechos de Inscripción al Concurso.'],
       ['dni', 'DNI del postulante/apoderado', 'Copia del D.N.I. y de su representante, si es menor de edad.'],
       ['seguro', 'Seguro de salud', 'Constancia de seguro de salud (ESSALUD, SIS, privado).'],
-      ['foto', 'Foto tamaño carné', 'Fotografía tamaño carné sobre fondo blanco.']
+      // ['foto', 'Foto tamaño carné', 'Fotografía tamaño carné sobre fondo blanco.']
   ] as [$campo, $label, $tooltip])
 
   @php
       $archivoExiste = !empty($doc?->$campo);
       $verificacion = $postulante->verificacion;
       $estado = $verificacion?->{$campo};
+      $bloqueado = optional($postulante->controlDocumentos)->$campo ?? false;
   @endphp
 
   <div class="relative bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-all duration-200 group">
@@ -19,7 +23,7 @@
     <div class="flex justify-between items-start">
       <div>
         <h3 class="text-sm font-semibold text-gray-800">
-          <i class="fa-solid fa-file-lines mr-1 text-red-600"></i> {{ $label }}
+          <i class="fa-solid fa-file-lines mr-1 text-blue-600"></i> {{ $label }}
         </h3>
         <p class="text-xs text-gray-500 mt-1" title="{{ $tooltip }}">
           {{ $tooltip }}
@@ -51,11 +55,17 @@
       <div class="flex items-stretch w-full max-w-full rounded-md overflow-hidden border border-blue-600 bg-white">
         <input type="file" name="{{ $campo }}" id="{{ $campo }}"
               class="sr-only"
-              onchange="mostrarNombreArchivo(event, '{{ $campo }}')" />
+              accept=".png, .jpg, .jpeg, .pdf"
+              onchange="mostrarNombreArchivo(event, '{{ $campo }}')"
+              data-existe="{{ $archivoExiste ? 1 : 0 }}"
+              {{ $bloqueado ? 'disabled' : '' }} />
+
         <label for="{{ $campo }}"
-              class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-medium border-r border-blue-600 cursor-pointer hover:bg-blue-700 transition whitespace-nowrap">
+              class="inline-flex items-center justify-center px-4 py-2 text-white text-sm font-medium border-r transition whitespace-nowrap
+                      {{ $bloqueado ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 cursor-pointer' }}">
           <i class="fa-solid fa-upload mr-2"></i> Subir archivo
         </label>
+
         <span id="nombre-archivo-{{ $campo }}"
               class="flex items-center px-3 text-sm text-gray-800 truncate w-full">
           @if ($archivoExiste)
@@ -65,6 +75,12 @@
           @endif
         </span>
       </div>
+
+      @if ($bloqueado)
+        <div class="mt-2 text-xs text-red-500 flex items-center gap-2">
+          <i class="fa-solid fa-lock"></i> Documento bloqueado
+        </div>
+      @endif
     </div>
 
     <!-- Enlace de archivo -->
