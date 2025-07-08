@@ -35,35 +35,53 @@
   </div>
 </div>
 
+@php
+  $procesoSeleccionado = null;
+  foreach ($procesos as $proceso) {
+      if (($data->id_proceso ?? request('id_proceso')) == $proceso->id_proceso) {
+          $procesoSeleccionado = $proceso;
+          break;
+      }
+  }
+@endphp
+
 <!-- Proceso de admisión -->
 <div class="mt-4 mx-2">
-  <select name="id_proceso" id="proceso_admision" class="{{ $inputClass }}">
-    <option value="" disabled selected>Seleccione Proceso de admisión</option>
-      @foreach($procesos as $proceso)
-        <option value="{{ $proceso->id_proceso }}"
-            data-codfac="{{ $proceso->c_codfac }}"
-            {{ ($data->id_proceso ?? '') == $proceso->id_proceso ? 'selected' : '' }}>
-            {{ $proceso->c_nompro }}
-        </option>
-      @endforeach
-  </select>
+  <!-- Campo visible con nombre -->
+  <input type="text" class="{{ $inputClass }}"
+         value="{{ $procesoSeleccionado->c_nompro ?? '' }}"
+         placeholder="Nombre del proceso de admisión" readonly>
+
+  <!-- Campo oculto con ID -->
+  <input type="hidden" name="id_proceso"
+         value="{{ $procesoSeleccionado->id_proceso ?? '' }}">
 </div>
+
 
 <!-- Modalidad y sede -->
 <div class="flex flex-col md:flex-row gap-4 mt-4">
-  <div class="w-full mx-2 flex-1">
-    <select name="id_mod_ing" class="{{ $inputClass }}">
-      <option value="" disabled {{ empty($data->id_mod_ing) ? 'selected' : '' }}>Modalidad de ingreso</option>
-      @foreach ($modalidades as $modalidad)
-          <option value="{{ $modalidad->id_mod_ing }}"
-              {{ ($data->id_mod_ing ?? '') == $modalidad->id_mod_ing ? 'selected' : '' }}>
-              {{ $modalidad->c_descri }}
-          </option>
-      @endforeach
-    </select>
+  @php
+    $modalidadSeleccionada = null;
+    foreach ($modalidades as $modalidad) {
+        if (($data->id_mod_ing ?? request('id_mod_ing')) == $modalidad->id_mod_ing) {
+            $modalidadSeleccionada = $modalidad;
+            break;
+        }
+    }
+  @endphp
 
-  
+  <div class="w-full mx-2 flex-1">
+    <!-- Campo visible con nombre de la modalidad -->
+    <input type="text" class="{{ $inputClass }}"
+          value="{{ $modalidadSeleccionada->c_descri ?? '' }}"
+          placeholder="Nombre de la modalidad" readonly>
+
+    <!-- Campo oculto con el ID real -->
+    <input type="hidden" name="id_mod_ing"
+          value="{{ $modalidadSeleccionada->id_mod_ing ?? '' }}">
   </div>
+
+
   <div class="w-full mx-2 flex-1">
     <select name="c_sedcod" class="{{ $inputClass }}">
         <option value="" disabled selected>Sede</option>
@@ -72,20 +90,28 @@
   </div>
 </div>
 
-<!-- Programa de interés -->
-<div class="mt-4 mx-2">
-  <select name="c_codesp1" id="programa_interes" class="{{ $inputClass }}" 
-        data-selected="{{ $data->c_codesp1 ?? '' }}">
-      <option value="" disabled selected>Seleccione el Programa de Interés</option>
-      @foreach ($especialidades as $esp)
-          <option value="{{ $esp->codesp }}"
-            data-codfac="{{ $esp->codfac }}"
-            {{ ($data->c_codesp1 ?? '') == $esp->codesp ? 'selected' : '' }}>
-              {{ $esp->nomesp }}
-          </option>
-      @endforeach
-  </select>
-</div>
+  @php
+    $especialidadSeleccionada = null;
+    foreach ($especialidades as $esp) {
+        if (($data->c_codesp1 ?? request('c_codesp1')) == $esp->codesp) {
+            $especialidadSeleccionada = $esp;
+            break;
+        }
+    }
+  @endphp
+
+  <!-- Programa de interés -->
+  <div class="mt-4 mx-2">
+    <!-- Visible: nombre del programa -->
+    <input type="text" class="{{ $inputClass }}"
+          value="{{ $especialidadSeleccionada->nomesp ?? '' }}"
+          placeholder="Nombre del programa de interés" readonly>
+
+    <!-- Oculto: código de especialidad -->
+    <input type="hidden" name="c_codesp1"
+          value="{{ $especialidadSeleccionada->codesp ?? '' }}">
+  </div>
+
 
 <!-- Fuente de información -->
 <div class="mt-4 mx-2">
@@ -140,7 +166,7 @@
   </div>
 </div>
 
-<script>
+{{-- <script>
 document.addEventListener('DOMContentLoaded', function () {
     const procesoSelect = document.getElementById('proceso_admision');
     const programaSelect = document.getElementById('programa_interes');
@@ -194,4 +220,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-</script>
+</script> --}}

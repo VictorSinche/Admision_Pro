@@ -16,7 +16,7 @@
     @foreach ($documentosRequeridos as $campo)
       @php
         $archivo = $postulante->documentos?->$campo;
-        $bloqueado = $postulante->controlDocumentos?->$campo ?? true;
+        $bloqueado = $postulante->controlDocumentos?->$campo ?? false;
         $label = ucfirst($campo); // Puedes mapearlo a nombres más bonitos si deseas
       @endphp
 

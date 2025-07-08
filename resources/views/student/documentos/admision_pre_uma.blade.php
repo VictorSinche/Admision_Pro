@@ -8,9 +8,6 @@
   {{-- Constancia de estudios --}}
   @foreach ([
       ['constancia', 'Constancia de estudios', 'Certificado o constancia de estudios o documento similar idóneo que acredite los 5 años de estudios de Educación Secundaria'],
-      ['constancianotas', 'Certificado académico', 'Certificado o constancia de notas original firmada por autoridad competente de la universidad de origen.'],
-      ['constmatricula', 'Constancia matrícula', 'Constancia de primera matrícula de primer periodo de la universidad de origen.'],
-      ['syllabus', 'Syllabus visados', 'Certificado o constancia de notas original firmada por autoridad competente de la universidad de origen.']
   ] as [$campo, $label, $tooltip])
 
   @php

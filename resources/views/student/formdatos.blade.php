@@ -17,7 +17,7 @@
 </div>
 
   <div class="w-full mx-2 flex-1 ">
-      <input type="text" name="c_numdoc" placeholder="Nro. Documento" value="{{ $data->c_numdoc ?? '' }}" class="{{ $inputClass }}">
+      <input type="text" name="c_numdoc" placeholder="Nro. Documento" value="{{ $data->c_numdoc ?? '' }}" class="{{ $inputClass }}" readonly>
   </div>
 </div>
 
@@ -38,7 +38,7 @@
 
 <!-- Correo -->
 <div class="mt-4 mx-2">
-  <input type="email" name="c_email" placeholder="Correo Electrónico" value="{{ $data->c_email ?? '' }}" class="{{ $inputClass }}">
+  <input type="email" name="c_email" placeholder="Correo Electrónico" value="{{ $data->c_email ?? '' }}" class="{{ $inputClass }}" readonly>
 </div>
 
 <!-- Dirección -->

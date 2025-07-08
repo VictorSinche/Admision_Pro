@@ -375,16 +375,31 @@ class InfoPostulanteController extends Controller
             'O' => 'alto_rendimiento',
             'D' => 'formulario-traslado-externo',
             'E' => 'formulario-admision-tecnico',
-            //'E' => 'formulario-primer-puesto',
-            //'E' => 'formulario-alto-rendimiento',
             'C' => 'formulario-pre-uma',
+        ];
+
+        $infoLocal = \App\Models\InfoPostulante::where('c_numdoc', $dni)->first();
+
+        $doc = \App\Models\DocumentoPostulante::where('info_postulante_id', $infoLocal?->id)->first();
+
+        $documentosMarcados = [
+            'formulario_inscripcion' => !empty($doc?->formulario),
+            'comprobante_pago' => !empty($doc?->pago),
+            'certificado_estudios' => !empty($doc?->constancia),
+            'copia_dni' => !empty($doc?->dni),
+            'seguro_salud' => !empty($doc?->seguro),
+            'certificado_notas_original' => !empty($doc?->constancianotas),
+            'constancia_primera_matricula' => !empty($doc?->constmatricula),
+            'syllabus_visados' => !empty($doc?->syllabus),
+            'titulo_tecnico' => !empty($doc?->certprofesional),
+            'constancia_colegio' => !empty($doc?->merito),
         ];
 
         $codigo = $postulante->id_mod_ing;
         $modalidad = $mapaModalidades[$codigo] ?? 'default';
         $fecha_actual = Carbon::now()->format('d-m-Y');
 
-        return view('declaracionJurada.formulario', compact('postulante', 'modalidad', 'data', 'ubigeos', 'especialidades', 'fecha_actual'));
+        return view('declaracionJurada.formulario', compact('postulante', 'modalidad', 'data', 'ubigeos', 'especialidades', 'fecha_actual', 'documentosMarcados'));
     }
 
     public function guardarDeclaracion(Request $request)
