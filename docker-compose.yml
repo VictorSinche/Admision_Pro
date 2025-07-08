@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  admision_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: admision_pro_app
+    ports:
+      - "7002:80"  # puerto diferente para evitar choque con libro_reclamaciones
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - admision_db
+
+  admision_db:
+    image: mysql:8.0
+    container_name: admision_pro_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: bd_admision
+      MYSQL_USER: laraveluser
+      MYSQL_PASSWORD: laravelpass
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports:
+      - "3308:3306"  # puerto expuesto distinto
+    volumes:
+      - admision_db_data:/var/lib/mysql
+
+volumes:
+  admision_db_data:

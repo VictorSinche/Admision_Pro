@@ -2,7 +2,7 @@
 
 set -e  # Detiene el script si algún comando falla
 
-echo "📦 Iniciando contenedor Laravel..."
+echo "📦 Iniciando contenedor Laravel con Apache..."
 
 # Verifica permisos
 echo "🔐 Ajustando permisos..."
@@ -16,12 +16,21 @@ else
     echo "✅ Enlace simbólico 'public/storage' ya existe."
 fi
 
+echo "⌛ Esperando que MySQL esté disponible..."
+until nc -z -v -w30 laravel_db 3306
+do
+  echo "⏳ Esperando MySQL..."
+  sleep 5
+done
+echo "✅ MySQL disponible. Continuando..."
+
+
 # Ejecutar migraciones (si no se hicieron en build)
 echo "🛠️  Ejecutando migraciones y seeders..."
 php artisan migrate --force || echo "⚠️  Migraciones fallaron (BD no disponible o ya migrada)"
 php artisan db:seed --force || echo "⚠️  Seeders fallaron (opcional o ya insertados)"
 
-# Limpiar y cachear config
+# Limpiar y cachear configuración
 echo "🧹 Limpiando y cacheando configuración de Laravel..."
 php artisan config:clear
 php artisan route:clear
@@ -38,6 +47,7 @@ touch storage/logs/laravel.log
 # Mostrar logs en background
 tail -f storage/logs/laravel.log &
 
-# Iniciar servidor
-echo "🚀 Ejecutando servidor Laravel en el puerto 8080..."
-exec php -S 0.0.0.0:8080 -t public
+# 🚀 Iniciar Apache
+echo "🚀 Iniciando Apache..."
+exec apache2-foreground
+
