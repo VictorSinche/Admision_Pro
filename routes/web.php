@@ -7,7 +7,7 @@ use App\Http\Controllers\CreatePostulanteController;
 use App\Http\Controllers\DeclaracionJuradaController;
 use App\Http\Controllers\PermisoPostulanteController;
 use App\Http\Controllers\NotificacionController;
-use App\http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EncargadoController;
 use App\Http\Controllers\PeticionesController;
 
