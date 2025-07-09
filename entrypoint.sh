@@ -17,7 +17,7 @@ else
 fi
 
 echo "⌛ Esperando que MySQL esté disponible..."
-until nc -z -v -w30 laravel_db 3306
+until nc -z -v -w30 admision_db 3306
 do
   echo "⏳ Esperando MySQL..."
   sleep 5
