@@ -33,7 +33,7 @@ RUN chown -R www-data:www-data /var/www/html \
 # Copiar script de inicio
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-
+RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 EXPOSE 80
 
 CMD ["/entrypoint.sh"]
