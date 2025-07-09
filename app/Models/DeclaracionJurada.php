@@ -16,7 +16,7 @@ class DeclaracionJurada extends Model
         'certificado_estudios',
         'copia_dni',
         'seguro_salud',
-        'foto_carnet',
+        // 'foto_carnet',
         'certificado_notas_original',
         'constancia_primera_matricula',
         'syllabus_visados',

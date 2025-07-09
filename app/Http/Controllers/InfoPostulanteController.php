@@ -370,9 +370,9 @@ class InfoPostulanteController extends Controller
         }
 
         $mapaModalidades = [
-            'B' => 'primeros_puestos',
+            'B' => 'formulario-primer-puesto',
             'A' => 'formulario-ordinario',
-            'O' => 'alto_rendimiento',
+            'O' => 'formulario-alto-rendimiento',
             'D' => 'formulario-traslado-externo',
             'E' => 'formulario-admision-tecnico',
             'C' => 'formulario-pre-uma',
@@ -559,11 +559,11 @@ class InfoPostulanteController extends Controller
                         ELSE 'NO APLICA'
                     END AS seguro_salud,
 
-                    CASE 
-                        WHEN dj.id_mod_ing IN ('A','C','D','E','R') THEN 
-                            CASE dj.foto_carnet WHEN '1' THEN 'PRESENTÓ' WHEN '0' THEN 'NO PRESENTÓ' END
-                        ELSE 'NO APLICA'
-                    END AS foto_carnet,
+                    --CASE 
+                        --WHEN dj.id_mod_ing IN ('A','C','D','E','R') THEN 
+                            --CASE dj.foto_carnet WHEN '1' THEN 'PRESENTÓ' WHEN '0' THEN 'NO PRESENTÓ' END
+                        --ELSE 'NO APLICA'
+                    --END AS foto_carnet,
 
                     CASE 
                         WHEN dj.id_mod_ing IN ('D','E') THEN 

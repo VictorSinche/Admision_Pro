@@ -144,34 +144,43 @@
 
                 <p class="fw-bold">Para lo cual acompaño la documentación requerida, con la calidad de declaración jurada:</p>
                 <ul class="list-unstyled">
-                    <li class="d-flex align-items-center">
-                        <input id="formulario_inscripcion" type="checkbox" class="form-check-input me-2" name="formulario_inscripcion" value="1">
-                        <label for="formulario_inscripcion">Formulario de inscripción virtual, debidamente llenado.</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input id="comprobante_pago" type="checkbox" class="form-check-input me-2" name="comprobante_pago" value="1">
-                        <label for="comprobante_pago">Copia del comprobante de Pago por Derechos de Inscripción al Concurso de Admisión.</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input id="certificado_estudios" type="checkbox" class="form-check-input me-2" name="certificado_estudios" value="1">
-                        <label for="certificado_estudios">Certificado o constancia de estudios o documento similar idóneo que acredite los 5 años de estudios de Educación Secundaria.</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input id="constancia_colegio" type="checkbox" class="form-check-input me-2" name="constancia_colegio" value="1">
-                        <label for="constancia_colegio">Constancia o resolución original del director del colegio de procedencia que acredite el orden de mérito requerido. (debe haber egresado los dos últimos años inmediatos a la fecha de admisión).</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input id="copia_dni" type="checkbox" class="form-check-input me-2" name="copia_dni" value="1">
-                        <label for="copia_dni">Copia del D.N.I. y de su representante, de ser el caso de menores de edad.</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input id="seguro_salud" type="checkbox" class="form-check-input me-2" name="seguro_salud" value="1">
-                        <label for="seguro_salud">Constancia de seguro de salud (ESSALUD, SIS, seguro particular).</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input id="foto_carnet" type="checkbox" class="form-check-input me-2" name="foto_carnet" value="1">
-                        <label for="foto_carnet">Fotografía tamaño carné sobre fondo blanco.</label>
-                    </li>
+                    @php
+                        $campos = [
+                            'formulario_inscripcion' => 'Formulario de inscripción virtual, debidamente llenado.',
+                            'comprobante_pago' => 'Copia del comprobante de Pago por Derechos de Inscripción al Concurso de Admisión.',
+                            'certificado_estudios' => 'Certificado o constancia de estudios o documento similar idóneo que acredite los 5 años de estudios de Educación Secundaria.',
+                            'constancia_colegio' => 'Constancia o resolución original del director del colegio de procedencia que acredite el orden de mérito requerido. (debe haber egresado los dos últimos años inmediatos a la fecha de admisión).',
+                            'copia_dni' => 'Copia del D.N.I. y de su representante, de ser el caso de menores de edad.',
+                            'seguro_salud' => 'Constancia de seguro de salud (ESSALUD, SIS, seguro particular).',
+                        ];
+                    @endphp
+
+                    <ul class="list-unstyled">
+                        @foreach ($campos as $nombre => $descripcion)
+                            @php
+                                $marcado = old($nombre, $documentosMarcados[$nombre] ?? false);
+                            @endphp
+                            <li class="d-flex align-items-center">
+                                <input type="hidden" name="{{ $nombre }}" value="{{ $marcado ? 1 : 0 }}">
+                                <input id="{{ $nombre }}" type="checkbox"
+                                    class="form-check-input me-2 bloqueado"
+                                    name="{{ $nombre }}_check"
+                                    value="1"
+                                    {{ $marcado ? 'checked' : '' }}>
+                                <label for="{{ $nombre }}" class="bloqueado">{{ $descripcion }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
+
+                    <style>
+                        .bloqueado {
+                            pointer-events: none;
+                            background-color: #ffffff;
+                            border-color: #ffffff;
+                            user-select: none;
+                        }
+                    </style>
+
                 </ul>                
                 <p class="mt-4">
                     En caso de falsedad en lo declarado y de la documentación presentada, me allano a las disposiciones y sanciones que emita la Universidad María Auxiliadora.

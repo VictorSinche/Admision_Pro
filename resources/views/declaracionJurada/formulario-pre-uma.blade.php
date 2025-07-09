@@ -148,39 +148,6 @@
                 </p>
 
                 <p class="fw-bold">Para lo cual acompaño la documentación requerida, con la calidad de declaración jurada:</p>
-                {{-- <ul class="list-unstyled">
-                    <li class="d-flex align-items-center">
-                        <input type="hidden" name="formulario_inscripcion" value="0">
-                        <input id="formulario_inscripcion" type="checkbox" class="form-check-input me-2" name="formulario_inscripcion" value="1">
-                        <label for="formulario_inscripcion">Formulario de inscripción virtual, debidamente llenado.</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input type="hidden" name="comprobante_pago" value="0">
-                        <input id="comprobante_pago" type="checkbox" class="form-check-input me-2" name="comprobante_pago" value="1">
-                        <label for="comprobante_pago">Copia del comprobante de Pago por Derechos de Inscripción al Concurso de Admisión.</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input type="hidden" name="certificado_estudios" value="0">
-                        <input id="certificado_estudios" type="checkbox" class="form-check-input me-2" name="certificado_estudios" value="1">
-                        <label for="certificado_estudios">Certificado o constancia de estudios o documento similar idóneo que acredite los 5 años de estudios de Educación Secundaria.</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input type="hidden" name="copia_dni" value="0">
-                        <input id="copia_dni" type="checkbox" class="form-check-input me-2" name="copia_dni" value="1">
-                        <label for="copia_dni">Copia del D.N.I. y de su representante, de ser el caso de menores de edad.</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input type="hidden" name="seguro_salud" value="0">
-                        <input id="seguro_salud" type="checkbox" class="form-check-input me-2" name="seguro_salud" value="1">
-                        <label for="seguro_salud">Constancia de seguro de salud (ESSALUD, SIS, seguro particular).</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input type="hidden" name="foto_carnet" value="0">
-                        <input id="foto_carnet" type="checkbox" class="form-check-input me-2" name="foto_carnet" value="1">
-                        <label for="foto_carnet">Fotografía tamaño carné sobre fondo blanco.</label>
-                    </li>
-                </ul>                --}}
-
                 @php
                     $campos = [
                         'formulario_inscripcion' => 'Formulario de inscripción virtual, debidamente llenado.',
@@ -188,7 +155,7 @@
                         'certificado_estudios' => 'Certificado o constancia de estudios o documento similar idóneo que acredite los 5 años de estudios de Educación Secundaria.',
                         'copia_dni' => 'Copia del D.N.I. y de su representante, de ser el caso de menores de edad.',
                         'seguro_salud' => 'Constancia de seguro de salud (ESSALUD, SIS, seguro particular).',
-                        'foto_carnet' => 'Fotografía tamaño carné sobre fondo blanco.'
+                        // 'foto_carnet' => 'Fotografía tamaño carné sobre fondo blanco.'
                     ];
                 @endphp
 
@@ -213,7 +180,7 @@
                     .bloqueado {
                         pointer-events: none;
                         background-color: #ffffff;
-                        border-color: #ced4da;
+                        border-color: #ffffff;
                         user-select: none;
                     }
                 </style>

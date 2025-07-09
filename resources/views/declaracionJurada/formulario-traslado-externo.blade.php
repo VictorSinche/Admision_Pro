@@ -149,46 +149,44 @@
                 <p class="fw-bold">Para lo cual acompaño la documentación requerida, con la calidad de declaración jurada:</p>
                 <ul class="list-unstyled">
                     <!-- Elementos comunes -->
-                    <li class="d-flex align-items-center">
-                        <input id="formulario_inscripcion" type="checkbox" class="form-check-input me-2" name="formulario_inscripcion" value="1">
-                        <label for="formulario_inscripcion">Formulario de inscripción virtual, debidamente llenado.</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input type="hidden" name="comprobante_pago" value="0">
-                        <input id="comprobante_pago" type="checkbox" class="form-check-input me-2" name="comprobante_pago" value="1">
-                        <label for="comprobante_pago">Copia del comprobante de Pago por Derechos de Inscripción al Concurso de Admisión.</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input type="hidden" name="copia_dni" value="0">
-                        <input id="copia_dni" type="checkbox" class="form-check-input me-2" name="copia_dni" value="1">
-                        <label for="copia_dni">Copia del D.N.I. y de su representante, de ser el caso de menores de edad.</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input type="hidden" name="seguro_salud" value="0">
-                        <input id="seguro_salud" type="checkbox" class="form-check-input me-2" name="seguro_salud" value="1">
-                        <label for="seguro_salud">Constancia de seguro de salud (ESSALUD, SIS, seguro particular).</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input type="hidden" name="foto_carnet" value="0">
-                        <input id="foto_carnet" type="checkbox" class="form-check-input me-2" name="foto_carnet" value="1">
-                        <label for="foto_carnet">Fotografía tamaño carné sobre fondo blanco.</label>
-                    </li>                
-                    <!-- Elementos únicos del segundo formulario -->
-                    <li class="d-flex align-items-center">
-                        <input type="hidden" name="certificado_notas_original" value="0">
-                        <input id="certificado_notas_original" type="checkbox" class="form-check-input me-2" name="certificado_notas_original" value="1">
-                        <label for="certificado_notas_original">Certificado o constancia de notas original firmada por autoridad competente de la universidad de origen.</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input type="hidden" name="constancia_primera_matricula" value="0">
-                        <input id="constancia_primera_matricula" type="checkbox" class="form-check-input me-2" name="constancia_primera_matricula" value="1">
-                        <label for="constancia_primera_matricula">Constancia de primera matrícula de primer periodo de la universidad de origen.</label>
-                    </li>
-                    <li class="d-flex align-items-center">
-                        <input type="hidden" name="syllabus_visados" value="0">
-                        <input id="syllabus_visados" type="checkbox" class="form-check-input me-2" name="syllabus_visados" value="1">
-                        <label for="syllabus_visados">Syllabus visados.</label>
-                    </li>
+                    @php
+                        $campos = [
+                            'formulario_inscripcion' => 'Formulario de inscripción virtual, debidamente llenado.',
+                            'comprobante_pago' => 'Copia del comprobante de Pago por Derechos de Inscripción al Concurso de Admisión.',
+                            'copia_dni' => 'Copia del D.N.I. y de su representante, de ser el caso de menores de edad.',
+                            'seguro_salud' => 'Constancia de seguro de salud (ESSALUD, SIS, seguro particular).',
+                            'certificado_notas_original' => 'Certificado o constancia de notas original firmada por autoridad competente de la universidad de origen.',
+                            'constancia_primera_matricula' => 'Constancia de primera matrícula de primer periodo de la universidad de origen.',
+                            'syllabus_visados' => 'Syllabus visados.'
+                        ];
+                    @endphp
+
+                    <ul class="list-unstyled">
+                        @foreach ($campos as $nombre => $descripcion)
+                            @php
+                                $marcado = old($nombre, $documentosMarcados[$nombre] ?? false);
+                            @endphp
+                            <li class="d-flex align-items-center">
+                                <input type="hidden" name="{{ $nombre }}" value="{{ $marcado ? 1 : 0 }}">
+                                <input id="{{ $nombre }}" type="checkbox"
+                                    class="form-check-input me-2 bloqueado"
+                                    name="{{ $nombre }}_check"
+                                    value="1"
+                                    {{ $marcado ? 'checked' : '' }}>
+                                <label for="{{ $nombre }}" class="bloqueado">{{ $descripcion }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
+
+                    <style>
+                        .bloqueado {
+                            pointer-events: none;
+                            background-color: #ffffff;
+                            border-color: #ffffff;
+                            user-select: none;
+                        }
+                    </style>
+
                 </ul>
                 
                 <p class="mt-4">

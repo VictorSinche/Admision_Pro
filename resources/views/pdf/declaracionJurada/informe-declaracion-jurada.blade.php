@@ -9,14 +9,6 @@
     <meta charset="UTF-8">
     <title>Declaración Jurada - UMA</title>
     <style>
-        /* body {            
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            color: #000;
-            line-height: 1.8;
-            margin: 20px 25px; 
-        } */
-
         @page {
             size: A4;
             margin: 8.8mm 0 0 0;
@@ -149,7 +141,6 @@
             'certificado_estudios' => 'Certificado o constancia de estudios o documento similar idóneo que acredite los 5 años de estudios de Educación Secundaria.',
             'copia_dni' => 'Copia del D.N.I. y de su representante, de ser el caso de menores de edad.',
             'seguro_salud' => 'Constancia de seguro de salud (ESSALUD, SIS, seguro particular).',
-            'foto_carnet' => 'Fotografía tamaño carné sobre fondo blanco.',
         ],
         'B' => [ // Primeros Puestos
             'formulario_inscripcion' => 'Formulario de inscripción virtual, debidamente llenado.',
@@ -158,7 +149,6 @@
             'constancia_colegio' => 'Constancia o resolución original del director del colegio que acredite el orden de mérito requerido.',
             'copia_dni' => 'Copia del D.N.I. y de su representante.',
             'seguro_salud' => 'Constancia de seguro de salud.',
-            'foto_carnet' => 'Fotografía tamaño carné sobre fondo blanco.',
         ],
         'C' => [ // Pre-UMA
             'formulario_inscripcion' => 'Formulario de inscripción virtual, debidamente llenado.',
@@ -166,7 +156,6 @@
             'certificado_estudios' => 'Certificado o constancia de estudios.',
             'copia_dni' => 'Copia del D.N.I.',
             'seguro_salud' => 'Constancia de seguro de salud.',
-            'foto_carnet' => 'Fotografía tamaño carné sobre fondo blanco.',
         ],
         'D' => [ // Traslado Externo
             'formulario_inscripcion' => 'Formulario de inscripción virtual, debidamente llenado.',
@@ -176,7 +165,6 @@
             'syllabus_visados' => 'Syllabus visados.',
             'copia_dni' => 'Copia del D.N.I.',
             'seguro_salud' => 'Constancia de seguro de salud.',
-            'foto_carnet' => 'Fotografía tamaño carné.',
         ],
         'E' => [ // Técnicos
             'formulario_inscripcion' => 'Formulario de inscripción virtual.',
@@ -188,7 +176,6 @@
             'titulo_tecnico' => 'Título técnico.',
             'copia_dni' => 'Copia del D.N.I.',
             'seguro_salud' => 'Constancia de seguro.',
-            'foto_carnet' => 'Fotografía tamaño carné.',
         ],
         'O' => [ // Alto rendimiento
             'formulario_inscripcion' => 'Formulario de inscripción virtual.',
@@ -197,7 +184,6 @@
             'constancia_colegio' => 'Constancia de promedio de 14 (de 3° a 5° secundaria).',
             'copia_dni' => 'Copia del D.N.I.',
             'seguro_salud' => 'Constancia de seguro de salud.',
-            'foto_carnet' => 'Fotografía tamaño carné.',
         ]
     ];
 
