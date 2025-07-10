@@ -29,7 +29,7 @@
   </div>
   <div class="w-full mx-2 flex-1">
     <select name="c_tippro" class="{{ $inputClass }}">
-      <option value="" disabled>Tipo de institución</option>
+      <option value="" disabled selected>Tipo de institución</option>
       <option value="PAR">Particular</option>
         <option value="EST">Estatal</option>
     </select>
@@ -63,8 +63,8 @@
   </div>
   <div class="w-full mx-2 flex-1">
     <select name="c_sedcod" class="{{ $inputClass }}">
-        <option value="" disabled selected>Sede</option>
-        <option value="1">Principal</option>
+        {{-- <option value="" disabled selected>Sede</option> --}}
+        <option value="1" selected>Principal</option>
     </select>
   </div>
 </div>
@@ -124,7 +124,7 @@
   </div> --}}
   <div class="w-full mx-2 flex-1">
     <select name="c_ietnica" class="{{ $inputClass }}">
-        <option value="" disabled>Identidad Étnica</option>
+        <option value="" disabled selected>Identidad Étnica</option>
         <option value="Q">Quechua</option>
         <option value="A">Aymara</option>
         <option value="N">Nativo o indígena de la Amazonía</option>

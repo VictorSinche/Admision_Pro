@@ -87,6 +87,8 @@ class CreatePostulanteController  extends Controller
                     // Concatenaciones
                     'id_user'        => 'web' . $numDoc,
                     'cod_asesor'     => 'web' . $numDoc,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ]);
 
                 return response()->json(['message' => '¡Registro exitoso!']);

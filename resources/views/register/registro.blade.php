@@ -145,17 +145,18 @@
             const tab = document.getElementById(id);
             tab.classList.toggle('hidden', (index + 1) !== step);
         });
+
         // Permitir clic en los pasos superiores
-        stepItems.forEach(function(item) {
-            item.style.cursor = 'pointer';
-            item.addEventListener('click', function() {
-                const itemStep = parseInt(item.getAttribute('data-step'));
-                if (itemStep <= steps.length) {
-                    step = itemStep;
-                    showStep();
-                }
-            });
-        });
+        // stepItems.forEach(function(item) {
+        //     item.style.cursor = 'pointer';
+        //     item.addEventListener('click', function() {
+        //         const itemStep = parseInt(item.getAttribute('data-step'));
+        //         if (itemStep <= steps.length) {
+        //             step = itemStep;
+        //             showStep();
+        //         }
+        //     });
+        // });
 
         stepItems.forEach(function (item) {
             const itemStep = parseInt(item.getAttribute('data-step'));
@@ -185,16 +186,73 @@
         btnNext.textContent = step === steps.length ? 'Confirmar' : 'Siguiente';
     }
 
+    function validarPasoActual() {
+        let campos = [];
+
+        if (step === 1) {
+            campos = [
+                { name: 'tipo_documento', label: 'Tipo de documento' },
+                { name: 'c_numdoc', label: 'Número de documento' },
+                { name: 'c_nombres', label: 'Nombres' },
+                { name: 'c_apepat', label: 'Apellido paterno' },
+                { name: 'c_apemat', label: 'Apellido materno' },
+                { name: 'c_email', label: 'Correo Electrónico' },
+                { name: 'c_dir', label: 'Dirección' },
+                { name: 'c_sexo', label: 'Genero' },
+                { name: 'd_fecnac', label: 'Fecha de Nacimiento' },
+                { name: 'c_ubigeo', label: 'Ubicación' },
+                { name: 'c_celu', label: 'Celular' }         
+            ];
+        } else if (step === 2) {
+            campos = [
+                // { name: 'c_nomapo', label: 'Nombre del apoderado' },
+                // { name: 'c_dniapo', label: 'DNI del apoderado' },
+                // { name: 'c_celuapo', label: 'Celular del apoderado' }
+            ];
+        } else if (step === 3) {
+            campos = [
+                { name: 'c_anoegreso', label: 'Programa de estudio' },
+                { name: 'c_sedcod', label: 'Sede' },
+                { name: 'c_tippro', label: 'Seleccione Proceso de admisión' },
+                { name: 'id_mod_ing', label: 'Modalidad de ingreso' },
+                { name: 'c_codesp1', label: 'Seleccione el Programa de Interés' },
+                { name: 'id_tab_turno', label: 'Turno' },
+            ];
+        }
+
+        let errores = [];
+
+        campos.forEach(campo => {
+            const input = document.querySelector(`[name="${campo.name}"]`);
+            if (input && !input.value.trim()) {
+                errores.push(`⚠️ ${campo.label} es obligatorio`);
+                input.classList.add('border-red-500');
+            } else if (input) {
+                input.classList.remove('border-red-500');
+            }
+        });
+
+        if (errores.length > 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Campos requeridos incompletos',
+                html: errores.join('<br>'),
+            });
+            return false;
+        }
+
+        return true;
+    }
+
+
     function validarFormulario() {
         const campos = [
-            { name: 'tipo_documento', label: 'Tipo de documento' },
-            { name: 'c_numdoc', label: 'Número de documento' },
-            { name: 'nombres', label: 'Nombres' },
-            { name: 'apellido_paterno', label: 'Apellido paterno' },
-            { name: 'apellido_materno', label: 'Apellido materno' },
-            { name: 'modalidad_ingreso_id', label: 'Modalidad de ingreso' },
-            // { name: 'programa_interes', label: 'Programa de interés' },
-            { name: 'proceso_admision', label: 'Proceso de admisión' }
+            { name: 'c_anoegreso', label: 'Programa de estudio' },
+            { name: 'c_sedcod', label: 'Sede' },
+            { name: 'c_tippro', label: 'Seleccione Proceso de admisión' },
+            { name: 'id_mod_ing', label: 'Modalidad de ingreso' },
+            { name: 'c_codesp1', label: 'Seleccione el Programa de Interés' },
+            { name: 'id_tab_turno', label: 'Turno' },
         ];
 
         let errores = [];
@@ -224,11 +282,12 @@
     if (btnNext) {
         btnNext.addEventListener('click', async function () {
             if (step < steps.length) {
+                if (!validarPasoActual()) return; // Solo avanza si pasa validación
                 step++;
                 showStep();
             } else {
+                if (!validarFormulario()) return; // Último paso
 
-            if(!validarFormulario()) return;
 
                 const form = document.getElementById('formPostulante');
                 const formData = new FormData(form);

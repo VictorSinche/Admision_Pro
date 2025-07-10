@@ -24,6 +24,8 @@ class DeclaracionJurada extends Model
         'constancia_colegio',
         'selectVinculo',
         'universidad_traslado',
+        'fecha_matricula',
+        'modalidad_estudio',
         'anno_culminado',
         'estado',
     ];

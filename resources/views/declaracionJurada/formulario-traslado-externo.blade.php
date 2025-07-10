@@ -210,6 +210,12 @@
                 <li>
                     <b>HE CURSADO</b> de manera satisfactoria mis estudios de nivel superior - profesional en la universidad  
                     <input type="text" id="universidad_traslado" name="universidad_traslado" class="input-line ms-1" style="width: 250px;"> 
+                        <span id="bloqueMatriculaModalidad">
+                            habiendo iniciado dichos estudios en la fecha  
+                            <input type="date" id="fecha_matricula" name="fecha_matricula" class="input-line ms-1" style="width: 180px;">, 
+                            bajo la modalidad  
+                            <input type="text" id="modalidad_estudio" name="modalidad_estudio" class="input-line ms-1" style="width: 200px;">, 
+                        </span>
                     hasta el año  
                     <input type="text" id="anno_culminado" name="anno_culminado" class="input-line ms-1" style="width: 100px;" maxlength="4">.
                 </li>                
