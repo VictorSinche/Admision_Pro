@@ -28,8 +28,8 @@ return new class extends Migration
             $table->string('constancia_colegio')->nullable();
             $table->string('selectVinculo')->nullable();
             $table->string('universidad_traslado')->nullable();
-            $table->string('fecha_matricula')->nullable();
             $table->string('modalidad_estudio')->nullable();
+            $table->date('fecha_matricula')->nullable();
             $table->string('anno_culminado')->nullable();
             $table->unsignedTinyInteger('estado')->default(0); // Opcional: estado global del documento
             $table->timestamps();

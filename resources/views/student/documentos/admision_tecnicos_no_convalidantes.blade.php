@@ -7,9 +7,6 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
   @foreach ([
-    ['constancianotas', 'Certificado de Notas', 'Certificado o constancia de notas en original y firmado por autoridad competente del centro de estudios (de la carrera técnica o profesional).'],
-    // ['constmatricula', 'Constancia de matrícula', 'Constancia de primera matrícula de primer periodo de la institución o universidad.'],
-    ['syllabus', 'Syllabus visados.', 'Syllabus visados.'],
     ['certprofesional', 'Certificado profesional', 'Título técnico o profesional o Constancia de Egresado o Graduado en copia certificada.'],
   ] as [$campo, $label, $tooltip])
 

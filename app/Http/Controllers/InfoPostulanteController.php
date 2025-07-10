@@ -209,8 +209,9 @@ class InfoPostulanteController extends Controller
             'A' => 'ordinario',
             'O' => 'alto_rendimiento',
             'D' => 'translado_externo',
-            'E' => 'admision_tecnicos',
+            //'L' => 'admision_tecnicos_no_convalidantes',
             'C' => 'admision_pre_uma',
+            'L' => 'admision_tecnicos',
         ];
 
         $codigo = $postulante->id_mod_ing;
@@ -220,8 +221,9 @@ class InfoPostulanteController extends Controller
             'A' => 'Ordinario',
             'O' => 'Alto Rendimiento',
             'D' => 'Traslado Externo',
-            'E' => 'Admisión para Técnicos',
+            //'L' => 'Titulos y Graduados no convalidante',
             'C' => 'Admisión Pre-UMA',
+            'L' => 'Titulos y Graduados',
         ][$codigo] ?? 'Desconocida';
 
         $registraDoc = DocumentoPostulante::where('info_postulante_id', $postulante->id)->first();
@@ -247,10 +249,11 @@ class InfoPostulanteController extends Controller
             $documentosPorModalidad = [
                 'A' => ['formulario', 'pago', 'seguro', 'dni', 'constancia' ],
                 'C' => ['formulario', 'pago', 'seguro', 'dni', 'constancia' ],
+                //'L' => ['formulario', 'pago', 'seguro', 'dni', 'certprofesional' ],
                 'B' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito' ],
                 'O' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito' ],
                 'D' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'constmatricula', 'syllabus' ],
-                'E' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'constmatricula', 'syllabus', 'certprofesional' ],
+                'L' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'constmatricula', 'syllabus', 'certprofesional' ],
             ];
 
             $codigo = $postulante->id_mod_ing;
@@ -374,8 +377,9 @@ class InfoPostulanteController extends Controller
             'A' => 'formulario-ordinario',
             'O' => 'formulario-alto-rendimiento',
             'D' => 'formulario-traslado-externo',
-            'E' => 'formulario-admision-tecnico',
+            'L' => 'formulario-admision-tecnico',
             'C' => 'formulario-pre-uma',
+            //'L' => 'formulario-admision-tecnico-no-convalidantes',
         ];
 
         $infoLocal = \App\Models\InfoPostulante::where('c_numdoc', $dni)->first();
@@ -395,11 +399,25 @@ class InfoPostulanteController extends Controller
             'constancia_colegio' => !empty($doc?->merito),
         ];
 
+        $especialidadesValidas = ['S2', 'S1', 'S4', 'E5', 'E7', 'E8', 'E9', 'S7'];
+
+        $codigoEspecialidad = strtoupper(trim($postulante->c_codesp1));
+
+        $mostrarBloqueMatricula = in_array($postulante->id_mod_ing, ['D', 'E'])
+            && !in_array($postulante->c_codesp1, $especialidadesValidas);
+
+        // dd([
+        //     'id_mod_ing' => $postulante->id_mod_ing,
+        //     'c_codesp1' => $postulante->c_codesp1,
+        //     'cod_limpio' => $codigoEspecialidad,
+        //     'mostrarBloqueMatricula' => $mostrarBloqueMatricula,
+        // ]);
+
         $codigo = $postulante->id_mod_ing;
         $modalidad = $mapaModalidades[$codigo] ?? 'default';
         $fecha_actual = Carbon::now()->format('d-m-Y');
 
-        return view('declaracionJurada.formulario', compact('postulante', 'modalidad', 'data', 'ubigeos', 'especialidades', 'fecha_actual', 'documentosMarcados'));
+        return view('declaracionJurada.formulario', compact('postulante', 'modalidad', 'data', 'ubigeos', 'especialidades', 'fecha_actual', 'documentosMarcados', 'mostrarBloqueMatricula'));
     }
 
     public function guardarDeclaracion(Request $request)
@@ -447,7 +465,8 @@ class InfoPostulanteController extends Controller
                     'selectVinculo' => trim($request->input('selectVinculo')),
                     'universidad_traslado' => trim($request->input('universidad_traslado')),
                     'anno_culminado' => trim($request->input('anno_culminado')),
-
+                    'fecha_matricula' => $request->has('fecha_matricula') ? date('Y-m-d', strtotime($request->input('fecha_matricula'))) : null,
+                    'modalidad_estudio' =>trim($request->input('modalidad_estudio')),
                     'estado' => 1,
                 ]
             );

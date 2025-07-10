@@ -121,7 +121,8 @@
             'B' => 'PRIMEROS PUESTOS',
             'C' => 'ADMISIÓN PRE-UMA',
             'D' => 'TRASLADO EXTERNO',
-            'E' => 'TITULADOS O GRADUADOS',
+            'L' => 'TITULADOS O GRADUADOS',
+            // 'L' => 'TITULADOS O GRADUADOS NO CONVALIDANTES',
             'O' => 'ALTO RENDIMIENTO',
         ];
         $textoTipo = $tiposTexto[$declaracion->infoPostulante->id_mod_ing] ?? 'DESCONOCIDO';
@@ -166,17 +167,23 @@
             'copia_dni' => 'Copia del D.N.I.',
             'seguro_salud' => 'Constancia de seguro de salud.',
         ],
-        'E' => [ // Técnicos
+        'L' => [ // Técnicos
             'formulario_inscripcion' => 'Formulario de inscripción virtual.',
             'comprobante_pago' => 'Copia del comprobante de pago.',
             'certificado_notas_original' => 'Certificado de notas original.',
-            'constancia_primera_matricula' => 'Constancia de primera matrícula.',
-            'certificado_estudios' => 'Certificado de estudios técnicos.',
             'syllabus_visados' => 'Syllabus visados.',
             'titulo_tecnico' => 'Título técnico.',
             'copia_dni' => 'Copia del D.N.I.',
             'seguro_salud' => 'Constancia de seguro.',
         ],
+        // 'E' => [ // Técnicos no convalidantes
+        //     'formulario_inscripcion' => 'Formulario de inscripción virtual.',
+        //     'comprobante_pago' => 'Copia del comprobante de pago.',
+        //     'copia_dni' => 'Copia del D.N.I.',
+        //     'seguro_salud' => 'Constancia de seguro.',
+        //     'titulo_tecnico' => 'Título técnico.',
+
+        // ],
         'O' => [ // Alto rendimiento
             'formulario_inscripcion' => 'Formulario de inscripción virtual.',
             'comprobante_pago' => 'Copia del comprobante de pago.',
@@ -226,22 +233,44 @@
         'B' => 'PP',   // Primeros Puestos
         'C' => 'PRE',  // Pre-UMA
         'D' => 'TE',   // Traslado Externo
-        'E' => 'TEC',  // Técnicos
+        'L' => 'TEC',  // Técnicos
+        //'L' => 'TECNO',  // Técnicos no convalidantes
+
         'O' => 'AR',   // Alto Rendimiento
     ];
     $codigo = $declaracion->infoPostulante->id_mod_ing;
     $tipoExtendido = $mapaTipo[$codigo] ?? 'DESCONOCIDO';
+    
+    $especialidadesOcultas = ['S1', 'S2', 'S4', 'S7', 'E5', 'E7', 'E8', 'E9'];
+    $codigoEspecialidad = strtoupper(trim($declaracion->infoPostulante->c_codesp1 ?? ''));
+    $mostrarBloqueMatricula = in_array($codigo, ['D', 'E']) && !in_array($codigoEspecialidad, $especialidadesOcultas);
 @endphp
-
     
 
     <ul>
         @if($tipoExtendido == 'O' || $tipoExtendido == 'PP' || $tipoExtendido == 'AR' || $tipoExtendido == 'PRE')
             <li><b>- HE CULMINADO</b> de manera satisfactoria mis estudios básicos – nivel secundaria en el año {{ $data->c_anoegreso }}.</li>
         @elseif($tipoExtendido == 'TEC')
-            <li><b>- HE CULMINADO</b> de manera satisfactoria mis estudios de nivel superior - técnico o profesional en el año {{ $declaracion->anno_culminado }}.</li>
+            <li>
+                <b>- HE CULMINADO</b> de manera satisfactoria mis estudios de nivel superior - técnico o profesional en el año {{ $declaracion->anno_culminado }}
+                @if($mostrarBloqueMatricula)
+                    , habiendo iniciado dichos estudios en la fecha {{ \Carbon\Carbon::parse($declaracion->fecha_matricula)->format('d/m/Y') }},
+                    bajo la modalidad {{ $declaracion->modalidad_estudio }}.
+                @endif
+            </li>
+        {{-- @elseif($tipoExtendido == 'TE')
+            <li><b>- HE CURSADO</b>  de manera satisfactoria mis estudios de nivel superior - profesional en la universidad  {{ $declaracion->universidad_traslado }} hasta el año {{ $declaracion->anno_culminado }}.</li> --}}
         @elseif($tipoExtendido == 'TE')
-            <li><b>- HE CURSADO</b>  de manera satisfactoria mis estudios de nivel superior - profesional en la universidad  {{ $declaracion->universidad_traslado }} hasta el año {{ $declaracion->anno_culminado }}.</li>
+            <li>
+                <b>- HE CURSADO</b> de manera satisfactoria mis estudios de nivel superior - profesional en la universidad {{ $declaracion->universidad_traslado }}
+                
+                @if($mostrarBloqueMatricula)
+                    , habiendo iniciado dichos estudios en la fecha {{ \Carbon\Carbon::parse($declaracion->fecha_matricula)->format('d/m/Y') }},
+                    bajo la modalidad {{ $declaracion->modalidad_estudio }}
+                @endif
+                
+                hasta el año {{ $declaracion->anno_culminado }}.
+            </li>
         @endif
     
         <li><b>- CUMPLO CON LOS REQUISITOS</b> exigidos por la UNIVERSIDAD MARÍA AUXILIADORA para participar del proceso de admisión 2025-II.</li>
@@ -271,7 +300,8 @@
             'B' => 'PP',   // Primeros Puestos
             'C' => 'PRE',  // Pre-UMA
             'D' => 'TE',   // Traslado Externo
-            'E' => 'TEC',  // Técnicos
+            'L' => 'TEC',  // Técnicos
+            //'E' => 'TECNO',  // Técnicos no convalidantes
             'O' => 'AR',   // Alto Rendimiento
         ];
         $tipoExtendido = $mapaTipo[$data->id_mod_ing] ?? 'DESCONOCIDO';

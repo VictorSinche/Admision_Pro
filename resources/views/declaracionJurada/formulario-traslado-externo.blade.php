@@ -156,7 +156,6 @@
                             'copia_dni' => 'Copia del D.N.I. y de su representante, de ser el caso de menores de edad.',
                             'seguro_salud' => 'Constancia de seguro de salud (ESSALUD, SIS, seguro particular).',
                             'certificado_notas_original' => 'Certificado o constancia de notas original firmada por autoridad competente de la universidad de origen.',
-                            'constancia_primera_matricula' => 'Constancia de primera matrícula de primer periodo de la universidad de origen.',
                             'syllabus_visados' => 'Syllabus visados.'
                         ];
                     @endphp
@@ -209,13 +208,16 @@
             <ul class="mt-3">
                 <li>
                     <b>HE CURSADO</b> de manera satisfactoria mis estudios de nivel superior - profesional en la universidad  
-                    <input type="text" id="universidad_traslado" name="universidad_traslado" class="input-line ms-1" style="width: 250px;"> 
+                    <input type="text" id="universidad_traslado" name="universidad_traslado" class="input-line ms-1" style="width: 250px;">
+                    @if($mostrarBloqueMatricula)
                         <span id="bloqueMatriculaModalidad">
                             habiendo iniciado dichos estudios en la fecha  
                             <input type="date" id="fecha_matricula" name="fecha_matricula" class="input-line ms-1" style="width: 180px;">, 
                             bajo la modalidad  
                             <input type="text" id="modalidad_estudio" name="modalidad_estudio" class="input-line ms-1" style="width: 200px;">, 
                         </span>
+                    @endif
+                                            
                     hasta el año  
                     <input type="text" id="anno_culminado" name="anno_culminado" class="input-line ms-1" style="width: 100px;" maxlength="4">.
                 </li>                

@@ -8,7 +8,6 @@
       ['pago', 'Comprobante de pago', 'Copia del comprobante de pago por Derechos de Inscripción al Concurso.'],
       ['dni', 'DNI del postulante/apoderado', 'Copia del D.N.I. y de su representante, si es menor de edad.'],
       ['seguro', 'Seguro de salud', 'Constancia de seguro de salud (ESSALUD, SIS, privado).'],
-      // ['foto', 'Foto tamaño carné', 'Fotografía tamaño carné sobre fondo blanco.']
   ] as [$campo, $label, $tooltip])
 
   @php
