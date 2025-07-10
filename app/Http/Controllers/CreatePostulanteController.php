@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CredencialesPostulanteMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class CreatePostulanteController  extends Controller
 {
@@ -91,7 +93,15 @@ class CreatePostulanteController  extends Controller
                     'updated_at' => now(),
                 ]);
 
-                return response()->json(['message' => '¡Registro exitoso!']);
+                Mail::to($request->input('c_email'))->send(
+                    new CredencialesPostulanteMail(
+                        $request->input('c_nombres'),
+                        $numDoc,
+                        $request->input('c_email')
+                    )
+                );
+
+                return response()->json(['message' => '¡Registro exitoso! Se enviaron tus credenciales al correo.']);
             } catch (\Exception $e) {
                 return response()->json([
                     'message' => 'Error al registrar al postulante.',

@@ -309,7 +309,11 @@
                             icon: 'success',
                             title: 'Confirmacion exitoso!',
                             text: data.message || 'Tu información fue registrada correctamente.',
+                            confirmButtonText: 'Ir al login',
+                        }).then(()=>{
+                            window.location.href = '/login-postulante'
                         });
+
                     } else {
                     if (data.errors) {
                         const errores = Object.values(data.errors).flat();
