@@ -46,7 +46,10 @@ class CreatePostulanteController  extends Controller
                 $numDoc = $request->input('c_numdoc');
                 $ubigeo = $request->input('c_ubigeo');
 
-                DB::connection('mysql_sigu_permits')->table('sga_tb_adm_cliente')->insert([
+                DB::connection(
+                    // 'mysql_sigu_permits'
+                    'mysql'
+                    )->table('sga_tb_adm_cliente')->insert([
                     'id_fase'        => $request->input('id_face', 1),
                     'id_mod_ing'     => $request->input('id_mod_ing'),
                     'c_apepat'       => $request->input('c_apepat'),

@@ -90,29 +90,32 @@ class InfoPostulanteController extends Controller
                 $validated
             );
 
-            // Guardar en base externa
-            // DB::connection('mysql_sigu_permits')
-            //     ->table('sga_tb_adm_cliente')
-            //     ->updateOrInsert(
-            //         ['c_numdoc' => $validated['c_numdoc']],
-            //         [
-            //             'id_mod_ing'     => $validated['id_mod_ing'],
-            //             'c_apepat'       => $validated['c_apepat'],
-            //             'c_apemat'       => $validated['c_apemat'],
-            //             'c_nombres'      => $validated['c_nombres'],
-            //             'c_email'        => $validated['c_email'],
-            //             'c_dir'          => $validated['c_dir'],
-            //             'c_sexo'         => $validated['c_sexo'],
-            //             'd_fecnac'       => $validated['d_fecnac'] ?? now(),
-            //             'c_celu'         => $validated['c_celu'],
-            //             'c_dptodom'      => $c_dptodom,
-            //             'c_provdom'      => $c_provdom,
-            //             'c_distdom'      => $c_distdom,
-            //         ]
-            //     );
+            //Guardar en base externa
+            DB::connection(
+                // 'mysql_sigu_permits
+                'mysql'
+                )
+                ->table('sga_tb_adm_cliente')
+                ->updateOrInsert(
+                    ['c_numdoc' => $validated['c_numdoc']],
+                    [
+                        'id_mod_ing'     => $validated['id_mod_ing'],
+                        'c_apepat'       => $validated['c_apepat'],
+                        'c_apemat'       => $validated['c_apemat'],
+                        'c_nombres'      => $validated['c_nombres'],
+                        'c_email'        => $validated['c_email'],
+                        'c_dir'          => $validated['c_dir'],
+                        'c_sexo'         => $validated['c_sexo'],
+                        'd_fecnac'       => $validated['d_fecnac'] ?? now(),
+                        'c_celu'         => $validated['c_celu'],
+                        'c_dptodom'      => $c_dptodom,
+                        'c_provdom'      => $c_provdom,
+                        'c_distdom'      => $c_distdom,
+                    ]
+                );
 
-            //     // Guardar en sesión
-            // session(['c_numdoc' => $validated['c_numdoc']]);
+                // Guardar en sesión
+            session(['c_numdoc' => $validated['c_numdoc']]);
 
             // Logging de cambios
             if ($postulante->wasRecentlyCreated) {
@@ -158,7 +161,10 @@ class InfoPostulanteController extends Controller
             return redirect()->route('login.postulante')->with('error', 'Inicia sesión para continuar');
         }
 
-        $postulante = DB::connection('mysql_sigu')
+        $postulante = DB::connection(
+            // 'mysql_sigu'
+            'mysql'
+            )
             ->table('sga_tb_adm_cliente')
             ->where('c_numdoc', $dni)
             ->first();
@@ -348,7 +354,10 @@ class InfoPostulanteController extends Controller
             return redirect()->route('login.postulante')->with('error', 'Inicia sesión para continuar');
         }
 
-        $postulante = DB::connection('mysql_sigu')
+        $postulante = DB::connection(
+            // 'mysql_sigu'
+            'mysql'
+            )
             ->table('sga_tb_adm_cliente')
             ->where('c_numdoc', $dni)
             ->first();

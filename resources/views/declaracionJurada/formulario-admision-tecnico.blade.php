@@ -178,23 +178,14 @@
                             </li>
                         @endforeach
                     </ul>
-
                     <style>
                         .bloqueado {
                             pointer-events: none;
                             background-color: white; /* más visible */
-                            
                             user-select: none;
                         }
-
-                        .bloqueado:checked {
-                            /* box-shadow: inset 0 0 0 1px #6c757d; */
-                        }
                     </style>
-
-
                 </ul>
-                
                 <p class="mt-4">
                     En caso de falsedad en lo declarado y de la documentación presentada, me allano a las disposiciones y sanciones que emita la Universidad María Auxiliadora.
                 </p>

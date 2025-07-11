@@ -64,7 +64,10 @@ class PostulanteLoginController extends Controller
             return back()->with('error', '❌ Credenciales inválidas (admin).');
         } else {
             // 🔐 POSTULANTE: buscar por DNI
-            $postulante = DB::connection('mysql_sigu')
+            $postulante = DB::connection(
+                // 'mysql_sigu'
+                'mysql'
+                )
                 ->table('sga_tb_adm_cliente')
                 ->where('c_numdoc', $input)
                 ->first();
