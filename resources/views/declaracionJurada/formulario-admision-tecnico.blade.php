@@ -182,11 +182,16 @@
                     <style>
                         .bloqueado {
                             pointer-events: none;
-                            background-color: #ffffff;
-                            border-color: #ffffff;
+                            background-color: white; /* más visible */
+                            
                             user-select: none;
                         }
+
+                        .bloqueado:checked {
+                            /* box-shadow: inset 0 0 0 1px #6c757d; */
+                        }
                     </style>
+
 
                 </ul>
                 
