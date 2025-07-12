@@ -363,7 +363,10 @@ class InfoPostulanteController extends Controller
             ->first();
 
         // 🔁 Ahora tomamos la data completa desde mysql_sigu
-        $data = DB::connection('mysql_sigu')
+        $data = DB::connection(
+            // 'mysql_sigu'
+            'mysql'
+            )
             ->table('sga_tb_adm_cliente')
             ->where('c_numdoc', $dni)
             ->first();
