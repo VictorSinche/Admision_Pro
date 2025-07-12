@@ -383,16 +383,6 @@
     function cerrarModal() {
         document.getElementById('modalnotificacion').classList.add('hidden');
     }
-    // function enviarNotificacion() {
-    //     const motivo = document.getElementById('motivo').value;
-    //     if (motivo.trim() === '') {
-    //         alert('Por favor, especifica qué documentos no son válidos.');
-    //         return;
-    //     }
-    //     console.log("Notificando: " + motivo);
-    //     cerrarModal();
-    //     alert('Notificación enviada correctamente.');
-    // }
 </script>
 
 <script>

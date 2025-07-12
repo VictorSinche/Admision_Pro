@@ -695,8 +695,7 @@ class InfoPostulanteController extends Controller
     */
     public function listarPostulantes()
     {
-        $postulantes = InfoPostulante::with('verificacion')->get();
-        $postulantes = InfoPostulante::paginate(10);
+        $postulantes = InfoPostulante::with('verificacion')->paginate(10);
 
         return view('admision.validarDocs.validardocpostulantes', compact('postulantes'));
     }
