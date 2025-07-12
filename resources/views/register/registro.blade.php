@@ -41,6 +41,36 @@
 </nav>
 
 <div class="p-4 min-h-screen">
+{{--  lOADER --}}
+<div id="loader-wrapper" class="hidden fixed inset-0 z-[9999] bg-white/80 flex flex-col justify-center items-center">
+    <img src="/uma/img/logo-uma.png" alt="Cargando UMA" class="w-16 h-16 mb-4 animate-pulse" />
+    <div class="loader"></div>
+    <p class="text-sm text-gray-700 mt-2">Cargando, por favor espera...</p>
+</div>
+
+<style>
+    .loader {
+        width: 120px;
+        height: 22px;
+        border-radius: 20px;
+        color: #e72352;
+        border: 2px solid;
+        position: relative;
+    }
+    .loader::before {
+        content: "";
+        position: absolute;
+        margin: 2px;
+        inset: 0 100% 0 0;
+        border-radius: inherit;
+        background: currentColor;
+        animation: l6 2s infinite;
+    }
+    @keyframes l6 {
+        100% { inset: 0 }
+    }
+</style>
+{{--  ENDlOADER --}}
     <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14 bg-white shadow-md">
         <div class="mt-5 text-left bg-white shadow-lg border border-gray-300 rounded-lg p-6">
             <div class="mx-4 p-4">
@@ -106,7 +136,6 @@
     </div>
 </div>
 
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const dropdownToggles = document.querySelectorAll('[data-dropdown-toggle]');
@@ -128,6 +157,15 @@
             });
         });
     });
+</script>
+
+<script>
+    function mostrarLoader() {
+        document.getElementById('loader-wrapper').classList.remove('hidden');
+    }
+    function ocultarLoader() {
+        document.getElementById('loader-wrapper').classList.add('hidden');
+    }
 </script>
 
 <script>
@@ -287,7 +325,7 @@
                 showStep();
             } else {
                 if (!validarFormulario()) return; // Último paso
-
+                mostrarLoader()
 
                 const form = document.getElementById('formPostulante');
                 const formData = new FormData(form);
@@ -303,7 +341,9 @@
                     });
 
                     const data = await response.json();
+                    ocultarLoader(
 
+                    )
                     if (response.ok) {
                         Swal.fire({
                             icon: 'success',
@@ -344,6 +384,7 @@
                         }
                     }
                 } catch (error) {
+                    ocultarLoader()
                     console.error('Error en la solicitud:', error);
                     Swal.fire({
                         icon: 'error',

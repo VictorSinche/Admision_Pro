@@ -69,7 +69,7 @@ public function rechazoDocumentos(Request $request)
             ]);
         }
 
-        return response()->json(['message' => 'Correo y WhatsApp enviados exitosamente']);
+        return response()->json(['message' => 'Correo enviado exitosamente']);
     } catch (\Exception $e) {
         Log::error("❌ Error al enviar notificación: " . $e->getMessage());
         return response()->json(['message' => 'Error al enviar notificación'], 500);

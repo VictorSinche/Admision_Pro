@@ -1,4 +1,6 @@
 <script src="https://cdn.tailwindcss.com"></script>
+<title>Admisión Cachimbos - Universidad María Auxiliadora</title>
+<link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
 
 <!-- fondo con imagen -->
 <div class="relative flex h-screen w-full items-center justify-center bg-gray-900 bg-cover bg-no-repeat" style="background-image:url('uma/img/of_uma.jpeg')">
@@ -11,7 +13,7 @@
     <div class="text-white">
       <div class="mb-8 flex flex-col items-center">
         {{-- <img src="uma/img/logo.png" width="150" alt="" /> --}}
-        <h1 class="mb-2 text-2xl font-bold">Admisión</h1>
+        <h1 class="mb-2 text-2xl font-bold">ADMISION CACHIMBOS</h1>
         <span class="text-gray-300 font">Introducir datos de acceso</span>
       </div>
       <form method="POST" action="{{ route('login.postulante.submit') }}">

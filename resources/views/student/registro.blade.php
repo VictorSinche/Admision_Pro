@@ -39,7 +39,10 @@
 
 <div class="mt-0 text-left bg-white shadow-lg border border-gray-300 rounded-lg p-6">
     <h1 class="text-2xl font-bold mb-4">
-        ¡Hola, <span class="text-[#e72352]">Victor Sinche</span>!
+        ¡Hola, 
+        <span class="text-[#e72352]">
+          {{ Str::title(session('nombre_completo') ?? 'Postulante') }}
+        </span>!
     </h1>      
   <p class="text-gray-600 text-lg">
       Por favor, revisa cuidadosamente la información que se muestra a continuación. Si detectas algún error, actualízala antes de continuar con el proceso.

@@ -8,7 +8,7 @@
 
 <link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
 
-<title>UMA | INFORMES</title>
+<title>UMA | ADMISION CACHIMBOS</title>
 
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

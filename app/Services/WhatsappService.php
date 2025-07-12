@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Log;
 
 class WhatsappService
 {
-    protected $token = 'EAAKKeFEWmXcBOwwpx7hLxkK4nwIITXCGuc2zApIbZBaZBGVEPHpd00jhqisnW2ZBQ8josPsZBifZBkk59d9FOCCdeAT0hjGBxJKkUmbyXe7aQZCZBwLcsMuc1bYk7QTmdZBZBxTXuIp6uTEfhPabhTMsXyTCbEztCm9o8ZAeLFhuV2Ho2ZA9zRIIOkjZAFRY7syZAIZCOXhgZDZD';
-    protected $phoneId = '708063022385698';
+    protected $token = '';
+    protected $phoneId = '';
 
     public function enviarMensaje($telefono, $nombre, $documentos)
     {
