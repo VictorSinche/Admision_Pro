@@ -34,7 +34,10 @@ public function descargarDeclaracionJuradaPDF($dni = null)
         return redirect()->back()->with('error', 'No se encontró la declaración jurada.');
     }
 
-    $data = DB::connection('mysql_sigu')
+    $data = DB::connection(
+        // 'mysql_sigu'
+        'mysql'
+        )
         ->table('sga_tb_adm_cliente')
         ->where('c_numdoc', $dni)
         ->first();
