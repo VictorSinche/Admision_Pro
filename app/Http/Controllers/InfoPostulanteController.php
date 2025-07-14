@@ -668,25 +668,33 @@ class InfoPostulanteController extends Controller
         try {
             $postulante = InfoPostulante::where('c_numdoc', $dni)->firstOrFail();
             $documentos  = DocumentoPostulante::where('info_postulante_id', $postulante->id)->first();
+
             if (!$documentos) {
                 $documentosFiltrados = collect();
             } else {
                 $documentosFiltrados = collect($documentos->getAttributes())
                     ->filter(fn ($valor, $campo) =>
                         $campo !== 'estado' &&
-                        !in_array($campo, ['id','info_postulante_id','created_at','updated_at']) &&
+                        !in_array($campo, ['id', 'info_postulante_id', 'created_at', 'updated_at']) &&
                         $valor
                     );
             }
+
+            // ✅ Añadir modalidad
+            $documentosFiltrados['id_mod_ing'] = $postulante->id_mod_ing;
+
+            // ✅ Declaración jurada
             $tieneDJ = DeclaracionJurada::whereHas('infoPostulante', function ($q) use ($dni) {
-                            $q->where('c_numdoc', $dni);
-                    })->exists();
+                $q->where('c_numdoc', $dni);
+            })->exists();
+
             if ($tieneDJ) {
                 $documentosFiltrados['declaracion_jurada'] = true;
             }
+
             return response()->json($documentosFiltrados);
         } catch (\Exception $e) {
-            Log::error("❌ Error documentosJson: ".$e->getMessage());
+            Log::error("❌ Error documentosJson: " . $e->getMessage());
             return response()->json(['error' => 'No se pudo cargar los documentos'], 500);
         }
     }
@@ -712,7 +720,7 @@ class InfoPostulanteController extends Controller
     {
         $request->validate([
             'dni' => 'required|string',
-            'campo' => 'required|in:formulario,pago,dni,seguro,dj,constancia,merito,constancianotas,constmatricula,syllabus,certprofesional',
+            'campo' => 'required|in:formulario,pago,dni,seguro,constancia,merito,constancianotas,constmatricula,syllabus,certprofesional',
             'estado' => 'required|in:0,1,2',
         ]);
 
@@ -723,7 +731,14 @@ class InfoPostulanteController extends Controller
 
         $verificacion->{$request->campo} = $request->estado;
         $verificacion->save();
-        $camposRequeridos = ['formulario', 'pago', 'dni', 'seguro', 'dj', 'constancia', 'merito', 'constancianotas', 'constmatricula', 'syllabus', 'certprofesional'];
+
+        // Lista sin 'dj'
+        $camposRequeridos = [
+            'formulario', 'pago', 'dni', 'seguro',
+            'constancia', 'merito', 'constancianotas',
+            'constmatricula', 'syllabus', 'certprofesional'
+        ];
+
         $valores = collect($camposRequeridos)->map(fn($campo) => $verificacion->{$campo});
 
         if ($valores->every(fn($v) => $v === 2)) {
@@ -731,7 +746,7 @@ class InfoPostulanteController extends Controller
         } elseif ($valores->contains(0)) {
             $verificacion->estado = 1; // Pendiente
         } else {
-            $verificacion->estado = 1; // Incompleto (pero ya revisado)
+            $verificacion->estado = 1; // Incompleto (pero revisado)
         }
 
         $verificacion->save();

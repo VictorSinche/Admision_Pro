@@ -33,7 +33,7 @@ class EncargadoController extends Controller
             'A' => 'Ordinario',
             'O' => 'Alto Rendimiento',
             'D' => 'Traslado Externo',
-            'E' => 'Admisión para Técnicos',
+            'L' => 'Titulos y Graduados',
             'C' => 'Admisión Pre-UMA',
         ][$codigo] ?? 'Desconocida';
 
@@ -41,10 +41,11 @@ class EncargadoController extends Controller
         $documentosPorModalidad = [
             'A' => ['formulario', 'pago', 'seguro', 'dni', 'constancia' ],
             'C' => ['formulario', 'pago', 'seguro', 'dni', 'constancia' ],
+            //'L' => ['formulario', 'pago', 'seguro', 'dni', 'certprofesional' ],
             'B' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito' ],
             'O' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito' ],
-            'D' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'constmatricula', 'syllabus' ],
-            'E' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'constmatricula', 'syllabus', 'certprofesional' ],
+            'D' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus' ],
+            'L' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus', 'certprofesional' ],
         ];
 
         $documentosRequeridos = $documentosPorModalidad[$codigo] ?? [];

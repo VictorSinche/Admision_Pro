@@ -264,41 +264,50 @@
 </script>
 
 <script>
-    function abrirModalDocumentos(dni) {
-        fetch(`/documentos-json/${dni}`)
-            .then(res => res.json())
-            .then(data => {
-                const select = document.getElementById('select-doc');
-                select.setAttribute('data-dni', dni);
-                select.innerHTML = `<option value="" disabled selected>Seleccione un documento</option>`;
+function abrirModalDocumentos(dni) {
+    const camposPorModalidad = {
+        'A': ['formulario', 'pago', 'seguro', 'dni', 'constancia'],
+        'C': ['formulario', 'pago', 'seguro', 'dni', 'constancia'],
+        'B': ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito'],
+        'O': ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito'],
+        'D': ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus'],
+        'L': ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus', 'certprofesional']
+    };
 
-                Object.entries(data).forEach(([campo, ruta]) => {
-                    if (campo !== 'declaracion_jurada' && ruta) {
-                        const option = document.createElement('option');
-                        option.value = ruta;
-                        option.text  = campo.toUpperCase();
-                        option.setAttribute('data-campo', campo);
-                        select.appendChild(option);
-                    }
-                });
+    fetch(`/documentos-json/${dni}`)
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById('select-doc');
+            select.setAttribute('data-dni', dni);
+            select.innerHTML = `<option value="" disabled selected>Seleccione un documento</option>`;
 
-                if (data.declaracion_jurada) {
-                    const rutaDJ  = `/declaracion-jurada/pdf/${dni}`;
-                    const option  = document.createElement('option');
-                    option.value  = rutaDJ;
-                    option.text   = 'DECLARACIÓN JURADA';
-                    option.setAttribute('data-campo', 'dj');
-                    select.appendChild(option);
+            const modalidad = data.id_mod_ing; // Asegúrate que el backend lo retorne
+            const campos = camposPorModalidad[modalidad] || [];
+
+            campos.forEach(campo => {
+                const ruta = data[campo] ?? ''; // si no existe, será vacío
+                const option = document.createElement('option');
+                option.text = campo.toUpperCase();
+                option.setAttribute('data-campo', campo);
+
+                if (ruta) {
+                    option.value = ruta;
+                } else {
+                    option.value = '#'; // valor falso
+                    option.setAttribute('data-inexistente', '1');
                 }
 
-                document.getElementById('preview-doc').innerHTML = `<span>Selecciona un documento para visualizar</span>`;
-                document.getElementById('modal-documentos').classList.remove('hidden');
-            })
-            .catch(err => {
-                console.error(err);
-                alert('Error al cargar documentos.');
+                select.appendChild(option);
             });
-    }
+
+            document.getElementById('preview-doc').innerHTML = `<span>Selecciona un documento para visualizar</span>`;
+            document.getElementById('modal-documentos').classList.remove('hidden');
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Error al cargar documentos.');
+        });
+}
 
     function cerrarModalDocumentos() {
         document.getElementById('modal-documentos').classList.add('hidden');
@@ -308,17 +317,26 @@
         const select = document.getElementById('select-doc');
         const ruta = select.value;
         const dni = select.getAttribute('data-dni');
+        const campo = select.options[select.selectedIndex].getAttribute('data-campo');
+        const esInexistente = select.options[select.selectedIndex].getAttribute('data-inexistente') === '1';
+
+        const container = document.getElementById('preview-doc');
+        container.innerHTML = '';
+
+        if (esInexistente || !ruta) {
+            container.innerHTML = `<div class="text-center text-red-600 text-sm">⚠️ El postulante no ha subido este documento.</div>`;
+            document.getElementById('acciones-validacion').classList.add('hidden');
+            return;
+        }
+
         let ext = '';
-        
         if (ruta.includes('/declaracion-jurada/pdf')) {
             ext = 'pdf';
         } else {
             ext = ruta.split('.').pop().toLowerCase();
         }
 
-        const container = document.getElementById('preview-doc');
         const fullRuta = ruta.startsWith('/declaracion-jurada/pdf') ? ruta : `/storage/postulantes/${dni}/${ruta}`;
-        container.innerHTML = '';
 
         if (ext === 'pdf') {
             container.innerHTML = `<iframe src="${fullRuta}" class="w-full h-96 border rounded" frameborder="0"></iframe>`;
@@ -328,15 +346,27 @@
             container.innerHTML = `<a href="${fullRuta}" target="_blank" class="text-blue-600 underline">Ver/descargar documento</a>`;
         }
 
-        // Mostrar los botones de validar
+        // Mostrar botones de validación solo si existe el archivo
         document.getElementById('acciones-validacion').classList.remove('hidden');
     }
+
 
     // ✅ Ahora la función validarDocumento está fuera y es accesible globalmente
     function validarDocumento(valido) {
         const select = document.getElementById('select-doc');
         const campo = select.options[select.selectedIndex].getAttribute('data-campo');
         const dni = select.getAttribute('data-dni');
+        const esInexistente = select.options[select.selectedIndex].getAttribute('data-inexistente') === '1';
+
+        if (esInexistente) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Este documento no fue subido por el postulante',
+                text: 'No se puede validar un documento inexistente.',
+                confirmButtonColor: '#d33'
+            });
+            return;
+        }
 
         const fila = document.querySelector(`tr[data-dni="${dni}"]`);
         if (!fila) return;
@@ -378,9 +408,9 @@
         .then(res => res.json())
         .then(() => {
             Swal.fire({
-            title: "¡Validación registrada correctamente!",
-            icon: "success",
-            draggable: true
+                title: "¡Validación registrada correctamente!",
+                icon: "success",
+                confirmButtonColor: "#3085d6"
             });
         })
         .catch(err => {

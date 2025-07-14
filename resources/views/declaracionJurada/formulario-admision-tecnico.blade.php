@@ -205,7 +205,6 @@
             </p>
 
             <ul class="mt-3">                
-                <p><strong>Debug Vista:</strong> mostrarBloqueMatricula = {{ $mostrarBloqueMatricula ? 'Sí' : 'No' }}</p>
                 <li>
                     <b>HE CULMINADO</b> de manera satisfactoria mis estudios de nivel superior - técnico o profesional en el año 
                     <input type="text" id="anno_culminado" name="anno_culminado" class="input-line ms-1 " style="width: 60px;" maxlength="4">
