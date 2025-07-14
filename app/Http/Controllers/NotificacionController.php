@@ -22,11 +22,21 @@ public function rechazoDocumentos(Request $request)
     try {
         $postulante = InfoPostulante::where('c_numdoc', $request->dni)->firstOrFail();
 
-        $todosLosCampos = ['formulario', 'pago', 'dni', 'seguro', 'dj'];
+        $camposPorModalidad = [
+                        'A' => ['formulario', 'pago', 'seguro', 'dni', 'constancia' ],
+                        'C' => ['formulario', 'pago', 'seguro', 'dni', 'constancia' ],
+                        //'L' => ['formulario', 'pago', 'seguro', 'dni', 'certprofesional' ],
+                        'B' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito' ],
+                        'O' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito' ],
+                        'D' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus' ],
+                        'L' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus', 'certprofesional' ],
+                    ];
+        $modalidad = $postulante->id_mod_ing;
+        $campos = $camposPorModalidad[$modalidad] ?? []; 
         $verificacion = $postulante->verificacion;
         $estados = [];
 
-        foreach ($todosLosCampos as $campo) {
+        foreach ($campos as $campo) {
             $valor = $verificacion ? $verificacion->$campo : null;
 
             if ($valor === 0) {
@@ -46,7 +56,7 @@ public function rechazoDocumentos(Request $request)
             $request->motivo ?? '',
             $request->documentos,
             $estados,
-            $todosLosCampos
+            $campos
         ));
 
         // Enviar WhatsApp

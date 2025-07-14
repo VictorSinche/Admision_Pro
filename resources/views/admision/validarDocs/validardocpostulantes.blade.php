@@ -15,7 +15,7 @@
 <!-- component -->
 <div class="max-w-[100%] mx-auto">
     <div class="relative flex flex-col w-full h-full text-slate-700 bg-white shadow-md rounded-xl bg-clip-border">
-        <div class="relative mx-4 mt-4 overflow-hidden text-slate-700 bg-white rounded-none bg-clip-border">
+        <div class="relative mx-4 mt-4 overflow-visible text-slate-700 bg-white rounded-none bg-clip-border">
             <div class="flex items-center justify-between ">
                 <div>
                     <h3 class="text-lg font-semibold text-slate-800">Validar Documentos</h3>
@@ -40,261 +40,59 @@
                 </div>
             </div>
         </div>
-        <div class="p-0 overflow-scroll">
-            <table class="w-full mt-4 text-left table-auto min-w-max">
-                <thead>
-                    <tr>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                        Nro
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                        DNI
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm font-normal leading-none text-slate-500">
-                        Nombre Completo
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Carrera
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Mod. Ingreso
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Ver docs.
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Formulario
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Pago
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        DNI
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Seguro
-                        </svg>
-                        </p>
-                    </th>
-                    {{-- <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Foto
-                        </svg>
-                        </p>
-                    </th> --}}
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        DJ
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Acciones
-                        </p>
-                    </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($postulantes as $i => $postulante)
-                        <tr data-dni="{{ $postulante->c_numdoc }}">
-                            <td class="p-4 border-b border-slate-200">
-                                <div class="flex flex-col">
-                                    <p class="text-sm font-semibold text-slate-700">
-                                        {{ $i + 1 }}
-                                    </p>
-                                </div>
-                            </td>
-                            <td class="p-4 border-b border-slate-200">
-                                <div class="flex flex-col">
-                                    <p class="text-sm font-semibold text-slate-700">
-                                        {{ $postulante->c_numdoc }}</td>
-                                    </p>
-                                </div>
-                            <td class="p-4 border-b border-slate-200">
-                                <div class="flex flex-col">
-                                    <p class="text-sm font-semibold text-slate-700">
-                                        {{ Str::title($postulante->c_nombres . ' ' . $postulante->c_apepat . ' ' . $postulante->c_apemat) }}</td>
-                                    </p>
-                                </div>
-                            <td class="p-4 border-b border-slate-200">
-                                <div class="flex flex-col">
-                                    <p class="text-sm font-semibold text-slate-700" title="{{ $postulante->nomesp }}">
-                                        {{ \Illuminate\Support\Str::limit($postulante->nomesp, 20, '...') }}
-                                    </p>
-                                </div>
-                            </td>
-                            @php
-                                $codigo = $postulante->id_mod_ing;
-                                $nombreModalidad = [
-                                    'B' => 'Primeros Puestos',
-                                    'A' => 'Ordinario',
-                                    'O' => 'Alto Rendimiento',
-                                    'D' => 'Traslado Externo',
-                                    'E' => 'Admisión para Técnicos',
-                                    'C' => 'Admisión Pre-UMA',
-                                ][$codigo] ?? 'Desconocida';
-                            @endphp
-                            <td class="p-4 border-b border-slate-200">
-                                <div class="flex flex-col">
-                                    <p class="text-sm font-semibold text-slate-700">
-                                        {{ $nombreModalidad }}
-                                    </p>
-                                </div>
-                            </td>
-                            <td class="p-4 border-b border-slate-200 text-center">
-                                <a href="javascript:void(0);" onclick="abrirModalDocumentos('{{ $postulante->c_numdoc }}')" class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-yellow-600 rounded hover:bg-yellow-700 transition">
-                                    <i class="fa-solid fa-folder-open"></i>
-                                </a>
-                            </td>
-                            @php $verif = $postulante->verificacion; @endphp
+        {{-- Pestañas de modalidades --}}
+        <div class="flex items-center gap-4 mt-4 px-4">
+            <label for="selectorModalidad" class="text-sm font-medium text-slate-700">Selecciona la modalidad:</label>
+            <select id="selectorModalidad" onchange="mostrarModalidadSelect(this)" class="border border-slate-300 text-sm rounded px-3 py-2">
+                <option value="C">Pre-UMA</option>
+                <option value="B">Primeros Puestos</option>
+                <option value="A">Ordinarios</option>
+                <option value="O">Alto rendimiento</option>
+                <option value="D">Traslado Externo</option>
+                <option value="L">Titulados y graduados</option>
 
-                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->formulario ?? 'null' }}" data-campo="formulario">
-                                {!! mostrarIconoVerificacion($verif->formulario ?? null) !!}
-                            </td>
-                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->pago ?? 'null' }}" data-campo="pago">
-                                {!! mostrarIconoVerificacion($verif->pago ?? null) !!}
-                            </td>
-                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->dni ?? 'null' }}" data-campo="dni">
-                                {!! mostrarIconoVerificacion($verif->dni ?? null) !!}
-                            </td>
-                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->seguro ?? 'null' }}" data-campo="seguro">
-                                {!! mostrarIconoVerificacion($verif->seguro ?? null) !!}
-                            </td>
-                            {{-- <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->foto ?? 'null' }}" data-campo="foto">
-                                {!! mostrarIconoVerificacion($verif->foto ?? null) !!} --}}
-                            </td>
-                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->dj ?? 'null' }}" data-campo="dj">
-                                {!! mostrarIconoVerificacion($verif->dj ?? null) !!}
-                            </td>
-                                <td class="p-4 border-b border-slate-200 text-center">
-                                    <div class="flex gap-2 justify-center">
-                                        @if($postulante->verificacion && $postulante->verificacion->notificado)
-                                            <a href="javascript:void(0);"
-                                                title="Reenviar notificación"
-                                                onclick="confirmarReenvio('{{ $postulante->c_numdoc }}')"
-                                                class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-yellow-500 rounded hover:bg-yellow-600 transition">
-                                                <i class="fa-solid fa-envelope-circle-check"></i>
-                                            </a>
-                                        @else
-                                            <a href="javascript:void(0);"
-                                                onclick="abrirModalNotificacion('{{ $postulante->c_numdoc }}')"
-                                                data-accion="notificar"
-                                                title="Notificar"
-                                                class="inline-flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition">
-                                                <i class="fa-solid fa-paper-plane" data-icono></i>
-                                            </a>
-                                        @endif
-                                    </div>
-                                </td>
-                        </tr>
-                    {{-- </form> --}}
-                    @endforeach
-                </tbody>
-            </table>
+                {{-- Agrega más modalidades si deseas --}}
+            </select>
         </div>
-        <div class="flex items-center justify-between p-3">
-            <p class="block text-sm text-slate-500">
-                Página {{ $postulantes->currentPage() }} de {{ $postulantes->lastPage() }}
-            </p>
+        {{-- colocar aqui los includes --}}
+        <div id="contenedor-tablas">
+            <div class="modalidad-tab" data-mod="C">
+                @include('admision.validarDocs.pormodalidad.preuma', [
+                    'postulantesModalidad' => $preuma
+                ])
+            </div>
 
-            <div class="flex gap-1">
-                {{-- Botón Anterior --}}
-                @if ($postulantes->onFirstPage())
-                    <span class="rounded border border-slate-300 py-2.5 px-3 text-xs font-semibold text-slate-400 cursor-not-allowed">
-                        Anterior
-                    </span>
-                @else
-                    <a href="{{ $postulantes->previousPageUrl() }}" class="rounded border border-slate-300 py-2.5 px-3 text-xs font-semibold text-slate-600 hover:opacity-75">
-                        Anterior
-                    </a>
-                @endif
+            <div class="modalidad-tab hidden" data-mod="B">
+                @include('admision.validarDocs.pormodalidad.primerosPuestos', [
+                    'postulantesModalidad' => $primeros
+                ])
+            </div>
 
-                {{-- Botón Siguiente --}}
-                @if ($postulantes->hasMorePages())
-                    <a href="{{ $postulantes->nextPageUrl() }}" class="rounded border border-slate-300 py-2.5 px-3 text-xs font-semibold text-slate-600 hover:opacity-75">
-                        Siguiente
-                    </a>
-                @else
-                    <span class="rounded border border-slate-300 py-2.5 px-3 text-xs font-semibold text-slate-400 cursor-not-allowed">
-                        Siguiente
-                    </span>
-                @endif
+            <div class="modalidad-tab hidden" data-mod="A">
+                @include('admision.validarDocs.pormodalidad.ordinarios', [
+                    'postulantesModalidad' => $ordinarios
+                ])
+            </div>
+
+            <div class="modalidad-tab hidden" data-mod="O">
+                @include('admision.validarDocs.pormodalidad.alto_rendimiento', [
+                    'postulantesModalidad' => $alto_rendimiento
+                ])
+            </div>
+
+            <div class="modalidad-tab hidden" data-mod="D">
+                @include('admision.validarDocs.pormodalidad.translado_externo', [
+                    'postulantesModalidad' => $translado_externo
+                ])
+            </div>
+
+            <div class="modalidad-tab hidden" data-mod="L">
+                @include('admision.validarDocs.pormodalidad.admision_tecnicos', [
+                    'postulantesModalidad' => $admision_tecnicos
+                ])
             </div>
         </div>
+
     </div>
 </div>
 
@@ -601,6 +399,16 @@
         filas.forEach(fila => {
             const textoFila = fila.textContent.toLowerCase();
             fila.style.display = textoFila.includes(filtro) ? "" : "none";
+        });
+    }
+        function mostrarModalidadSelect(select) {
+        const codigo = select.value;
+
+        document.querySelectorAll('.modalidad-tab').forEach(tab => {
+            tab.classList.add('hidden');
+            if (tab.getAttribute('data-mod') === codigo) {
+                tab.classList.remove('hidden');
+            }
         });
     }
 </script>

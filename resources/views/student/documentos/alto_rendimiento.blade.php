@@ -22,7 +22,7 @@
     <div class="flex justify-between items-start">
       <div>
         <h3 class="text-sm font-semibold text-gray-800">
-          <i class="fa-solid fa-file-lines mr-1 text-red-600"></i> {{ $label }}
+          <i class="fa-solid fa-file-lines mr-1 text-blue-600"></i> {{ $label }}
         </h3>
         <p class="text-xs text-gray-500 mt-1" title="{{ $tooltip }}">
           {{ $tooltip }}

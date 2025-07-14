@@ -258,8 +258,8 @@ class InfoPostulanteController extends Controller
                 //'L' => ['formulario', 'pago', 'seguro', 'dni', 'certprofesional' ],
                 'B' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito' ],
                 'O' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito' ],
-                'D' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'constmatricula', 'syllabus' ],
-                'L' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'constmatricula', 'syllabus', 'certprofesional' ],
+                'D' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus' ],
+                'L' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus', 'certprofesional' ],
             ];
 
             $codigo = $postulante->id_mod_ing;
@@ -698,16 +698,21 @@ class InfoPostulanteController extends Controller
     */
     public function listarPostulantes()
     {
-        $postulantes = InfoPostulante::with('verificacion')->paginate(10);
+        $preuma = InfoPostulante::with('verificacion')->where('id_mod_ing', 'C')->get();
+        $primeros = InfoPostulante::with('verificacion')->where('id_mod_ing', 'B')->get();
+        $ordinarios = InfoPostulante::with('verificacion')->where('id_mod_ing', 'A')->get();
+        $alto_rendimiento = InfoPostulante::with('verificacion')->where('id_mod_ing', 'O')->get();
+        $translado_externo = InfoPostulante::with('verificacion')->where('id_mod_ing', 'D')->get();
+        $admision_tecnicos = InfoPostulante::with('verificacion')->where('id_mod_ing', 'L')->get();
 
-        return view('admision.validarDocs.validardocpostulantes', compact('postulantes'));
+        return view('admision.validarDocs.validardocpostulantes', compact('preuma', 'primeros', 'ordinarios', 'alto_rendimiento', 'translado_externo', 'admision_tecnicos'));
     }
 
     public function validarCampo(Request $request)
     {
         $request->validate([
             'dni' => 'required|string',
-            'campo' => 'required|in:formulario,pago,dni,seguro,dj',
+            'campo' => 'required|in:formulario,pago,dni,seguro,dj,constancia,merito,constancianotas,constmatricula,syllabus,certprofesional',
             'estado' => 'required|in:0,1,2',
         ]);
 
@@ -718,7 +723,7 @@ class InfoPostulanteController extends Controller
 
         $verificacion->{$request->campo} = $request->estado;
         $verificacion->save();
-        $camposRequeridos = ['formulario', 'pago', 'dni', 'seguro', 'dj'];
+        $camposRequeridos = ['formulario', 'pago', 'dni', 'seguro', 'dj', 'constancia', 'merito', 'constancianotas', 'constmatricula', 'syllabus', 'certprofesional'];
         $valores = collect($camposRequeridos)->map(fn($campo) => $verificacion->{$campo});
 
         if ($valores->every(fn($v) => $v === 2)) {
@@ -742,7 +747,6 @@ class InfoPostulanteController extends Controller
 
         return response()->json(['message' => 'Validación guardada y estado actualizado correctamente']);
     }
-
 
     /*
     |--------------------------------------------------------------------------

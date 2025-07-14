@@ -77,14 +77,16 @@ class EncargadoController extends Controller
         $registro->$campo = $nuevoEstado;
         $registro->save();
 
+        $comentario = request('observacion');
+
         // Registrar historial
         HistorialVerificacion::create([
             'info_postulante_id' => $postulante->id,
             'tabla' => 'control_documentos',
             'campo' => $campo,
             'estado' => $nuevoEstado,
-            'observacion' => $nuevoEstado ? 'Se bloqueó luego de revisión manual' : 'Se desbloqueó por decisión del encargado',
-            'actualizado_por' => session('nombre_completo') ?? 'Sistema',
+            'observacion' => $comentario ?? ($nuevoEstado ? 'Se bloqueó luego de revisión manual' : 'Se desbloqueó por decisión del encargado'),
+            'actualizado_por' => session('nombre_completo') ?? 'Admision',
             'cod_user' => session('cod_user') ?? '',
         ]);
 
