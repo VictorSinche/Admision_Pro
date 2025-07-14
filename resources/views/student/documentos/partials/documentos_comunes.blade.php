@@ -1,5 +1,6 @@
 @php 
   $doc = $postulante->documentos;
+  $verificacion = $postulante->verificacion;
   $control = $postulante->controDocumentos;
 @endphp
 
@@ -12,7 +13,6 @@
 
   @php
       $archivoExiste = !empty($doc?->$campo);
-      $verificacion = $postulante->verificacion;
       $estado = $verificacion?->{$campo};
       $bloqueado = optional($postulante->controlDocumentos)->$campo ?? false;
   @endphp

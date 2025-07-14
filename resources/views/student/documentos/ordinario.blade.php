@@ -27,6 +27,25 @@
           {{ $tooltip }}
         </p>
       </div>
+            <!-- Estado -->
+      <div>
+        @switch($estado)
+          @case(2)
+            <span class="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+              <i class="fa-solid fa-check-circle"></i> Válido
+            </span>
+            @break
+          @case(1)
+            <span class="inline-flex items-center gap-1 px-3 py-1 bg-red-100 text-[#E72352] text-xs font-medium rounded-full">
+              <i class="fa-solid fa-xmark-circle"></i> No válido
+            </span>
+            @break
+          @default
+            <span class="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
+              <i class="fa-regular fa-clock"></i> Pendiente
+            </span>
+        @endswitch
+      </div>
     </div>
 
     <!-- Subida -->
