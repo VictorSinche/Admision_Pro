@@ -33,4 +33,9 @@ class InfoPostulante extends Model
     {
         return $this->hasOne(ControlDocumentos::class, 'info_postulante_id');
     }
+    public function declaracionJurada()
+    {
+        return $this->hasOne(DeclaracionJurada::class, 'info_postulante_id');
+    }
+
 }

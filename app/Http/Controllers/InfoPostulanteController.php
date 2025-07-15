@@ -706,14 +706,16 @@ class InfoPostulanteController extends Controller
     */
     public function listarPostulantes()
     {
-        $preuma = InfoPostulante::with('verificacion')->where('id_mod_ing', 'C')->get();
-        $primeros = InfoPostulante::with('verificacion')->where('id_mod_ing', 'B')->get();
-        $ordinarios = InfoPostulante::with('verificacion')->where('id_mod_ing', 'A')->get();
-        $alto_rendimiento = InfoPostulante::with('verificacion')->where('id_mod_ing', 'O')->get();
-        $translado_externo = InfoPostulante::with('verificacion')->where('id_mod_ing', 'D')->get();
-        $admision_tecnicos = InfoPostulante::with('verificacion')->where('id_mod_ing', 'L')->get();
+        $preuma = InfoPostulante::with('verificacion', 'declaracionJurada')->where('id_mod_ing', 'C')->get();
+        $primeros = InfoPostulante::with('verificacion', 'declaracionJurada')->where('id_mod_ing', 'B')->get();
+        $ordinarios = InfoPostulante::with('verificacion', 'declaracionJurada')->where('id_mod_ing', 'A')->get();
+        $alto_rendimiento = InfoPostulante::with('verificacion', 'declaracionJurada')->where('id_mod_ing', 'O')->get();
+        $translado_externo = InfoPostulante::with('verificacion', 'declaracionJurada')->where('id_mod_ing', 'D')->get();
+        $admision_tecnicos = InfoPostulante::with('verificacion', 'declaracionJurada')->where('id_mod_ing', 'L')->get();
 
-        return view('admision.validarDocs.validardocpostulantes', compact('preuma', 'primeros', 'ordinarios', 'alto_rendimiento', 'translado_externo', 'admision_tecnicos'));
+        $hayDJ = DeclaracionJurada::exists();
+        
+        return view('admision.validarDocs.validardocpostulantes', compact('preuma', 'primeros', 'ordinarios', 'alto_rendimiento', 'translado_externo', 'admision_tecnicos', 'hayDJ'));
     }
 
     public function validarCampo(Request $request)
