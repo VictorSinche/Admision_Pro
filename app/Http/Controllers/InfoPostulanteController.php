@@ -734,22 +734,27 @@ class InfoPostulanteController extends Controller
         $verificacion->{$request->campo} = $request->estado;
         $verificacion->save();
 
-        // Lista sin 'dj'
-        $camposRequeridos = [
-            'formulario', 'pago', 'dni', 'seguro',
-            'constancia', 'merito', 'constancianotas',
-            'constmatricula', 'syllabus', 'certprofesional'
+        // Lista dinámica según modalidad
+        $documentosPorModalidad = [
+            'A' => ['formulario', 'pago', 'seguro', 'dni', 'constancia'],
+            'C' => ['formulario', 'pago', 'seguro', 'dni', 'constancia'],
+            'B' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito'],
+            'O' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito'],
+            'D' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus'],
+            'L' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus', 'certprofesional'],
         ];
+
+        $modalidad = $postulante->id_mod_ing;
+        $camposRequeridos = $documentosPorModalidad[$modalidad] ?? [];
 
         $valores = collect($camposRequeridos)->map(fn($campo) => $verificacion->{$campo});
 
         if ($valores->every(fn($v) => $v === 2)) {
             $verificacion->estado = 2; // Completado
-        } elseif ($valores->contains(0)) {
-            $verificacion->estado = 1; // Pendiente
         } else {
-            $verificacion->estado = 1; // Incompleto (pero revisado)
+            $verificacion->estado = 1; // Incompleto o pendiente (si hay 0 o 1)
         }
+
 
         $verificacion->save();
 

@@ -43,7 +43,7 @@
         {{-- Pestañas de modalidades --}}
         <div class="flex items-center gap-4 mt-4 px-4">
             <label for="selectorModalidad" class="text-sm font-medium text-slate-700">Selecciona la modalidad:</label>
-<select id="selectorModalidad" onchange="mostrarModalidadSelect(this)" class="w-72 border border-slate-300 text-sm rounded px-3 py-2">
+            <select id="selectorModalidad" onchange="mostrarModalidadSelect(this)" class="w-72 border border-slate-300 text-sm rounded px-3 py-2">
                 <option value="C">Pre-UMA</option>
                 <option value="B">Primeros Puestos</option>
                 <option value="A">Ordinarios</option>

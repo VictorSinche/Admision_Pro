@@ -17,9 +17,13 @@ class VerificacionDocumento extends Model
         'pago',
         'dni',
         'seguro',
-        // 'foto',
-        'dj',
         'notificado',
+        'constancia',
+        'merito',
+        'constancianotas',
+        'constmatricula',
+        'syllabus',
+        'certprofesional',
     ];
 
     /**
