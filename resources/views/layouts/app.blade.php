@@ -251,7 +251,7 @@
                   </li>
                 @endif
 
-                @if(tienePermisoGlobal('POS.2'))
+                {{-- @if(tienePermisoGlobal('POS.2'))
                   <li>
                     <a href="{{ route('student.pagosinscripcion') }}" 
                     class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
@@ -259,7 +259,7 @@
                     Pagos inscripción
                     </a>              
                   </li>
-                @endif
+                @endif --}}
 
                 @if(tienePermisoGlobal('POS.3'))
                   @if($estadoConfirmado)
@@ -306,7 +306,7 @@
                     </a>              
                   </li>
                 @endif
-                @if(tienePermisoGlobal('ADM.2'))
+                {{-- @if(tienePermisoGlobal('ADM.2'))
                   <li>
                     <a href="{{ route('admision.responsable') }}" 
                       class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
@@ -314,7 +314,7 @@
                       Validar Docs. Post. R.
                     </a>              
                   </li>
-                @endif
+                @endif --}}
                 @if(tienePermisoGlobal('ADM.3'))                  
                   <li>
                     <a href="{{ route('admision.verificar') }}" 
@@ -326,15 +326,6 @@
                 @endif
                 @if(tienePermisoGlobal('ADM.4'))
                   <li>
-                    <a href="{{ route('admision.historialDj') }}" 
-                      class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                      {{ Request::routeIs('admision.historialDj') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                      Historial Declaración Jurada
-                    </a>            
-                  </li>
-                @endif
-                @if(tienePermisoGlobal('ADM.5'))
-                  <li>
                     <a href="{{ route('admision.buscar') }}" 
                       class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
                       {{ Request::routeIs('admision.historialDj') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
@@ -342,11 +333,21 @@
                     </a>            
                   </li>
                 @endif
+                @if(tienePermisoGlobal('ADM.5'))
+                  <li>
+                    <a href="{{ route('admision.historialDj') }}" 
+                      class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                      {{ Request::routeIs('admision.historialDj') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                      Historial Declaración Jurada
+                    </a>            
+                  </li>
+                @endif
+
               </ul>
             </li>
           @endif
 
-          @if (tieneAlgunPermisoGlobal(['DIR.1']))
+          {{-- @if (tieneAlgunPermisoGlobal(['DIR.1']))
             <li>
             <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-director" data-collapse-toggle="submenu-director">
               
@@ -449,7 +450,7 @@
               @endif
             </ul>
           </li>
-          @endif
+          @endif --}}
         </ul>
     </div>
   </aside>

@@ -43,7 +43,7 @@
         {{-- Pestañas de modalidades --}}
         <div class="flex items-center gap-4 mt-4 px-4">
             <label for="selectorModalidad" class="text-sm font-medium text-slate-700">Selecciona la modalidad:</label>
-            <select id="selectorModalidad" onchange="mostrarModalidadSelect(this)" class="border border-slate-300 text-sm rounded px-3 py-2">
+            <select id="selectorModalidad" onchange="mostrarModalidadSelect(this)" class="w-72 border border-slate-300 text-sm rounded px-3 py-2">
                 <option value="C">Pre-UMA</option>
                 <option value="B">Primeros Puestos</option>
                 <option value="A">Ordinarios</option>
@@ -264,50 +264,50 @@
 </script>
 
 <script>
-function abrirModalDocumentos(dni) {
-    const camposPorModalidad = {
-        'A': ['formulario', 'pago', 'seguro', 'dni', 'constancia'],
-        'C': ['formulario', 'pago', 'seguro', 'dni', 'constancia'],
-        'B': ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito'],
-        'O': ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito'],
-        'D': ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus'],
-        'L': ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus', 'certprofesional']
-    };
+    function abrirModalDocumentos(dni) {
+        const camposPorModalidad = {
+            'A': ['formulario', 'pago', 'seguro', 'dni', 'constancia'],
+            'C': ['formulario', 'pago', 'seguro', 'dni', 'constancia'],
+            'B': ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito'],
+            'O': ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito'],
+            'D': ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus'],
+            'L': ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus', 'certprofesional']
+        };
 
-    fetch(`/documentos-json/${dni}`)
-        .then(res => res.json())
-        .then(data => {
-            const select = document.getElementById('select-doc');
-            select.setAttribute('data-dni', dni);
-            select.innerHTML = `<option value="" disabled selected>Seleccione un documento</option>`;
+        fetch(`/documentos-json/${dni}`)
+            .then(res => res.json())
+            .then(data => {
+                const select = document.getElementById('select-doc');
+                select.setAttribute('data-dni', dni);
+                select.innerHTML = `<option value="" disabled selected>Seleccione un documento</option>`;
 
-            const modalidad = data.id_mod_ing; // Asegúrate que el backend lo retorne
-            const campos = camposPorModalidad[modalidad] || [];
+                const modalidad = data.id_mod_ing; // Asegúrate que el backend lo retorne
+                const campos = camposPorModalidad[modalidad] || [];
 
-            campos.forEach(campo => {
-                const ruta = data[campo] ?? ''; // si no existe, será vacío
-                const option = document.createElement('option');
-                option.text = campo.toUpperCase();
-                option.setAttribute('data-campo', campo);
+                campos.forEach(campo => {
+                    const ruta = data[campo] ?? ''; // si no existe, será vacío
+                    const option = document.createElement('option');
+                    option.text = campo.toUpperCase();
+                    option.setAttribute('data-campo', campo);
 
-                if (ruta) {
-                    option.value = ruta;
-                } else {
-                    option.value = '#'; // valor falso
-                    option.setAttribute('data-inexistente', '1');
-                }
+                    if (ruta) {
+                        option.value = ruta;
+                    } else {
+                        option.value = '#'; // valor falso
+                        option.setAttribute('data-inexistente', '1');
+                    }
 
-                select.appendChild(option);
+                    select.appendChild(option);
+                });
+
+                document.getElementById('preview-doc').innerHTML = `<span>Selecciona un documento para visualizar</span>`;
+                document.getElementById('modal-documentos').classList.remove('hidden');
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Error al cargar documentos.');
             });
-
-            document.getElementById('preview-doc').innerHTML = `<span>Selecciona un documento para visualizar</span>`;
-            document.getElementById('modal-documentos').classList.remove('hidden');
-        })
-        .catch(err => {
-            console.error(err);
-            alert('Error al cargar documentos.');
-        });
-}
+    }
 
     function cerrarModalDocumentos() {
         document.getElementById('modal-documentos').classList.add('hidden');

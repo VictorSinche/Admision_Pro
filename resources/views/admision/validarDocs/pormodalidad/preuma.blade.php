@@ -98,6 +98,7 @@
                         </svg>
                         </p>
                     </th>
+
                     <th
                         class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                         <p
@@ -105,7 +106,8 @@
                         DJ
                         </svg>
                         </p>
-                    </th>
+                    </th>    
+
                     <th
                         class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                         <p
@@ -167,9 +169,21 @@
                             <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->constancia ?? 'null' }}" data-campo="constancia">
                                 {!! mostrarIconoVerificacion($verif->constancia ?? null) !!}
                             </td>
-                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->dj ?? 'null' }}" data-campo="dj">
-                                {!! mostrarIconoVerificacion($verif->dj ?? null) !!}
+                            <td class="p-4 border-b border-slate-200 text-center align-middle">
+                                @if ($postulante->declaracionJurada)
+                                    <a href="{{ route('declaracionJurada.descargar', ['dni' => $postulante->c_numdoc]) }}"
+                                        target="_blank"
+                                        title="Ver declaración jurada"
+                                        class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 hover:bg-indigo-200 transition-all duration-200">
+                                        <i class="fa-solid fa-eye text-lg"></i>
+                                    </a>
+                                @else
+                                    <span title="No disponible" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-400">
+                                        <i class="fa-solid fa-eye-slash text-lg"></i>
+                                    </span>
+                                @endif
                             </td>
+
                                 <td class="p-4 border-b border-slate-200 text-center">
                                     <div class="flex gap-2 justify-center">
                                         @if($postulante->verificacion && $postulante->verificacion->notificado)

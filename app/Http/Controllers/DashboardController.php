@@ -11,7 +11,7 @@ class DashboardController extends Controller
     {
         $currentStep = 1;
 
-        return view('dashboardAdmin.dashboard', compact('currentStep')); // Asegúrate de tener la vista en resources/views/dashboard/index.blade.php
+        return view('dashboardAdmin.dashboard', compact('currentStep'));
     }
 
     public function resumenEstados()
@@ -27,6 +27,7 @@ class DashboardController extends Controller
             ->leftJoin('documentos_postulante as dp', 'dp.info_postulante_id', '=', 'ip.id')
             ->leftJoin('declaracion_jurada as dj', 'dj.info_postulante_id', '=', 'ip.id')
             ->leftJoin('verificacion_documentos as vd', 'vd.info_postulante_id', '=', 'ip.id')
+            ->leftJoin('sga_tb_adm_cliente as sga', 'sga.c_numdoc', '=', 'p.dni')
             ->select(
                 'p.id',
                 'ip.c_numdoc',
@@ -35,7 +36,8 @@ class DashboardController extends Controller
                 'ip.estado as estado_info',
                 'dp.estado as estado_docs',
                 'dj.estado as estado_dj',
-                'vd.estado as estado_verificacion'
+                'vd.estado as estado_verificacion',
+                'sga.created_at as fecha_registro'
             )
             ->where('p.dni', $dni)
             ->get();

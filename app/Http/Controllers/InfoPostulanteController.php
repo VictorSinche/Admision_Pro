@@ -706,14 +706,16 @@ class InfoPostulanteController extends Controller
     */
     public function listarPostulantes()
     {
-        $preuma = InfoPostulante::with('verificacion')->where('id_mod_ing', 'C')->get();
-        $primeros = InfoPostulante::with('verificacion')->where('id_mod_ing', 'B')->get();
-        $ordinarios = InfoPostulante::with('verificacion')->where('id_mod_ing', 'A')->get();
-        $alto_rendimiento = InfoPostulante::with('verificacion')->where('id_mod_ing', 'O')->get();
-        $translado_externo = InfoPostulante::with('verificacion')->where('id_mod_ing', 'D')->get();
-        $admision_tecnicos = InfoPostulante::with('verificacion')->where('id_mod_ing', 'L')->get();
+        $preuma = InfoPostulante::with('verificacion', 'declaracionJurada')->where('id_mod_ing', 'C')->get();
+        $primeros = InfoPostulante::with('verificacion', 'declaracionJurada')->where('id_mod_ing', 'B')->get();
+        $ordinarios = InfoPostulante::with('verificacion', 'declaracionJurada')->where('id_mod_ing', 'A')->get();
+        $alto_rendimiento = InfoPostulante::with('verificacion', 'declaracionJurada')->where('id_mod_ing', 'O')->get();
+        $translado_externo = InfoPostulante::with('verificacion', 'declaracionJurada')->where('id_mod_ing', 'D')->get();
+        $admision_tecnicos = InfoPostulante::with('verificacion', 'declaracionJurada')->where('id_mod_ing', 'L')->get();
 
-        return view('admision.validarDocs.validardocpostulantes', compact('preuma', 'primeros', 'ordinarios', 'alto_rendimiento', 'translado_externo', 'admision_tecnicos'));
+        $hayDJ = DeclaracionJurada::exists();
+        
+        return view('admision.validarDocs.validardocpostulantes', compact('preuma', 'primeros', 'ordinarios', 'alto_rendimiento', 'translado_externo', 'admision_tecnicos', 'hayDJ'));
     }
 
     public function validarCampo(Request $request)
@@ -732,21 +734,26 @@ class InfoPostulanteController extends Controller
         $verificacion->{$request->campo} = $request->estado;
         $verificacion->save();
 
-        // Lista sin 'dj'
-        $camposRequeridos = [
-            'formulario', 'pago', 'dni', 'seguro',
-            'constancia', 'merito', 'constancianotas',
-            'constmatricula', 'syllabus', 'certprofesional'
+        // Lista dinámica según modalidad
+        $documentosPorModalidad = [
+            'A' => ['formulario', 'pago', 'seguro', 'dni', 'constancia'],
+            'C' => ['formulario', 'pago', 'seguro', 'dni', 'constancia'],
+            'B' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito'],
+            'O' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito'],
+            'D' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus'],
+            'L' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus', 'certprofesional'],
         ];
 
-        $valores = collect($camposRequeridos)->map(fn($campo) => $verificacion->{$campo});
+        $modalidad = $postulante->id_mod_ing;
+        $camposRequeridos = $documentosPorModalidad[$modalidad] ?? [];
 
-        if ($valores->every(fn($v) => $v === 2)) {
-            $verificacion->estado = 2; // Completado
-        } elseif ($valores->contains(0)) {
-            $verificacion->estado = 1; // Pendiente
+        $valores = collect($camposRequeridos)->map(fn($campo) => $verificacion->{$campo});
+        $tieneDJ = DeclaracionJurada::where('info_postulante_id', $postulante->id)->exists();
+
+        if ($valores->every(fn($v) => $v === 2) || ($tieneDJ && $valores->every(fn($v) => in_array($v, [1, 2])))) {
+            $verificacion->estado = 2; // Considerado validado si todo es 2, o si hay 1 pero tiene DJ
         } else {
-            $verificacion->estado = 1; // Incompleto (pero revisado)
+            $verificacion->estado = 1;
         }
 
         $verificacion->save();
