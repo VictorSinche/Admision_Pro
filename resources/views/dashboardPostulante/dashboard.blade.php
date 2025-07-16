@@ -338,8 +338,20 @@
 			$estadoDocs = $postulante->estado_docs ?? 0;
 			$tieneDJ = $postulante->estado_dj !== null;
 			$estadoVerificacion = $postulante->estado_verificacion ?? null;
+			$modalidad = $postulante->modalidad ?? 'A';
+			$documentosRequeridos = $documentosPorModalidad[$modalidad] ?? [];
+			$documentosSubidos = $postulante->documentos ?? [];
+			$documentosCompletos = 0;
 			$fechaUltima = optional($postulante)->fecha_registro ? \Carbon\Carbon::parse($postulante->fecha_registro)->format('d/m/Y') : '---';
 
+			foreach ($documentosRequeridos as $doc) {
+				if (!empty($documentosSubidos->$doc) && $documentosSubidos->$doc == 2) {
+					$documentosCompletos++;
+				}
+			}
+
+			$faltanDocs = count($documentosRequeridos) > $documentosCompletos;
+			
 			$yaConfirmo = isset($postulante->c_numdoc);
 			$cNumdoc = $postulante->c_numdoc ?? session('dni_postulante');
 			$estadoConfirmado = $postulante->estado_info == 1;
@@ -362,6 +374,14 @@
 				$buttonText = 'Subir documentos';
 				$icono = 'fas fa-file-alt text-gray-500';
 				$verRequisitos = false;
+			} elseif ($estadoVerificacion === 2 || ($estadoVerificacion === 1 && $tieneDJ && !$faltanDocs)) {
+				$bgColor = 'bg-green-100 text-green-700';
+				$estadoTexto = '✔ Documentación validada';
+				$mensaje = '✅ Tus documentos fueron revisados y validados por el área de admisión.';
+				$buttonColor = 'border border-green-600 text-green-600 hover:bg-green-50';
+				$buttonText = 'Ver documentos validados';
+				$icono = 'fas fa-check-circle text-green-600';
+				$verRequisitos = true;
 		    } elseif ($estadoVerificacion === 1) {
 				// Nuevo estado de documentos observados
 				$bgColor = 'bg-red-100 text-red-700';
@@ -370,14 +390,6 @@
 				$buttonColor = 'border border-red-500 text-red-600 hover:bg-red-100';
 				$buttonText = 'Revisar observaciones';
 				$icono = 'fas fa-times-circle text-red-500';
-				$verRequisitos = true;
-			} elseif ($estadoVerificacion === 2) {
-				$bgColor = 'bg-green-100 text-green-700';
-				$estadoTexto = '✔ Documentación validada';
-				$mensaje = '✅ Tus documentos fueron revisados y validados por el área de admisión.';
-				$buttonColor = 'border border-green-600 text-green-600 hover:bg-green-50';
-				$buttonText = 'Ver documentos validados';
-				$icono = 'fas fa-check-circle text-green-600';
 				$verRequisitos = true;
 			} elseif ($estadoDocs == 2) {
 				$bgColor = 'bg-yellow-400 text-black';
@@ -396,13 +408,14 @@
 				$icono = 'fas fa-file-alt text-yellow-500';
 				$verRequisitos = true;
 			} elseif ($estadoDocs == 1 && !$tieneDJ) {
-				$bgColor = 'bg-red-500 text-white';
-				$estadoTexto = '❗ Faltan documentos';
-				$mensaje = '🔍 Aún no se ha subido tu declaración jurada.';
+				$bgColor = 'bg-red-300 text-red-700';
+				$estadoTexto = '❗ Documentos incompletos';
+				$mensaje = '🔍 Aún tienes documentos pendientes. Puedes completar tu carga o generar tu declaración jurada si aún no la subiste.';
 				$buttonColor = 'border border-red-600 text-red-600 hover:bg-red-50';
-				$buttonText = 'Subir declaración';
+				$buttonText = 'Subir documentos';
 				$icono = 'fas fa-exclamation-circle text-red-600';
 				$verRequisitos = true;
+
 			} else {
 				$bgColor = 'bg-gray-300 text-gray-700';
 				$estadoTexto = '📥 Sube tus documentos';
@@ -424,8 +437,7 @@
 				{{ $estadoTexto }}
 			</span>
 
-			<p class="mt-4 text-sm text-gray-500">📂 Último documento recibido: {{ $fechaUltima }}</p>
-			<p class="text-sm mt-1">{{ $mensaje }}</p>
+			<p class="text-sm mt-5">{{ $mensaje }}</p>
 
 			<div class="mt-6 flex flex-col gap-2">
 				@if($yaConfirmo && $estadoConfirmado)

@@ -748,13 +748,13 @@ class InfoPostulanteController extends Controller
         $camposRequeridos = $documentosPorModalidad[$modalidad] ?? [];
 
         $valores = collect($camposRequeridos)->map(fn($campo) => $verificacion->{$campo});
+        $tieneDJ = DeclaracionJurada::where('info_postulante_id', $postulante->id)->exists();
 
-        if ($valores->every(fn($v) => $v === 2)) {
-            $verificacion->estado = 2; // Completado
+        if ($valores->every(fn($v) => $v === 2) || ($tieneDJ && $valores->every(fn($v) => in_array($v, [1, 2])))) {
+            $verificacion->estado = 2; // Considerado validado si todo es 2, o si hay 1 pero tiene DJ
         } else {
-            $verificacion->estado = 1; // Incompleto o pendiente (si hay 0 o 1)
+            $verificacion->estado = 1;
         }
-
 
         $verificacion->save();
 
