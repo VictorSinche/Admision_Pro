@@ -25,7 +25,7 @@
         @endif
         <div class="mb-4 text-lg">
           <input class="rounded-3xl border-none bg-white px-6 py-2 text-center placeholder-black shadow-lg outline-none backdrop-blur-md text-black"
-            type="text" name="dni" placeholder="DNI" required />
+            type="text" name="dni" placeholder="Nro° Documento" required />
         </div>
         <div class="mb-4 text-lg">
           <input class="rounded-3xl border-none bg-white px-6 py-2 text-center placeholder-black shadow-lg outline-none backdrop-blur-md text-black"

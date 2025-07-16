@@ -127,6 +127,8 @@
     <div class="bg-white w-full max-w-3xl mx-auto p-6 rounded-lg shadow-2xl relative">
         <h2 class="text-2xl font-bold text-gray-800 mb-4">📁 Documentos del postulante</h2>
 
+        <div id="estado-doc" class="mb-2 hidden"></div> <!-- NUEVO -->
+
         <label class="block mb-2 text-sm font-medium text-gray-700">Tipo de documento:</label>
         <select id="select-doc" onchange="mostrarDocumento()" class="w-full mb-4 p-2 border rounded">
             <option value="" disabled selected>Seleccione un documento</option>
@@ -311,6 +313,8 @@
 
     function cerrarModalDocumentos() {
         document.getElementById('modal-documentos').classList.add('hidden');
+        document.getElementById('estado-doc').classList.add('hidden');
+        document.getElementById('estado-doc').innerHTML = '';
     }
 
     function mostrarDocumento() {
@@ -322,6 +326,41 @@
 
         const container = document.getElementById('preview-doc');
         container.innerHTML = '';
+
+        const estadoDoc = document.getElementById('estado-doc');
+        estadoDoc.classList.remove('hidden'); // Asegúrate de mostrar el contenedor
+
+        // Obtener el estado visual desde la tabla
+        const fila = document.querySelector(`tr[data-dni="${dni}"]`);
+        const celda = fila ? Array.from(fila.querySelectorAll('td')).find(td => td.dataset.campo === campo) : null;
+        const estado = celda ? parseInt(celda.getAttribute('data-estado')) : 0;
+
+        let badge = '';
+        if (esInexistente || !ruta) {
+            badge = `<span class="inline-block px-3 py-1 bg-gray-200 text-gray-800 text-sm font-semibold rounded-full shadow">
+                        ⛔ Documento no subido
+                    </span>`;
+            estadoDoc.innerHTML = badge;
+            container.innerHTML = `<div class="text-center text-red-600 text-sm">⚠️ El postulante no ha subido este documento.</div>`;
+            document.getElementById('acciones-validacion').classList.add('hidden');
+            return;
+        }
+
+        // Mostrar badge según el estado
+        if (estado === 2) {
+            badge = `<span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded-full shadow">
+                        ✅ Documento validado
+                    </span>`;
+        } else if (estado === 1) {
+            badge = `<span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-sm font-semibold rounded-full shadow">
+                        ❌ Documento no válido
+                    </span>`;
+        } else {
+            badge = `<span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-semibold rounded-full shadow">
+                        ⚠️ Falta revisión
+                    </span>`;
+        }
+        estadoDoc.innerHTML = badge;
 
         if (esInexistente || !ruta) {
             container.innerHTML = `<div class="text-center text-red-600 text-sm">⚠️ El postulante no ha subido este documento.</div>`;
@@ -412,6 +451,20 @@
                 icon: "success",
                 confirmButtonColor: "#3085d6"
             });
+            const estadoDoc = document.getElementById('estado-doc');
+    let badge = '';
+    if (estado === 2) {
+        badge = `<span class="inline-block px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded-full shadow">
+                    ✅ Documento validado
+                </span>`;
+    } else if (estado === 1) {
+        badge = `<span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-sm font-semibold rounded-full shadow">
+                    ❌ Documento no válido
+                </span>`;
+    }
+
+    estadoDoc.classList.remove('hidden');
+    estadoDoc.innerHTML = badge;
         })
         .catch(err => {
             console.error(err);
