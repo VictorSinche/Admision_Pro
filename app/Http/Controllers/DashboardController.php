@@ -37,8 +37,21 @@ class DashboardController extends Controller
                 'dp.estado as estado_docs',
                 'dj.estado as estado_dj',
                 'vd.estado as estado_verificacion',
-                'sga.created_at as fecha_registro'
+                // Campos individuales desde verificacion_documentos
+                'vd.formulario',
+                'vd.pago',
+                'vd.dni',
+                'vd.seguro',
+                'vd.constancia',
+                'vd.merito',
+                'vd.constancianotas',
+                'vd.constmatricula',
+                'vd.syllabus',
+                'vd.certprofesional',
+                'sga.created_at as fecha_registro',
+                'ip.id_mod_ing as modalidad',
             )
+
             ->where('p.dni', $dni)
             ->get();
 
