@@ -140,7 +140,7 @@ class PostulanteLoginController extends Controller
                         }
                     }
 
-                    return redirect()->route('student.registro');
+                    return redirect()->route('dashboardPost.dashboard');
                 }
 
                 return back()->with('error', '❌ Contraseña incorrecta (postulante).');

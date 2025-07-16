@@ -57,12 +57,7 @@
     </div>
 
 	@php
-		// $postulante = $postulantes[0] ?? null;
 
-		// $estadoDocs = $postulante->estado_docs ?? 0;
-		// $tieneDJ = $postulante->estado_dj !== null;
-		// $estadoVerificacion = $postulante->estado_verificacion ?? null;
-		// $estadoConfirmado = $postulante->estado_info == 1;
 		$progreso = 0;
 
 		if ($estadoConfirmado) {
