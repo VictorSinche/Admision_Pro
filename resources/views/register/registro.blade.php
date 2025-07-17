@@ -351,7 +351,7 @@
                             text: data.message || 'Tu información fue registrada correctamente.',
                             confirmButtonText: 'Ir al login',
                         }).then(()=>{
-                            window.location.href = '/login-postulante'
+                            window.location.href = '/'
                         });
 
                     } else {
