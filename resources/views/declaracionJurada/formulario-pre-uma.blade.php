@@ -6,7 +6,7 @@
     <title>Declaración Jurada - Universidad María Auxiliadora</title>
     <link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/sweetalert2.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://kit.fontawesome.com/c500eba471.js" crossorigin="anonymous"></script>

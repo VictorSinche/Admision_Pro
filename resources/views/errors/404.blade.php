@@ -9,10 +9,10 @@
 <title>UMA | 404</title>
 
 
-{{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+{{-- <script src="/js/sweetalert2.js"></script> --}}
 <!-- CDN Tom Select -->
-{{-- <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+{{-- <link href="/tom-select/tom-select.css" rel="stylesheet">
+<script src="/tom-select/tom-select.complete.min.js"></script>
 
 
 <div class="flex flex-col items-center justify-center min-h-[50vh] text-center text-gray-600">

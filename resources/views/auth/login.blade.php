@@ -1,16 +1,13 @@
-<script src="https://cdn.tailwindcss.com"></script>
-
-{{-- @php
-    $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
-@endphp --}}
-
-{{-- <link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/css/app.css']['file']) }}">
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<script type="module" src="{{ asset('build/' . $manifest['resources/js/app.js']['file']) }}"></script>
-<title>Admisión Cachimbos - Universidad María Auxiliadora</title> --}}
-
-<link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
+  <title>Login Admin - UMA</title>
+</head>
+<body>
 <!-- fondo con imagen -->
 <div class="relative flex h-screen w-full items-center justify-center bg-gray-900 bg-cover bg-no-repeat" style="background-image:url('uma/img/of_uma.jpeg')">
 
@@ -33,12 +30,22 @@
           </div>
         @endif
         <div class="mb-4 text-lg">
-          <input class="rounded-3xl border-none bg-white px-6 py-2 text-center placeholder-black shadow-lg outline-none backdrop-blur-md text-black"
-            type="text" name="dni" placeholder="Nro° Documento" required />
+          <input 
+            class="rounded-3xl border-none bg-white px-6 py-2 text-center placeholder-black shadow-lg outline-none backdrop-blur-md text-black"
+            type="text"
+            name="dni"
+            placeholder="Nro° Documento"
+            required
+            autocomplete="username" />
         </div>
         <div class="mb-4 text-lg">
-          <input class="rounded-3xl border-none bg-white px-6 py-2 text-center placeholder-black shadow-lg outline-none backdrop-blur-md text-black"
-            type="password" name="password" placeholder="Contraseña" required />
+          <input 
+            class="rounded-3xl border-none bg-white px-6 py-2 text-center placeholder-black shadow-lg outline-none backdrop-blur-md text-black"
+            type="password"
+            name="password"
+            placeholder="Contraseña"
+            required
+            autocomplete="current-password" />
         </div>
         <div class="mt-8 flex justify-center text-lg text-black">
           <button type="submit" class="rounded-3xl bg-[#f7003a] bg-opacity-50 px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-red-600">
@@ -57,4 +64,11 @@
     </div>
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js"></script>
+
+<script src="/js/tailwindcss.js"></script>
+<script src="/js/alpine.js"></script>
+
+  
+  
+</body>
+</html>

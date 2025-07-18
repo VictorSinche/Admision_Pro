@@ -1,70 +1,63 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UMA | ADMISION CACHIMBOS</title>
+@php
+    $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+@endphp
 
-    {{-- CSRF Token y Favicon --}}
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
-    {{-- Tom Select --}}    
-    <link href="/tom-select/tom-select.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/css/app.css']['file']) }}">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
 
-    {{-- App CSS compilado (Vite o Mix) --}}
-    @php
-        $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
-    @endphp
-    <link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/css/app.css']['file']) }}">
+<title>UMA | ADMISION CACHIMBOS</title>
 
-    {{-- Estilos extra de cada vista --}}
-    @yield('link')
-    
-    {{-- Loader --}}
-    <style>
-        .loader {
-            width: 120px;
-            height: 22px;
-            border-radius: 20px;
-            color: #e72352;
-            border: 2px solid;
-            position: relative;
-        }
-        .loader::before {
-            content: "";
-            position: absolute;
-            margin: 2px;
-            inset: 0 100% 0 0;
-            border-radius: inherit;
-            background: currentColor;
-            animation: l6 2s infinite;
-        }
-        @keyframes l6 {
-            100% { inset: 0 }
-        }
-    </style>
-</head>
-<body class="bg-gray-100 dark:bg-gray-900">
+<script src="/tom-select/tom-select.complete.min.js"></script>
 
-  @php
-      use App\Models\InfoPostulante;
-      $numeroDocumento = session('c_numdoc');
-      $estadoConfirmado = false;
+@php
+  use App\Models\InfoPostulante;
 
-      if ($numeroDocumento) {
-          $postulante = InfoPostulante::where('c_numdoc', $numeroDocumento)->first();
-          $estadoConfirmado = $postulante && $postulante->estado === 1;
-      }
-  @endphp
+  $numeroDocumento = session('c_numdoc');
+  $estadoConfirmado = false;
 
-  {{-- Loader Global --}}
-  <div id="loader-wrapper" class="hidden fixed inset-0 z-[9999] bg-white/80 flex flex-col justify-center items-center">
-      <img src="/uma/img/logo-uma.png" alt="Cargando UMA" class="w-16 h-16 mb-4 animate-pulse" />
-      <div class="loader"></div>
-      <p class="text-sm text-gray-700 mt-2">Cargando, por favor espera...</p>
-  </div>
+  if ($numeroDocumento) {
+      $postulante = InfoPostulante::where('c_numdoc', $numeroDocumento)->first();
+      $estadoConfirmado = $postulante && $postulante->estado === 1;
+  }
+@endphp
 
-  <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+<!-- Loader Global con Imagen -->
+<div id="loader-wrapper" class="hidden fixed inset-0 z-[9999] bg-white/80 flex flex-col justify-center items-center">
+  <!-- Imagen arriba -->
+  <img src="/uma/img/logo-uma.png" alt="Cargando UMA" class="w-16 h-16 mb-4 animate-pulse" />
+  
+  <!-- Loader animado -->
+  <div class="loader"></div>
+  
+  <!-- Texto -->
+  <p class="text-sm text-gray-700 mt-2">Cargando, por favor espera...</p>
+</div>
+
+<style>
+  .loader {
+    width: 120px;
+    height: 22px;
+    border-radius: 20px;
+    color: #e72352;
+    border: 2px solid;
+    position: relative;
+  }
+  .loader::before {
+    content: "";
+    position: absolute;
+    margin: 2px;
+    inset: 0 100% 0 0;
+    border-radius: inherit;
+    background: currentColor;
+    animation: l6 2s infinite;
+  }
+  @keyframes l6 {
+    100% { inset: 0 }
+  }
+</style>
+
+<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center justify-start rtl:justify-end">
@@ -348,103 +341,214 @@
             </li>
           @endif
 
+          {{-- @if (tieneAlgunPermisoGlobal(['DIR.1']))
+            <li>
+            <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-director" data-collapse-toggle="submenu-director">
+              
+              <i class="fa-solid fa-user-tie fa-lg text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+              
+              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Director</span>
+              
+              <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
+              </svg>
+            </button>
+          
+            <ul id="submenu-director" class="py-2 space-y-2 {{ Request::routeIs('director.*') ? '' : 'hidden' }}">
+              @if (tienePermisoGlobal('DIR.1'))
+                <li>
+                  <a href="{{ route('director.convalidacion') }}" 
+                    class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                    {{ Request::routeIs('director.convalidacion') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    Convalidación
+                  </a>              
+                </li>
+              @endif
+            </ul>
+          </li>
+          @endif
+
+          @if (tieneAlgunPermisoGlobal(['COA.1']))
+            <li>
+            <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-coa" data-collapse-toggle="submenu-coa">
+              
+              <i class="fa-solid fa-folder-tree text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+              
+              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Coa</span>
+              
+              <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
+              </svg>
+            </button>
+          
+            <ul id="submenu-coa" class="py-2 space-y-2 {{ Request::routeIs('coa.*') ? '' : 'hidden' }}">
+              @if (tienePermisoGlobal('COA.1'))
+                <li>
+                  <a href="{{ route('coa.listado') }}" 
+                    class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                    {{ Request::routeIs('coa.listado') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    Listado
+                  </a>              
+                </li>
+              @endif
+            </ul>
+          </li>
+          @endif
+
+          @if (tieneAlgunPermisoGlobal(['OSA.1']))
+            <li>
+            <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-osar" data-collapse-toggle="submenu-osar">
+              
+              <i class="fa-solid fa-file-lines text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+              
+              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Osar</span>
+              
+              <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
+              </svg>
+            </button>
+          
+            <ul id="submenu-osar" class="py-2 space-y-2 {{ Request::routeIs('osar.*') ? '' : 'hidden' }}">
+            @if (tienePermisoGlobal('OSA.1'))
+              <li>
+                <a href="{{ route('osar.listado') }}" 
+                  class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                  {{ Request::routeIs('osar.listado') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                  Listado
+                </a>
+              </li>
+              @endif
+            </ul>
+          </li>
+          @endif
+
+          @if (tieneAlgunPermisoGlobal(['TES.1']))
+            <li>
+            <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-tesoreria" data-collapse-toggle="submenu-tesoreria">
+              <i class="fa-solid fa-wallet text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Tesoreria</span>
+              <svg class="w-3 h-3 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1 5 5 1 1"/>
+              </svg>
+            </button>
+          
+            <ul id="submenu-tesoreria" class="py-2 space-y-2 {{ Request::routeIs('tesoreria.*') ? '' : 'hidden' }}">
+              @if (tienePermisoGlobal('TES.1'))
+                <li>
+                <a href="{{ route('tesoreria.listado') }}" 
+                  class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                  {{ Request::routeIs('tesoreria.listado') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                  Listado
+                </a>              
+              </li>
+              @endif
+            </ul>
+          </li>
+          @endif --}}
         </ul>
     </div>
   </aside>
 
-
-  {{-- CONTENIDO PRINCIPAL --}}
   <div class="p-4 sm:ml-64 bg-gray-200 min-h-screen">
-      <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14 bg-white shadow-md">
-          @yield('content')
-      </div>
+    <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14 bg-white shadow-md">
+      @yield('content')
+    </div>
   </div>
 
-  {{-- SCRIPTS --}}
+  
   <script src="/js/sweetalert2.js"></script>
+  <!-- CDN Tom Select -->
+  <link href="/tom-select/tom-select.css" rel="stylesheet">
   <script type="module" src="{{ asset('build/' . $manifest['resources/js/app.js']['file']) }}"></script>
-  <script src="/tom-select/tom-select.complete.min.js"></script>
-  <script src="/tom-select/tom-select.complete.min.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Toggle Collapse
-      const toggles = document.querySelectorAll('[data-collapse-toggle]');
-      toggles.forEach(function (toggle) {
-        const targetId = toggle.getAttribute('data-collapse-toggle');
-        const targetElement = document.getElementById(targetId);
-        toggle.addEventListener('click', function () {
-          targetElement?.classList.toggle('hidden');
+        const toggles = document.querySelectorAll('[data-collapse-toggle]');
+    
+        toggles.forEach(function (toggle) {
+            const targetId = toggle.getAttribute('data-collapse-toggle');
+            const targetElement = document.getElementById(targetId);
+    
+            toggle.addEventListener('click', function () {
+                if (targetElement.classList.contains('hidden')) {
+                    targetElement.classList.remove('hidden');
+                } else {
+                    targetElement.classList.add('hidden');
+                }
+            });
         });
-      });
-  
-      // Dropdown Toggle
-      const dropdownToggles = document.querySelectorAll('[data-dropdown-toggle]');
-      dropdownToggles.forEach(function (toggle) {
-        const targetId = toggle.getAttribute('data-dropdown-toggle');
-        const targetElement = document.getElementById(targetId);
-  
-        toggle.addEventListener('click', function (event) {
-          event.stopPropagation();
-          targetElement?.classList.toggle('hidden');
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdownToggles = document.querySelectorAll('[data-dropdown-toggle]');
+    
+        dropdownToggles.forEach(function (toggle) {
+            const targetId = toggle.getAttribute('data-dropdown-toggle');
+            const targetElement = document.getElementById(targetId);
+    
+            toggle.addEventListener('click', function (event) {
+                event.stopPropagation(); // evita cerrar instantáneamente
+                targetElement.classList.toggle('hidden');
+            });
+    
+            // Cerrar el dropdown si haces click afuera
+            document.addEventListener('click', function (e) {
+                if (!toggle.contains(e.target) && !targetElement.contains(e.target)) {
+                    targetElement.classList.add('hidden');
+                }
+            });
         });
-      });
-  
-      // Cerrar todos los dropdowns si se hace clic fuera
-      document.addEventListener('click', function (e) {
-        dropdownToggles.forEach(toggle => {
-          const targetId = toggle.getAttribute('data-dropdown-toggle');
-          const targetElement = document.getElementById(targetId);
-          if (targetElement && !toggle.contains(e.target) && !targetElement.contains(e.target)) {
-            targetElement.classList.add('hidden');
-          }
-        });
-      });
-  
-      // Loader en navegación por enlaces
+    });
+  </script>
+        
+  <script>
+    function mostrarLoader() {
+      document.getElementById('loader-wrapper')?.classList.remove('hidden');
+    }
+    function ocultarLoader() {
+      document.getElementById('loader-wrapper')?.classList.add('hidden');
+    }
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
       const enlaces = document.querySelectorAll('a[href]:not([href^="#"]):not([target])');
+
       enlaces.forEach(link => {
-        link.addEventListener('click', function () {
+        link.addEventListener('click', function (e) {
           const href = this.getAttribute('href');
           if (href && !href.startsWith('javascript:') && !this.classList.contains('no-loader')) {
             mostrarLoader();
           }
         });
       });
-  
-      // Reset de notificaciones
-      const btnNotificaciones = document.querySelector('[data-dropdown-toggle="dropdown-notificaciones"]');
-      if (btnNotificaciones) {
-        btnNotificaciones.addEventListener('click', () => {
-          fetch("{{ route('notificaciones.reset') }}", {
-            method: "POST",
-            headers: {
-              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-              'Content-Type': 'application/json'
-            }
-          })
-          .then(res => res.json())
-          .then(data => {
-            console.log("🔄 Notificación reseteada:", data.message);
-            const contador = btnNotificaciones.querySelector('div.absolute');
-            if (contador) contador.remove();
-          });
-        });
-      }
     });
-  
-    // Funciones globales para el loader
-    function mostrarLoader() {
-      document.getElementById('loader-wrapper')?.classList.remove('hidden');
-    }
-  
-    function ocultarLoader() {
-      document.getElementById('loader-wrapper')?.classList.add('hidden');
-    }
   </script>
 
-  {{-- Scripts extra de cada vista --}}
-  @yield('script')
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const btnNotificaciones = document.querySelector('[data-dropdown-toggle="dropdown-notificaciones"]');
+    
+    if (btnNotificaciones) {
+      btnNotificaciones.addEventListener('click', () => {
+        fetch("{{ route('notificaciones.reset') }}", {
+          method: "POST",
+          headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(res => res.json())
+        .then(data => {
+          console.log("🔄 Notificación reseteada:", data.message);
+          // Opcional: ocultar el contador
+          const contador = btnNotificaciones.querySelector('div.absolute');
+          if (contador) contador.remove();
+        });
+      });
+    }
+  });
+</script>
 
-</body>
-</html>
