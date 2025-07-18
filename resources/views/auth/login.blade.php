@@ -29,12 +29,22 @@
           </div>
         @endif
         <div class="mb-4 text-lg">
-          <input class="rounded-3xl border-none bg-white px-6 py-2 text-center placeholder-black shadow-lg outline-none backdrop-blur-md text-black"
-            type="text" name="dni" placeholder="Nro° Documento" required />
+          <input 
+            class="rounded-3xl border-none bg-white px-6 py-2 text-center placeholder-black shadow-lg outline-none backdrop-blur-md text-black"
+            type="text"
+            name="dni"
+            placeholder="Nro° Documento"
+            required
+            autocomplete="username" />
         </div>
         <div class="mb-4 text-lg">
-          <input class="rounded-3xl border-none bg-white px-6 py-2 text-center placeholder-black shadow-lg outline-none backdrop-blur-md text-black"
-            type="password" name="password" placeholder="Contraseña" required />
+          <input 
+            class="rounded-3xl border-none bg-white px-6 py-2 text-center placeholder-black shadow-lg outline-none backdrop-blur-md text-black"
+            type="password"
+            name="password"
+            placeholder="Contraseña"
+            required
+            autocomplete="current-password" />
         </div>
         <div class="mt-8 flex justify-center text-lg text-black">
           <button type="submit" class="rounded-3xl bg-[#f7003a] bg-opacity-50 px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-red-600">
