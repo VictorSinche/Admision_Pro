@@ -30,10 +30,12 @@
     {{-- Se incluye la vista según modalidad --}}
     @includeIf('student.documentos.' . strtolower($modalidad))
 
-    <button type="submit" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg cursor-pointer hover:bg-green-700 transition duration-200">
-      <i class="fa-solid fa-file-upload mr-2"></i>	
-      Guardar Documentos
-    </button>
+    @if (!$documentosCompletos)
+      <button id="btnGuardarDocs" type="submit" class="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg cursor-pointer hover:bg-green-700 transition duration-200">
+        <i class="fa-solid fa-file-upload mr-2"></i>	
+        Guardar Documentos
+      </button>
+    @endif
   </form>
 
 
@@ -67,29 +69,6 @@
                   class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-md shadow hover:bg-green-700 transition">
                   <i class="fa-solid fa-file-pdf mr-2"></i> Descargar declaración jurada
                 </a>
-
-                  {{-- Estado de validación --}}
-                  @if(!is_null($djValidado))
-                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-3xl
-                                @switch($djValidado)
-                                  @case(0) bg-gray-100 text-gray-800 @break
-                                  @case(1) bg-red-100 text-red-800 @break
-                                  @case(2) bg-green-300 text-green-800 @break
-                                @endswitch">
-                      <i class="fa-solid
-                                @switch($djValidado)
-                                  @case(0) fa-clock @break
-                                  @case(1) fa-xmark-circle @break
-                                  @case(2) fa-check-circle @break
-                                @endswitch"></i>
-                      @switch($djValidado)
-                        @case(0) Pendiente @break
-                        @case(1) No válido @break
-                        @case(2) Válido @break
-                      @endswitch
-                    </span>
-                  @endif
-
               </div>
           </div>
         </div>
@@ -142,19 +121,30 @@
   
       // 3. Reemplazo de archivo
       document.querySelectorAll('input[type="file"]').forEach(input => {
-          input.addEventListener('change', function () {
-              if (this.dataset.existe === "1") {
-                  Swal.fire({
-                      icon: 'question',
-                      title: '¿Deseas reemplazar este archivo?',
-                      text: 'Ya has enviado este documento. Si continúas, se actualizará con el nuevo archivo seleccionado.',
-                      showCancelButton: true,
-                      confirmButtonText: 'Sí, reemplazar',
-                      cancelButtonText: 'Cancelar',
-                      confirmButtonColor: '#e72352',
-                  });
+        input.addEventListener('change', function () {
+          if (this.dataset.existe === "1") {
+            Swal.fire({
+              icon: 'question',
+              title: '¿Deseas reemplazar este archivo?',
+              text: 'Ya has enviado este documento. Si continúas, se actualizará con el nuevo archivo seleccionado.',
+              showCancelButton: true,
+              confirmButtonText: 'Sí, reemplazar',
+              cancelButtonText: 'Cancelar',
+              confirmButtonColor: '#e72352',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // ✅ Enviar el formulario automáticamente si el botón está oculto
+                const form = this.closest('form');
+                if (form) {
+                  form.submit();
+                }
+              } else {
+                // Revertir el input si se canceló
+                this.value = '';
               }
-          });
+            });
+          }
+        });
       });
   });
   </script>

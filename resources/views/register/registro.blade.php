@@ -270,6 +270,16 @@
             }
         });
 
+        // Validación específica para correo electrónico
+            const emailInput = document.querySelector('[name="c_email"]');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (emailInput && !emailRegex.test(emailInput.value.trim())) {
+                errores.push('⚠️ Correo electrónico no es válido');
+                emailInput.classList.add('border-red-500');
+            }
+
+
         if (errores.length > 0) {
             Swal.fire({
                 icon: 'error',
