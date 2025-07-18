@@ -138,7 +138,7 @@ Route::middleware('auth.postulante')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::get('/crear-postulante', [CreatePostulanteController::class, 'mostrarFormulario'])->name('register.registro');
-Route::post('/crear-postulante', [CreatePostulanteController::class, 'registrarPostulante']);
+Route::post('/crear-postulante', [CreatePostulanteController::class, 'registrarPostulante'])->name('postulante.store');
 
 
 
