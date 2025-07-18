@@ -99,7 +99,7 @@
                     </div>        
                 </div>
             </div>
-            <form method="POST" action="{{ url('/crear-postulante') }}" id="formPostulante">
+            <form method="POST" action="{{ route('register.registro') }}" id="formPostulante">
                 @csrf
                 <!-- Aquí dentro va absolutamente todo -->
                 <div class="mt-8 p-4">
