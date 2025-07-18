@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ConsolidadoPostulantesExport;
+use App\Exports\DocumentosFaltantesExport;
 use App\Models\InfoPostulante;
 use App\Models\DeclaracionJurada;
 use App\Models\DocumentoPostulante;
@@ -792,4 +794,19 @@ class InfoPostulanteController extends Controller
         return json_decode($response->getBody()->getContents(), true);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Funcion para reportes
+    |--------------------------------------------------------------------------
+    */
+    public function exportarConsolidado()
+    {
+        return Excel::download(new ConsolidadoPostulantesExport, 'consolidado_postulantes.xlsx');
+    }
+
+    public function exportarDocumentosFaltantes(Request $request)
+    {
+        $modalidad = $request->input('modalidad', 'A'); // Por defecto ordinario
+        return Excel::download(new DocumentosFaltantesExport($modalidad), 'faltantes_modalidad_' . $modalidad . '.xlsx');
+    }
 }

@@ -284,7 +284,7 @@
             </li>
           @endif
 
-          @if (tieneAlgunPermisoGlobal(['ADM.1', 'ADM.2', 'ADM.3', 'ADM.4', 'ADM.5']))
+          @if (tieneAlgunPermisoGlobal(['ADM.1', 'ADM.2', 'ADM.3', 'ADM.4', 'ADM.5', 'ADM.6']))
             <li>
               <button type="button" class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700" aria-controls="submenu-admision" data-collapse-toggle="submenu-admision">
                 <!-- ícono -->
@@ -328,7 +328,7 @@
                   <li>
                     <a href="{{ route('admision.buscar') }}" 
                       class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
-                      {{ Request::routeIs('admision.historialDj') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                      {{ Request::routeIs('admision.buscar') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                       Control Documentos
                     </a>            
                   </li>
@@ -342,7 +342,15 @@
                     </a>            
                   </li>
                 @endif
-
+                {{-- @if(tienePermisoGlobal('ADM.6')) --}}
+                  <li>
+                    <a href="{{ route('admision.reportes') }}" 
+                      class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
+                      {{ Request::routeIs('admision.reportes') ? 'bg-gray-100 text-blue-700 dark:bg-gray-700 dark:text-white' : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                      Reportes
+                    </a>            
+                  </li>
+                {{-- @endif --}}
               </ul>
             </li>
           @endif

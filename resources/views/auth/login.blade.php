@@ -1,4 +1,9 @@
-<script src="https://cdn.tailwindcss.com"></script>
+@php
+    $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+@endphp
+
+<link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/css/app.css']['file']) }}">
+<script type="module" src="{{ asset('build/' . $manifest['resources/js/app.js']['file']) }}"></script>
 
 <link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
 
@@ -9,7 +14,7 @@
   <div class="absolute inset-0 bg-red-900/30 backdrop-blur-sm"></div>
 
   <!-- contenido principal (formulario) -->
-  <div class="relative z-10 rounded-xl bg-black bg-opacity-50 px-16 py-10 shadow-lg backdrop-blur-md max-sm:px-8">
+  <div class="relative z-10 rounded-xl bg-black bg-opacity-50 px-16 py-10 shadow-lg backdrop-blur-md max-sm:px-8 login-box">
     <div class="text-white">
       <div class="mb-8 flex flex-col items-center">
         {{-- <img src="uma/img/logo.png" width="150" alt="" /> --}}
@@ -48,4 +53,21 @@
     </div>
   </div>
 </div>
-<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js"></script>
+
+
+<style>
+.login-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 40px;
+  border-radius: 16px;
+  color: white;
+  width: 390px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+}
+</style>
