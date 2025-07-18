@@ -114,11 +114,3 @@ class CreatePostulanteController  extends Controller
         }
 
 }
-
-
-dd([
-    'isSecure' => request()->isSecure(),
-    'url' => url('/'),
-    'x_forwarded_proto' => request()->header('x-forwarded-proto'),
-    'app_url' => config('app.url'),
-]);
