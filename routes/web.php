@@ -25,10 +25,12 @@ Route::post('/logout', [PostulanteLoginController::class, 'logout'])->name('logo
 Route::middleware('auth.admin')->group(function () {
     /*
     |--------------------------------------------------------------------------
-    | Rutas de Permisos
+    | Rutas de dashboard-admin
     |--------------------------------------------------------------------------
     */
-    Route::get('/dashboard-admin',[DashboardController::class, 'index'])->name('dashboard.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'getKPIs'])->name('dashboard.dashboard');
+    Route::get('/dashboard/data', [DashboardController::class, 'obtenerDatos']);
+    
     /*
     |--------------------------------------------------------------------------
     | Rutas de Permisos

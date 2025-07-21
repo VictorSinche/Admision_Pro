@@ -1,10 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
-
-use Illuminate\Http\Request;
-
 class DashboardController extends Controller
 {
     public function index()
@@ -57,4 +55,42 @@ class DashboardController extends Controller
         return view('dashboardPostulante.dashboard', compact('postulantes'));
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Funciones para el dashboard del administrador
+    |--------------------------------------------------------------------------
+    */
+    public function getKPIs()
+    {
+        // Total postulantes
+        $total_postulantes = DB::table('info_postulante')->count();
+
+        // Sin declaración jurada (estado null o 0)
+        $sin_declaracion = DB::table('info_postulante as ip')
+            ->leftJoin('declaracion_jurada as dj', 'dj.info_postulante_id', '=', 'ip.id')
+            ->whereNull('dj.id')
+            ->count();
+
+        // Documentos incompletos (estado = 1)
+        $documentos_incompletos = DB::table('documentos_postulante')
+            ->where('estado', 1)
+            ->count();
+
+        // Completos: declaración.estado = 1 y documentos.estado = 2
+        $completos = DB::table('info_postulante as ip')
+            ->join('declaracion_jurada as dj', 'dj.info_postulante_id', '=', 'ip.id')
+            ->join('documentos_postulante as dp', 'dp.info_postulante_id', '=', 'ip.id')
+            ->where('dj.estado', 1)
+            ->where('dp.estado', 2)
+            ->distinct('ip.id')
+            ->count('ip.id');
+
+        return view('dashboardAdmin.dashboard', compact(
+            'total_postulantes',
+            'sin_declaracion',
+            'documentos_incompletos',
+            'completos'
+        ));
+    }
+    
 }
