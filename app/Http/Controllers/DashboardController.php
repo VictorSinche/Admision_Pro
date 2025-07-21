@@ -45,7 +45,6 @@ class DashboardController extends Controller
                 'vd.constancia',
                 'vd.merito',
                 'vd.constancianotas',
-                'vd.constmatricula',
                 'vd.syllabus',
                 'vd.certprofesional',
                 'sga.created_at as fecha_registro',

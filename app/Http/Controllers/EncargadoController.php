@@ -57,7 +57,7 @@ class EncargadoController extends Controller
     {
         $permitidos = [
             'formulario', 'pago', 'constancia', 'constancianotas',
-            'dni', 'seguro', 'constmatricula', 'certprofesional',
+            'dni', 'seguro', 'certprofesional',
             'syllabus', 'merito'
         ];
 

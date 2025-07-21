@@ -21,7 +21,6 @@ class VerificacionDocumento extends Model
         'constancia',
         'merito',
         'constancianotas',
-        'constmatricula',
         'syllabus',
         'certprofesional',
     ];

@@ -19,8 +19,6 @@ class DocumentoPostulante extends Model
         'constancianotas',
         'dni',
         'seguro',
-        // 'foto',
-        'constmatricula',
         'certprofecional',
         'syllabus',
         'merito',

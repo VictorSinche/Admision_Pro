@@ -22,7 +22,6 @@ return new class extends Migration
             $table->boolean('constancianotas')->default(false);
             $table->boolean('dni')->default(false);
             $table->boolean('seguro')->default(false);
-            $table->boolean('constmatricula')->default(false);
             $table->boolean('certprofesional')->default(false);
             $table->boolean('syllabus')->default(false);
             $table->boolean('merito')->default(false);

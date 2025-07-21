@@ -16,7 +16,6 @@ class ControlDocumentos extends Model
         'constancianotas',
         'dni',
         'seguro',
-        'constmatricula',
         'certprofesional',
         'syllabus',
         'merito',

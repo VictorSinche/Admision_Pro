@@ -410,7 +410,6 @@ class InfoPostulanteController extends Controller
             'copia_dni' => !empty($doc?->dni),
             'seguro_salud' => !empty($doc?->seguro),
             'certificado_notas_original' => !empty($doc?->constancianotas),
-            'constancia_primera_matricula' => !empty($doc?->constmatricula),
             'syllabus_visados' => !empty($doc?->syllabus),
             'titulo_tecnico' => !empty($doc?->certprofesional),
             'constancia_colegio' => !empty($doc?->merito),
@@ -727,7 +726,7 @@ class InfoPostulanteController extends Controller
     {
         $request->validate([
             'dni' => 'required|string',
-            'campo' => 'required|in:formulario,pago,dni,seguro,constancia,merito,constancianotas,constmatricula,syllabus,certprofesional',
+            'campo' => 'required|in:formulario,pago,dni,seguro,constancia,merito,constancianotas,syllabus,certprofesional',
             'estado' => 'required|in:0,1,2',
         ]);
 

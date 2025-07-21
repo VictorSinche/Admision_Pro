@@ -183,9 +183,6 @@
                             <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->constancianotas ?? 'null' }}" data-campo="constancianotas">
                                 {!! mostrarIconoVerificacion($verif->constancianotas ?? null) !!}
                             </td>
-                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->constmatricula ?? 'null' }}" data-campo="constmatricula">
-                                {!! mostrarIconoVerificacion($verif->constmatricula ?? null) !!}
-                            </td>
                             <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->syllabus ?? 'null' }}" data-campo="syllabus">
                                 {!! mostrarIconoVerificacion($verif->syllabus ?? null) !!}
                             </td>

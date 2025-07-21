@@ -25,7 +25,7 @@
 
     $documentosSubidos = (object) collect([
         'formulario', 'pago', 'dni', 'seguro', 'constancia', 'merito',
-        'constancianotas', 'constmatricula', 'syllabus', 'certprofesional'
+        'constancianotas', 'syllabus', 'certprofesional'
     ])->mapWithKeys(fn($campo) => [$campo => $postulante->$campo ?? null])->toArray();
 
     $documentosCompletos = 0;

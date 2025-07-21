@@ -25,7 +25,6 @@ class CreateVerificacionDocumentosTable extends Migration
             $table->boolean('constancia')->default(0);            
             $table->boolean('constancianotas')->default(0);
             $table->boolean('merito')->default(0);
-            $table->boolean('constmatricula')->default(0);
             $table->boolean('syllabus')->default(0);
             $table->boolean('certprofesional')->default(0);
 
