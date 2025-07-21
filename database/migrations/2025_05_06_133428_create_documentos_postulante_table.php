@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('seguro')->nullable();
             $table->string('constmatricula')->nullable();
             $table->string('certprofesional')->nullable();
-            $table->string('certNotas')->nullable();
             $table->string('syllabus')->nullable();
             $table->string('merito')->nullable();
             $table->unsignedTinyInteger('estado')->default(0); // Opcional: estado global del documento
