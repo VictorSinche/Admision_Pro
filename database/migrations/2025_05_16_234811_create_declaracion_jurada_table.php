@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('certificado_estudios')->nullable();
             $table->string('copia_dni')->nullable();
             $table->string('seguro_salud')->nullable();
-            // $table->string('foto_carnet')->nullable();
             $table->string('certificado_notas_original')->nullable();
             $table->string('constancia_primera_matricula')->nullable();
             $table->string('syllabus_visados')->nullable();
@@ -31,7 +30,7 @@ return new class extends Migration
             $table->string('modalidad_estudio')->nullable();
             $table->date('fecha_matricula')->nullable();
             $table->string('anno_culminado')->nullable();
-            $table->unsignedTinyInteger('estado')->default(0); // Opcional: estado global del documento
+            $table->unsignedTinyInteger('estado')->default(0);
             $table->timestamps();
         });
     }

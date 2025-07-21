@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ConsolidadoPostulantesExport;
+use App\Exports\DocumentosFaltantesDetalleExport;
 use App\Exports\DocumentosFaltantesExport;
 use App\Models\InfoPostulante;
 use App\Models\DeclaracionJurada;
@@ -17,6 +18,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use App\Exports\PostulantesDJExport;
+use App\Exports\PostulantesSinDeclaracionExport;
+use App\Exports\ReporteGeneralPostulantesExport;
 use App\Models\ControlDocumentos;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -277,7 +280,7 @@ class InfoPostulanteController extends Controller
             $control = ControlDocumentos::firstOrNew(['info_postulante_id' => $postulante->id]);
             // Subimos archivos requeridos como antes
             foreach ($documentosRequeridos as $campo) {
-                $bloqueado = optional($postulante->controlDocuementos)->$campo ?? false;
+                $bloqueado = optional($postulante->controlDocumentos)->$campo ?? false;
                 if($bloqueado) continue;
 
                     if ($request->hasFile($campo)) {
@@ -799,14 +802,53 @@ class InfoPostulanteController extends Controller
     | Funcion para reportes
     |--------------------------------------------------------------------------
     */
-    public function exportarConsolidado()
+    public function exportarReporteGeneral()
     {
-        return Excel::download(new ConsolidadoPostulantesExport, 'consolidado_postulantes.xlsx');
+        return Excel::download(new ReporteGeneralPostulantesExport, 'reporte_general_postulantes.xlsx');
     }
 
-    public function exportarDocumentosFaltantes(Request $request)
+    public function exportarDocumentosFaltantesDetalle(Request $request)
     {
-        $modalidad = $request->input('modalidad', 'A'); // Por defecto ordinario
-        return Excel::download(new DocumentosFaltantesExport($modalidad), 'faltantes_modalidad_' . $modalidad . '.xlsx');
+        $mapaModalidades = [
+            'A' => 'ordinario',
+            'B' => 'ingreso_por_merito',
+            'C' => 'primeros_puestos',
+            'D' => 'traslado_externo',
+            'L' => 'segunda_carrera',
+            'O' => 'pre_uma',
+            'ALL' => 'todas_las_modalidades',
+        ];
+
+        $modalidad = $request->input('modalidad', 'ALL');
+        $nombreModalidad = $mapaModalidades[$modalidad] ?? 'desconocido';
+
+        return Excel::download(
+            new DocumentosFaltantesDetalleExport($modalidad),
+            'faltantes_detallado_' . $nombreModalidad . '.xlsx'
+        );
     }
+
+    public function exportarSinDeclaracion(Request $request)
+    {
+        $mapaModalidades = [
+            'A' => 'ordinario',
+            'B' => 'ingreso_por_merito',
+            'C' => 'primeros_puestos',
+            'D' => 'traslado_externo',
+            'L' => 'segunda_carrera',
+            'O' => 'pre_uma',
+            'ORDINARIO' => 'ordinario',
+            'PRE-UMA' => 'pre_uma',
+            '' => 'todas_las_modalidades',
+        ];
+
+        $modalidad = $request->input('modalidad', '');
+        $nombreModalidad = $mapaModalidades[$modalidad] ?? 'desconocido';
+
+        return Excel::download(
+            new PostulantesSinDeclaracionExport($modalidad),
+            'postulantes_sin_declaracion_' . $nombreModalidad . '.xlsx'
+        );
+    }
+
 }

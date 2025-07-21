@@ -55,8 +55,10 @@ Route::middleware('auth.admin')->group(function () {
     Route::get('/encargado/revisar-documentos', [EncargadoController::class, 'revisarDocumentos'])->name('encargado.revisar');
     Route::put('/encargado/postulante/{id}/bloquear/{campo}', [EncargadoController::class, 'toggleBloqueo'])->name('documentos.bloqueo.toggle');
     Route::get('/reportes', fn() => view('admision.reportes.reportes'))->name('admision.reportes');
-    Route::get('/exportar/consolidado', [InfoPostulanteController::class, 'exportarConsolidado'])->name('exportar.consolidado');
-    Route::get('/exportar/faltantes', [InfoPostulanteController::class, 'exportarDocumentosFaltantes'])->name('exportar.faltantes');
+    //reportes
+    Route::get('/exportar-reporte-general', [InfoPostulanteController::class, 'exportarReporteGeneral'])->name('reporte.general');
+    Route::get('/reporte-faltantes-detalle', [InfoPostulanteController::class, 'exportarDocumentosFaltantesDetalle'])->name('reporte.faltantes.detalle');
+    Route::get('/reporte/sin-declaracion', [InfoPostulanteController::class, 'exportarSinDeclaracion'])->name('reporte.sin_declaracion');
 
     /*
     |--------------------------------------------------------------------------
