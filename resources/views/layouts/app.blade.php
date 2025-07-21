@@ -343,7 +343,7 @@
                     </a>            
                   </li>
                 @endif
-                {{-- @if(tienePermisoGlobal('ADM.6')) --}}
+                @if(tienePermisoGlobal('ADM.6'))
                   <li>
                     <a href="{{ route('admision.reportes') }}" 
                       class="rounded-2xl flex items-center w-full p-2 pl-11 transition duration-75 group 
@@ -351,7 +351,7 @@
                       Reportes
                     </a>            
                   </li>
-                {{-- @endif --}}
+                @endif
               </ul>
             </li>
           @endif
