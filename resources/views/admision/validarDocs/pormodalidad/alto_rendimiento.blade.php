@@ -94,7 +94,7 @@
                         class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                         <p
                         class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Cost. Notas
+                        Cost. Estudios
                         </svg>
                         </p>
                     </th>
@@ -102,15 +102,7 @@
                         class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                         <p
                         class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Cost. Matricula
-                        </svg>
-                        </p>
-                    </th>
-                    <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Syllabus
+                        Merito
                         </svg>
                         </p>
                     </th>
@@ -179,12 +171,11 @@
                             <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->seguro ?? 'null' }}" data-campo="seguro">
                                 {!! mostrarIconoVerificacion($verif->seguro ?? null) !!}
                             </td>
+                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->constancia ?? 'null' }}" data-campo="constancia">
+                                {!! mostrarIconoVerificacion($verif->constancia ?? null) !!}
                             </td>
-                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->constancianotas ?? 'null' }}" data-campo="constancianotas">
-                                {!! mostrarIconoVerificacion($verif->constancianotas ?? null) !!}
-                            </td>
-                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->syllabus ?? 'null' }}" data-campo="syllabus">
-                                {!! mostrarIconoVerificacion($verif->syllabus ?? null) !!}
+                            <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->merito ?? 'null' }}" data-campo="merito">
+                                {!! mostrarIconoVerificacion($verif->merito ?? null) !!}
                             </td>
                             <td class="p-4 border-b border-slate-200 text-center align-middle">
                                 @if ($postulante->declaracionJurada)
