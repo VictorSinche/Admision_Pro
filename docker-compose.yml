@@ -21,10 +21,11 @@ services:
     container_name: admision_pro_db
     restart: always
     environment:
-      MYSQL_DATABASE: bd_admision
-      MYSQL_USER: laraveluser
-      MYSQL_PASSWORD: laravelpass
-      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      
     ports:
       - "3308:3306"
     volumes:
