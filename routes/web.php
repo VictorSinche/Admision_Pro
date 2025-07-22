@@ -29,8 +29,7 @@ Route::middleware('auth.admin')->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/dashboard', [DashboardController::class, 'getKPIs'])->name('dashboard.dashboard');
-    Route::get('/dashboard/data', [DashboardController::class, 'obtenerDatos']);
-    
+    Route::get('/api/dashboard-data', [DashboardController::class, 'obtenerDatosGraficos']);
     /*
     |--------------------------------------------------------------------------
     | Rutas de Permisos

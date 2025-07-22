@@ -594,12 +594,6 @@ class InfoPostulanteController extends Controller
                         ELSE 'NO APLICA'
                     END AS seguro_salud,
 
-                    --CASE 
-                        --WHEN dj.id_mod_ing IN ('A','C','D','E','R') THEN 
-                            --CASE dj.foto_carnet WHEN '1' THEN 'PRESENTÓ' WHEN '0' THEN 'NO PRESENTÓ' END
-                        --ELSE 'NO APLICA'
-                    --END AS foto_carnet,
-
                     CASE 
                         WHEN dj.id_mod_ing IN ('D','E') THEN 
                             CASE dj.certificado_notas_original WHEN '1' THEN 'PRESENTÓ' WHEN '0' THEN 'NO PRESENTÓ' END
