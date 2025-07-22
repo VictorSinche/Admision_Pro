@@ -7,12 +7,14 @@ services:
       dockerfile: Dockerfile
     container_name: admision_pro_app
     ports:
-      - "7002:80"  # puerto diferente para evitar choque con libro_reclamaciones
+      - "7002:80"
     volumes:
       - .:/var/www/html
     depends_on:
       - admision_db
     command: ["/entrypoint.sh"]
+    networks:
+      - nginx-proxy-manager_default
 
   admision_db:
     image: mysql:8.0
@@ -24,9 +26,27 @@ services:
       MYSQL_PASSWORD: laravelpass
       MYSQL_ROOT_PASSWORD: rootpass
     ports:
-      - "3308:3306"  # puerto expuesto distinto
+      - "3308:3306"
     volumes:
       - admision_db_data:/var/lib/mysql
+    networks:
+      - nginx-proxy-manager_default
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: admision_pro_phpmyadmin
+    restart: always
+    expose:
+      - "80"
+    environment:
+      PMA_HOST: admision_db
+      PMA_PORT: 3306
+    networks:
+      - nginx-proxy-manager_default
 
 volumes:
   admision_db_data:
+
+networks:
+  nginx-proxy-manager_default:
+    external: true

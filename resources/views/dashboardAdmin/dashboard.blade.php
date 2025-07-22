@@ -70,93 +70,53 @@
         </div>
     </main>
 
-    {{-- <script>
-        // Bar Chart
-        new Chart(document.getElementById('barChart'), {
-            type: 'bar',
-            data: {
-                labels: ['Ordinario', 'Primeros Puestos', 'Pre UMA', 'Traslados'],
-                datasets: [{
-                    label: 'Cantidad',
-                    data: [210, 132, 85, 43],
-                    backgroundColor: ['#3B82F6', '#10B981', '#6366F1', '#F59E0B']
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false },
-                }
-            }
-        });
-
-        // Pie Chart
-        new Chart(document.getElementById('pieChart'), {
-            type: 'doughnut',
-            data: {
-                labels: ['Completos', 'Incompletos'],
-                datasets: [{
-                    data: [316, 196],
-                    backgroundColor: ['#10B981', '#EF4444'],
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-    </script> --}}
     <script>
-fetch('/api/dashboard-data')
-    .then(response => response.json())
-    .then(data => {
-        // Gráfico de Barras
-        new Chart(document.getElementById('barChart'), {
-            type: 'bar',
-            data: {
-                labels: data.labels_modalidad,
-                datasets: [{
-                    label: 'Cantidad',
-                    data: data.data_modalidad,
-                    backgroundColor: ['#3B82F6', '#10B981', '#6366F1', '#F59E0B']
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false },
-                }
-            }
-        });
+      fetch('/api/dashboard-data')
+          .then(response => response.json())
+          .then(data => {
+              // Gráfico de Barras con colores personalizados
+              new Chart(document.getElementById('barChart'), {
+                  type: 'bar',
+                  data: {
+                      labels: data.labels_modalidad,
+                      datasets: [{
+                          label: 'Cantidad',
+                          data: data.data_modalidad,
+                          backgroundColor: data.colors_modalidad
+                      }]
+                  },
+                  options: {
+                      responsive: true,
+                      plugins: {
+                          legend: { display: false },
+                      }
+                  }
+              });
 
-        // Gráfico de Dona
-        new Chart(document.getElementById('pieChart'), {
-            type: 'doughnut',
-            data: {
-                labels: data.documentacion.labels,
-                datasets: [{
-                    data: data.documentacion.data,
-                    backgroundColor: ['#10B981', '#EF4444'],
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-    })
-    .catch(error => {
-        console.error('Error al cargar datos del dashboard:', error);
-    });
-</script>
+              // Gráfico de Dona
+              new Chart(document.getElementById('pieChart'), {
+                  type: 'doughnut',
+                  data: {
+                      labels: data.documentacion.labels,
+                      datasets: [{
+                          data: data.documentacion.data,
+                          backgroundColor: data.documentacion.colors,
+                      }]
+                  },
+                  options: {
+                      responsive: true,
+                      plugins: {
+                          legend: {
+                              position: 'bottom'
+                          }
+                      }
+                  }
+              });
+          })
+          .catch(error => {
+              console.error('Error al cargar datos del dashboard:', error);
+          });
+    </script>
 
 </body>
 </html>

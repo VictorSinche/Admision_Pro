@@ -67,5 +67,16 @@
             </div>
         </form>
     </div>
+        {{-- Tarjeta: Evolución de Registros de Postulantes --}}
+    <div class="bg-white shadow-md rounded-2xl p-6 mb-6 flex items-center justify-between">
+        <div>
+            <h2 class="text-lg font-semibold text-gray-700">📥 Evolución de Interesados de Postulantes</h2>
+            <p class="text-sm text-gray-500">Todos los interesados con registros en el sistema.</p>
+        </div>
+        <a href="{{ route('reporte.evolucion') }}" target="_blank"
+            class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition">
+            <i class="fas fa-file-excel mr-2"></i> Descargar Excel
+        </a>
+    </div>
 </div>
 @endsection

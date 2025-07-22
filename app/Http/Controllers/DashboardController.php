@@ -97,33 +97,39 @@ class DashboardController extends Controller
     
     public function obtenerDatosGraficos()
     {
-        // Postulantes por modalidad
+        // Modalidades y colores por código
         $modalidades = [
-            'A' => 'Ordinario',
-            'B' => 'Primeros Puestos',
-            'C' => 'Pre UMA',
-            'D' => 'Traslados E.',
-            // 'E' => '',
-            'L' => 'Titulos o Graduados',
-            'O' => 'Alto Rendimiento',
-            'R' => 'Segunda Carrera',
+            'A' => ['label' => 'Ordinario', 'color' => '#3B82F6'],
+            'B' => ['label' => 'Primeros Puestos', 'color' => '#10B981'],
+            'C' => ['label' => 'Pre UMA', 'color' => '#6366F1'],
+            'D' => ['label' => 'Traslados E.', 'color' => '#F59E0B'],
+            'L' => ['label' => 'Tit. o Grad.', 'color' => '#8B5CF6'],
+            'O' => ['label' => 'Alto Rendimiento', 'color' => '#EC4899'],
+            'R' => ['label' => 'Segunda Carrera', 'color' => '#F87171'],
         ];
 
-        $modalidadCounts = [];
-        foreach ($modalidades as $key => $label) {
-            $modalidadCounts[] = InfoPostulante::where('id_mod_ing', $key)->count();
+        $labels = [];
+        $data = [];
+        $colors = [];
+
+        foreach ($modalidades as $codigo => $info) {
+            $labels[] = $info['label'];
+            $data[] = InfoPostulante::where('id_mod_ing', $codigo)->count();
+            $colors[] = $info['color'];
         }
 
-        // Documentos completos = estado = 2
+        // Documentación completa e incompleta
         $completos = DocumentoPostulante::where('estado', 2)->count();
         $incompletos = DocumentoPostulante::where('estado', '!=', 2)->count();
 
         return response()->json([
-            'labels_modalidad' => array_values($modalidades),
-            'data_modalidad' => $modalidadCounts,
+            'labels_modalidad' => $labels,
+            'data_modalidad' => $data,
+            'colors_modalidad' => $colors,
             'documentacion' => [
                 'labels' => ['Completos', 'Incompletos'],
-                'data' => [$completos, $incompletos]
+                'data' => [$completos, $incompletos],
+                'colors' => ['#10B981', '#EF4444']
             ]
         ]);
     }

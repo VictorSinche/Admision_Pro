@@ -60,6 +60,7 @@ Route::middleware('auth.admin')->group(function () {
     Route::get('/exportar-reporte-general', [InfoPostulanteController::class, 'exportarReporteGeneral'])->name('reporte.general');
     Route::get('/reporte-faltantes-detalle', [InfoPostulanteController::class, 'exportarDocumentosFaltantesDetalle'])->name('reporte.faltantes.detalle');
     Route::get('/reporte/sin-declaracion', [InfoPostulanteController::class, 'exportarSinDeclaracion'])->name('reporte.sin_declaracion');
+    Route::get('/reporte/evolucion-registros-excel', [InfoPostulanteController::class, 'exportarEvolucion'])->name('reporte.evolucion');
 
     /*
     |--------------------------------------------------------------------------
