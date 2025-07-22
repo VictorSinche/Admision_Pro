@@ -12,6 +12,7 @@ services:
       - .:/var/www/html
     depends_on:
       - admision_db
+    command: ["/entrypoint.sh"]
 
   admision_db:
     image: mysql:8.0
