@@ -37,7 +37,7 @@ services:
     container_name: admision_pro_phpmyadmin
     restart: always
     expose:
-      - "80"
+      - "8081:80"  # ← Aquí estás exponiendo el puerto 8081 al exterior
     environment:
       PMA_HOST: admision_db
       PMA_PORT: 3306
