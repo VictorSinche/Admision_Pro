@@ -39,7 +39,7 @@ services:
     ports:
       - "8081:80"  # ← Aquí estás exponiendo el puerto 8081 al exterior
     environment:
-      PMA_HOST: admision_db
+      PMA_HOST: admision_pro_db
       PMA_PORT: 3306
     networks:
       - nginx-proxy-manager_default
