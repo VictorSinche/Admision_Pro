@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\ConsolidadoPostulantesExport;
 use App\Exports\DocumentosFaltantesDetalleExport;
 use App\Exports\DocumentosFaltantesExport;
+use App\Exports\EvolucionRegistrosExport;
 use App\Models\InfoPostulante;
 use App\Models\DeclaracionJurada;
 use App\Models\DocumentoPostulante;
@@ -844,4 +845,8 @@ class InfoPostulanteController extends Controller
         );
     }
 
+    public function exportarEvolucion()
+    {
+        return Excel::download(new EvolucionRegistrosExport, 'evolucion_interesados.xlsx');
+    }
 }
