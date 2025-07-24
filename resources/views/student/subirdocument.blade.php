@@ -2,6 +2,16 @@
 
 @section('content')
 
+@php
+    use Carbon\Carbon;
+
+    $fechaLimite = $postulante->fecha_limite_docs 
+        ? Carbon::parse($postulante->fecha_limite_docs) 
+        : null;
+
+    $plazoVencido = $fechaLimite && Carbon::now()->gt($fechaLimite);
+@endphp
+
 <style>
   input[type="file"]::file-selector-button {
     background-color: #818181;
@@ -15,11 +25,16 @@
 <div class="bg-white shadow-lg border border-gray-300 rounded-lg p-6">
   <h1 class="text-2xl font-bold text-black mb-6">Adjunta tus documentos</h1>
 
-  <p class="text-gray-600 text-base mb-6">
-    Documentos requeridos para la modalidad.
-    <span class="font-semibold text-[#e72352]">{{ $nombreModalidad }}</span>
-    Una vez que los hayas subido, no podrás volver a cargarlos.
+  <p class="text-gray-600 text-base mb-6 leading-relaxed">
+    Debes subir los documentos requeridos para la modalidad 
+    <span class="font-semibold text-[#E72352]">{{ $nombreModalidad }}</span>
+    antes del <span class="font-semibold text-blue-600">{{ \Carbon\Carbon::parse($postulante->fecha_limite_docs)->format('d/m/Y') }}</span>.
+    <br class="hidden md:block">
+    <span class="text-sm text-gray-500 italic">
+      Una vez que los hayas cargado correctamente, no podrás volver a modificarlos.
+    </span>
   </p>
+
 
   <hr class="my-4 border-t border-gray-300" />
 
@@ -95,7 +110,27 @@
   @endif
   
 </div>
+
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if ($fechaLimite)
+            Swal.fire({
+                icon: '{{ $plazoVencido ? 'error' : 'info' }}',
+                title: '{{ $plazoVencido ? '¡Plazo Finalizado!' : 'Fecha límite para subir documentos' }}',
+                html: `
+                        {{ $plazoVencido 
+                            ? 'El plazo para subir tus documentos ha finalizado el ' . $fechaLimite->format('d/m/Y') . '.' 
+                            : 'Tienes hasta el ' . $fechaLimite->format('d/m/Y') . ' para subir todos tus documentos.'
+                        }}
+                `,
+                confirmButtonColor: '#e72352',
+                confirmButtonText: '{{ $plazoVencido ? "Entendido" : "Ok, lo haré" }}'
+            });
+        @endif
+    });
+</script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -114,11 +149,15 @@
           Swal.fire({
               icon: 'info',
               title: 'Faltan algunos documentos',
-              html: 'Puedes presentar una <strong>declaración jurada</strong> y entregarlos más adelante.',
+              html: `
+                Puedes presentar una <strong>declaración jurada</strong> y entregarlos más adelante.<br><br>
+                <i class="fa-regular fa-clock text-sm text-red-600"></i> 
+                <strong>Fecha límite:</strong> {{ session('fecha_limite_docs') ?? 'Sin fecha registrada' }}
+              `,
               confirmButtonColor: '#e72352'
           });
       @endif
-  
+
       // 3. Reemplazo de archivo
       document.querySelectorAll('input[type="file"]').forEach(input => {
         input.addEventListener('change', function () {

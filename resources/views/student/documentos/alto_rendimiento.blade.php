@@ -2,6 +2,9 @@
   $doc = $postulante->documentos;
   $verificacion = $postulante->verificacion;
   $control = $postulante->controlDocumentos;
+  $bloqueoPorFecha = $postulante->fecha_limite_docs
+                    ? \Carbon\Carbon::now()->gt(\Carbon\Carbon::parse($postulante->fecha_limite_docs))
+                    : false;
 @endphp
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -56,11 +59,11 @@
               accept=".png, .jpg, .jpeg, .pdf"
               onchange="mostrarNombreArchivo(event, '{{ $campo }}')"
               data-existe="{{ $archivoExiste ? 1 : 0 }}"
-              {{ $bloqueado ? 'disabled' : '' }} />
+              {{ ($bloqueado || $bloqueoPorFecha) ? 'disabled' : '' }} />
 
         <label for="{{ $campo }}"
               class="inline-flex items-center justify-center px-4 py-2 text-white text-sm font-medium border-r transition whitespace-nowrap
-                      {{ $bloqueado ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 cursor-pointer' }}">
+                {{ ($bloqueado || $bloqueoPorFecha) ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 cursor-pointer' }}">
           <i class="fa-solid fa-upload mr-2"></i> Subir archivo
         </label>
 
@@ -74,9 +77,13 @@
         </span>
       </div>
 
-      @if ($bloqueado)
+      @if ($archivoExiste && $bloqueado)
         <div class="mt-2 text-xs text-red-500 flex items-center gap-2">
           <i class="fa-solid fa-lock"></i> Documento bloqueado
+        </div>
+      @elseif (!$archivoExiste && $bloqueoPorFecha)
+        <div class="mt-2 text-xs text-red-500 flex items-center gap-2">
+          <i class="fa-solid fa-clock"></i> Plazo vencido para subir documentos
         </div>
       @endif
     </div>

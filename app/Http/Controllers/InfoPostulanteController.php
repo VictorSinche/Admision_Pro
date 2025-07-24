@@ -90,11 +90,11 @@ class InfoPostulanteController extends Controller
 
             // Mapeo de fechas según proceso
             $procesosConFecha = [
-                79 => '2025-08-22',
-                80 => '2025-08-22',
-                81 => '2025-08-22',
-                82 => '2025-08-22',
-                83 => '2025-08-22',
+                79 => '2025-07-22',
+                80 => '2025-07-22',
+                81 => '2025-07-22',
+                82 => '2025-07-22',
+                83 => '2025-07-22',
             ];
 
             // Verificar si el proceso actual tiene fecha límite
@@ -270,6 +270,12 @@ class InfoPostulanteController extends Controller
                 return back()->with('error', 'Postulante no encontrado.');
             }
 
+            // 🔒 Validar fecha límite de documentos
+            if ($postulante->fecha_limite_docs && now()->gt(\Carbon\Carbon::parse($postulante->fecha_limite_docs))) {
+                return back()->with('error', '⛔ El plazo para subir documentos venció el ' .
+                    \Carbon\Carbon::parse($postulante->fecha_limite_docs)->format('d/m/Y') . '.');
+            }
+
             $accessToken = session('microsoft_token');
 
             $documentosPorModalidad = [
@@ -324,16 +330,13 @@ class InfoPostulanteController extends Controller
                         }
                     }
             }
-
             // Guardamos antes de contar
             $registro->save();
             $control->save();
-
             // Recontar cuántos documentos requeridos ya están llenos (no null)
             $documentosSubidos = collect($documentosRequeridos)
                 ->filter(fn($campo) => !empty($registro->$campo))
                 ->count();
-
             // Estado general
             if ($documentosSubidos === 0) {
                 $registro->estado = 0;
@@ -342,17 +345,19 @@ class InfoPostulanteController extends Controller
             } else {
                 $registro->estado = 2;
             }
-
             $registro->save();
-
-
             // Mensaje dinámico
             if ($registro->estado < 2) {
                 return redirect()->back()
                     ->with('success', 'Se cargaron algunos documentos.')
-                    ->with('documentos_incompletos', true);
+                    ->with('documentos_incompletos', true)
+                    ->with(
+                        'fecha_limite_docs',
+                        $postulante->fecha_limite_docs
+                            ? Carbon::parse($postulante->fecha_limite_docs)->format('d/m/Y')
+                            : null
+                    );
             }
-
             return redirect()->back()->with('success', '✅ Todos los documentos fueron cargados correctamente.');
         } catch (\Exception $e) {
             Log::error('❌ Error al guardar documentos: ' . $e->getMessage());
