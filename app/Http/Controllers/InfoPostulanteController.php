@@ -90,11 +90,11 @@ class InfoPostulanteController extends Controller
 
             // Mapeo de fechas según proceso
             $procesosConFecha = [
-                79 => '2025-07-22',
-                80 => '2025-07-22',
-                81 => '2025-07-22',
-                82 => '2025-07-22',
-                83 => '2025-07-22',
+                // 79 => '2025-07-22',
+                // 80 => '2025-07-22',
+                // 81 => '2025-07-22',
+                // 82 => '2025-07-22',
+                // 83 => '2025-07-22',
             ];
 
             // Verificar si el proceso actual tiene fecha límite

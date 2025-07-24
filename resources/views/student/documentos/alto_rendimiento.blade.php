@@ -45,9 +45,9 @@
             </span>
             @break
           @default
-            <span class="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
+            {{-- <span class="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
               <i class="fa-regular fa-clock"></i> Pendiente
-            </span>
+            </span> --}}
         @endswitch
       </div>
     </div>
