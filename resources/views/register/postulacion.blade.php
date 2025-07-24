@@ -25,7 +25,7 @@
 <!-- Año de egreso y tipo de institución -->
 <div class="flex flex-col md:flex-row gap-4 mt-4">
   <div class="w-full mx-2 flex-1">
-      <input type="text" name="c_anoegreso" placeholder="Año de egreso" value="" class="{{ $inputClass }}">
+      <input type="number" name="c_anoegreso" placeholder="Año de egreso" value="" class="{{ $inputClass }}">
   </div>
   <div class="w-full mx-2 flex-1">
     <select name="c_tippro" class="{{ $inputClass }}">

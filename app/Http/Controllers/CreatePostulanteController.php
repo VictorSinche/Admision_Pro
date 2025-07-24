@@ -24,6 +24,7 @@ class CreatePostulanteController  extends Controller
 
         $especialidades = DB::connection('mysql_sigu')
             ->table('tb_especialidad')
+            ->where('codesp', '<>', 'E1')
             ->get();
 
             $modalidades = DB::connection('mysql_sigu')
