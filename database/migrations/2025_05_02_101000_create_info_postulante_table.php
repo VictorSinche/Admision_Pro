@@ -26,9 +26,9 @@ return new class extends Migration
             $table->string('c_codesp1', 5);                 // Programa de interés (especialidad)
             $table->integer('id_proceso');                  // Proceso de admisión
             $table->string('c_sedcod', 4)->nullable();      // Sede
-
             $table->tinyInteger('estado')->default(0);      // Estado: 0 = No confirmado, 1 = Confirmado
             $table->timestamp('fecha_confirmacion')->nullable(); // Fecha de confirmación
+            $table->date('fecha_limite_docs')->nullable();
 
             $table->timestamps();
         });

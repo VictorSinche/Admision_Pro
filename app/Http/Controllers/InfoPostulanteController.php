@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ConsolidadoPostulantesExport;
 use App\Exports\DocumentosFaltantesDetalleExport;
-use App\Exports\DocumentosFaltantesExport;
 use App\Exports\EvolucionRegistrosExport;
 use App\Models\InfoPostulante;
 use App\Models\DeclaracionJurada;
@@ -90,6 +88,22 @@ class InfoPostulanteController extends Controller
             // Asignar al array validated
             $validated['nomesp'] = $nomesp ?? 'Sin nombre';
 
+            // Mapeo de fechas según proceso
+            $procesosConFecha = [
+                79 => '2025-08-22',
+                80 => '2025-08-22',
+                81 => '2025-08-22',
+                82 => '2025-08-22',
+                83 => '2025-08-22',
+            ];
+
+            // Verificar si el proceso actual tiene fecha límite
+            if (array_key_exists($validated['id_proceso'], $procesosConFecha)) {
+                $validated['fecha_limite_docs'] = $procesosConFecha[$validated['id_proceso']];
+            } else {
+                $validated['fecha_limite_docs'] = null;
+            }
+            
             // Guardar en base local
             $postulante = InfoPostulante::updateOrCreate(
                 ['c_numdoc' => $validated['c_numdoc']],
