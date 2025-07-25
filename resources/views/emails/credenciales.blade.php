@@ -13,8 +13,8 @@
     <p>A continuación, te enviamos tus credenciales de acceso:</p>
 
     <ul>
-        <li><strong>Usuario:</strong> {{ $dni }}</li>
-        <li><strong>Contraseña:</strong> web{{ $dni }}</li>
+        <li><strong>Usuario:</strong> {{ $usuario }}</li>
+        <li><strong>Contraseña:</strong> {{ $password }}</li>
     </ul>
 
     <p>Con estas credenciales podrás continuar con tu postulación y seguimiento desde nuestra plataforma.</p>

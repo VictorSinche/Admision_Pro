@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Mail\CredencialesPostulanteMail;
+use App\Models\PostulanteCredencial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class CreatePostulanteController  extends Controller
 {
@@ -42,15 +45,38 @@ class CreatePostulanteController  extends Controller
     }
 
     public function registrarPostulante(Request $request)
-        {
-            try {
-                $numDoc = $request->input('c_numdoc');
-                $ubigeo = $request->input('c_ubigeo');
+    {
+        // Valida lo mínimo indispensable (ajusta según tu caso)
+        $request->validate([
+            'c_apepat'   => 'required|string|max:50',
+            'c_apemat'   => 'required|string|max:50',
+            'c_nombres'  => 'required|string|max:50',
+            'c_tipdoc'   => 'required|string|max:10',
+            'c_numdoc'   => 'required|string|max:11|unique:mysql.sga_tb_adm_cliente,c_numdoc',
+            'd_fecnac'   => 'required|date',
+            'c_ubigeo'   => 'required|string|size:6',
+            'c_dir'      => 'required|string|max:100',
+            'c_celu'     => 'nullable|string|max:30',
+            'c_email'    => 'required|email|max:50',
+            'c_sexo'     => 'required|string|size:1',
+            'id_proceso' => 'required|integer',
+            'c_codesp1'  => 'required|string|max:5',
+        ]);
 
-                DB::connection(
-                    // 'mysql_sigu_permits'
-                    'mysql'
-                    )->table('sga_tb_adm_cliente')->insert([
+        $numDoc = $request->input('c_numdoc');
+        $ubigeo = $request->input('c_ubigeo');
+
+        // Generamos la contraseña en texto plano que verá el postulante
+        $passwordPlano = Str::upper(Str::random(3)) . $numDoc; // Ej: ABC12345678
+
+        try {
+            // Usa la misma conexión que usa tu tabla sga_tb_adm_cliente
+            DB::connection('mysql')->beginTransaction();
+
+            // 1) Insertar postulante y obtener su id_cliente
+            $idCliente = DB::connection('mysql')
+                ->table('sga_tb_adm_cliente')
+                ->insertGetId([
                     'id_fase'        => $request->input('id_face', 1),
                     'id_mod_ing'     => $request->input('id_mod_ing'),
                     'c_apepat'       => $request->input('c_apepat'),
@@ -70,7 +96,11 @@ class CreatePostulanteController  extends Controller
                     'c_codesp1'      => $request->input('c_codesp1'),
                     'c_codesp2'      => $request->input('c_codesp1'),
 
-                    // Valores por defecto o vacíos
+                    // Mantienes los originales:
+                    'id_user'        => 'web' . $numDoc,
+                    'cod_asesor'     => 'web' . $numDoc,
+
+                    // Valores por defecto / opcionales
                     'c_procedencia'  => $request->input('c_procedencia', ''),
                     'c_colg_ubicacion' => $request->input('c_colg_ubicacion', ''),
                     'c_anoegreso'    => $request->input('c_anoegreso', ''),
@@ -88,30 +118,39 @@ class CreatePostulanteController  extends Controller
                     'c_celuapo'      => $request->input('c_celuapo', ''),
                     'id_tab_alu_contact' => $request->input('id_tab_alu_contact', ''),
                     'c_paisnac'      => $request->input('c_paisnac', ''),
-                    'c_ietnica'      => $request->input('c_ietnica'),
+                    'c_ietnica'      => $request->input('c_ietnica', ''),
 
-                    // Concatenaciones
-                    'id_user'        => 'web' . $numDoc,
-                    'cod_asesor'     => 'web' . $numDoc,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
+                    'created_at'     => now(),
+                    'updated_at'     => now(),
+                ], 'id_cliente'); // explícito (opcional en MySQL)
+            
+            // 2) Insertar credenciales en la nueva tabla con contraseña hasheada
+            PostulanteCredencial::create([
+                'cliente_id'    => $idCliente,
+                'username'      => $numDoc,
+                'password_hash' => Hash::make($passwordPlano),
+            ]);
 
-                Mail::to($request->input('c_email'))->send(
-                    new CredencialesPostulanteMail(
-                        $request->input('c_nombres'),
-                        $numDoc,
-                        $request->input('c_email')
-                    )
-                );
+            // 3) Enviar correo con el usuario + contraseña en texto plano
+            Mail::to($request->input('c_email'))->send(
+                new CredencialesPostulanteMail(
+                    $request->input('c_nombres'),
+                    $numDoc,   // usuario que mantienes
+                    $passwordPlano,    // contraseña temporal en texto plano
+                    $request->input('c_email')
+                )
+            );
 
-                return response()->json(['message' => '¡Registro exitoso! Se enviaron tus credenciales al correo.']);
-            } catch (\Exception $e) {
-                return response()->json([
-                    'message' => 'Error al registrar al postulante.',
-                    'error'   => $e->getMessage()
-                ], 500);
-            }
+            DB::connection('mysql')->commit();
+
+            return response()->json(['message' => '¡Registro exitoso! Se enviaron tus credenciales al correo.']);
+        } catch (\Throwable $e) {
+            DB::connection('mysql')->rollBack();
+
+            return response()->json([
+                'message' => 'Error al registrar al postulante.',
+                'error'   => $e->getMessage(),
+            ], 500);
         }
-
+    }
 }

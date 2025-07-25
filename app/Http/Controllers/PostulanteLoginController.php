@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PostulanteCredencial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -64,90 +65,99 @@ class PostulanteLoginController extends Controller
             return back()->with('error', '❌ Credenciales inválidas (admin).');
         } else {
             // 🔐 POSTULANTE: buscar por DNI
-            $postulante = DB::connection(
-                // 'mysql_sigu'
-                'mysql'
-                )
+            $dni = $input;
+
+            $postulante = DB::connection('mysql')
                 ->table('sga_tb_adm_cliente')
-                ->where('c_numdoc', $input)
+                ->where('c_numdoc', $dni)
                 ->first();
 
-            if ($postulante) {
-                $passwordEsperada = 'web' . $postulante->c_numdoc;
+            if (!$postulante) {
+                return back()->with('error', '❌ DNI no encontrado.');
+            }
 
-                if ($request->password === $passwordEsperada) {
-                    session([
-                        'dni_postulante'    => $postulante->c_numdoc,
-                        'datos_postulante' => $postulante,
-                        'c_numdoc'          => $postulante->c_numdoc,
-                        'nombre_completo'   => $postulante->c_nombres . ' ' . $postulante->c_apepat . ' ' . $postulante->c_apemat,
-                        'correo'            => $postulante->c_email_institucional ?? $postulante->c_email,
-                        'rol'               => 'postulante',
-                    ]);
+            // Buscar credenciales por cliente_id y username = dni
+            $credencial = PostulanteCredencial::where('cliente_id', $postulante->id_cliente)
+                ->where('username', $dni)
+                ->first();
 
-                    // Crear en base local si no existe
-                    $postulanteLocal = DB::table('postulantes')->where('dni', $postulante->c_numdoc)->first();
+            if (!$credencial) {
+                return back()->with('error', '❌ No tienes credenciales generadas. Comunícate con Admisión.');
+            }
 
-                    if (!$postulanteLocal) {
-                        $postulanteId = DB::table('postulantes')->insertGetId([
-                            'dni'        => $postulante->c_numdoc,
-                            'nombres'    => $postulante->c_nombres,
-                            'apellidos'  => $postulante->c_apepat . ' ' . $postulante->c_apemat,
-                            'email'      => $postulante->c_email_institucional ?? $postulante->c_email,
-                            'created_at' => now(),
-                            'updated_at' => now()
-                        ]);
-
-                        // Asignar todos los ítems del módulo POS
-                        $moduloPosId = DB::table('modules')->where('codigo', 'POS')->value('id');
-                        $itemPosIds = DB::table('items')->where('module_id', $moduloPosId)->pluck('id');
-
-                        foreach ($itemPosIds as $itemId) {
-                            DB::table('permissions_postulantes')->updateOrInsert(
-                                ['postulante_id' => $postulanteId, 'item_id' => $itemId],
-                                [
-                                    'estado' => 'A',
-                                    'created_at' => now(),
-                                    'updated_at' => now()
-                                ]
-                            );
-                        }
-
-                        // Asignar el ítem dash.1
-                        $itemDash = DB::table('items')->where('codigo', 'dash.2')->first();
-                        if ($itemDash) {
-                            DB::table('permissions_postulantes')->updateOrInsert(
-                                ['postulante_id' => $postulanteId, 'item_id' => $itemDash->id],
-                                [
-                                    'estado' => 'A',
-                                    'created_at' => now(),
-                                    'updated_at' => now()
-                                ]
-                            );
-                        }
-
-                        // Asignar el ítem PET.1
-                        $itemPet = DB::table('items')->where('codigo', 'PET.1')->first();
-                        if ($itemPet) {
-                            DB::table('permissions_postulantes')->updateOrInsert(
-                                ['postulante_id' => $postulanteId, 'item_id' => $itemPet->id],
-                                [
-                                    'estado' => 'A',
-                                    'created_at' => now(),
-                                    'updated_at' => now()
-                                ]
-                            );
-                        }
-                    }
-
-                    return redirect()->route('dashboardPost.dashboard');
-                }
-
+            // Verificar contraseña hash
+            if (!Hash::check($request->password, $credencial->password_hash)) {
                 return back()->with('error', '❌ Contraseña incorrecta (postulante).');
             }
 
-            return back()->with('error', '❌ DNI no encontrado.');
+            // ✅ Password correcta: crear sesión
+            session([
+                'dni_postulante'   => $postulante->c_numdoc,
+                'datos_postulante' => $postulante,
+                'c_numdoc'         => $postulante->c_numdoc,
+                'nombre_completo'  => $postulante->c_nombres . ' ' . $postulante->c_apepat . ' ' . $postulante->c_apemat,
+                'correo'           => $postulante->c_email,
+                'rol'              => 'postulante',
+            ]);
+
+            // Crear en base local si no existe
+            $postulanteLocal = DB::table('postulantes')->where('dni', $postulante->c_numdoc)->first();
+
+            if (!$postulanteLocal) {
+                $postulanteId = DB::table('postulantes')->insertGetId([
+                    'dni'        => $postulante->c_numdoc,
+                    'nombres'    => $postulante->c_nombres,
+                    'apellidos'  => $postulante->c_apepat . ' ' . $postulante->c_apemat,
+                    'email'      => $postulante->c_email,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+
+                // Asignar todos los ítems del módulo POS
+                $moduloPosId = DB::table('modules')->where('codigo', 'POS')->value('id');
+                $itemPosIds = DB::table('items')->where('module_id', $moduloPosId)->pluck('id');
+
+                foreach ($itemPosIds as $itemId) {
+                    DB::table('permissions_postulantes')->updateOrInsert(
+                        ['postulante_id' => $postulanteId, 'item_id' => $itemId],
+                        [
+                            'estado'     => 'A',
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]
+                    );
+                }
+
+                // Asignar el ítem dash.2
+                $itemDash = DB::table('items')->where('codigo', 'dash.2')->first();
+                if ($itemDash) {
+                    DB::table('permissions_postulantes')->updateOrInsert(
+                        ['postulante_id' => $postulanteId, 'item_id' => $itemDash->id],
+                        [
+                            'estado'     => 'A',
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]
+                    );
+                }
+
+                // Asignar el ítem PET.1
+                $itemPet = DB::table('items')->where('codigo', 'PET.1')->first();
+                if ($itemPet) {
+                    DB::table('permissions_postulantes')->updateOrInsert(
+                        ['postulante_id' => $postulanteId, 'item_id' => $itemPet->id],
+                        [
+                            'estado'     => 'A',
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]
+                    );
+                }
+            }
+
+            return redirect()->route('dashboardPost.dashboard');
         }
+
     }
 
     public function createUpdateUser(Request $request)

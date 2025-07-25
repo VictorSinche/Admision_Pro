@@ -11,14 +11,16 @@ class CredencialesPostulanteMail extends Mailable
     use Queueable, SerializesModels;
 
     public $nombres;
-    public $dni;
+    public $usuario;
+    public $password;
     public $correo;
 
-    public function __construct($nombres, $dni, $correo)
+    public function __construct($nombres, $usuario, $password, $correo)
     {
-        $this->nombres = $nombres;
-        $this->dni = $dni;
-        $this->correo = $correo;
+        $this->nombres  = $nombres;
+        $this->usuario  = $usuario;
+        $this->password = $password;
+        $this->correo   = $correo;
     }
 
     public function build()

@@ -30,6 +30,8 @@ class RechazoDocumentosPostulante extends Mailable
     {
         return $this->subject('Observaciones sobre tus documentos de admisión')
             ->view('emails.rechazo_documentos')
+            ->cc(['sinchevictorhugo@gmail.com', 'vitosh2911@gmail.com'])
+            // ->cc(['admision@uma.edu.pe', 'helpdesk@uma.edu.pe'])
             ->with([
                 'postulante' => $this->postulante,
                 'motivo' => $this->motivo,
