@@ -47,7 +47,9 @@ Route::middleware('auth.admin')->group(function () {
     Route::get('/convalidacion', fn() => view('director.convalidacion'))->name('director.convalidacion');
     Route::get('/historialdj', [InfoPostulanteController::class, 'listarPostulantesConDJ'])->name('admision.historialDj');
     Route::get('/listpostulante', [InfoPostulanteController::class, 'resumenEstados'])->name('admision.listpostulante');
-    Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
+    // Route::post('/exceldj', [InfoPostulanteController::class, 'exportarExcelDJ'])->name('exceldj');
+    Route::post('/exportar-declaracion-jurada', [InfoPostulanteController::class, 'exportExcelMultiple'])
+    ->name('exceldj');
     Route::get('/admision/postulantes/verificar', [InfoPostulanteController::class, 'listarPostulantes'])->name('admision.verificar');
 
     Route::post('/validar-documento', [InfoPostulanteController::class, 'validarCampo'])->name('verificacion.campo');
@@ -67,9 +69,9 @@ Route::middleware('auth.admin')->group(function () {
     | Rutas de Declaración Jurada
     |--------------------------------------------------------------------------
     */
-    Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
-    Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');
-    Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])->name('declaracionJurada.descargar');
+    // Route::get('/declaracion-jurada/{modalidad?}', [InfoPostulanteController::class, 'vistaDeclaracionJurada'])->name('declaracionJurada.formulario');
+    // Route::post('/declaracion-jurada/guardar', [InfoPostulanteController::class, 'guardarDeclaracion'])->name('declaracionJurada.guardar');
+    // Route::get('/declaracion-jurada/pdf/{dni}', [DeclaracionJuradaController::class, 'descargarDeclaracionJuradaPDF'])->name('declaracionJurada.descargar');
 
     /*
     |--------------------------------------------------------------------------
@@ -128,14 +130,6 @@ Route::middleware('auth.postulante')->group(function () {
     */
     Route::get('/auth/microsoft', [App\Http\Controllers\Auth\MicrosoftController::class, 'redirectToMicrosoft']);
     Route::get('/callback/microsoft', [App\Http\Controllers\Auth\MicrosoftController::class, 'handleMicrosoftCallback']);
-    /*
-    |--------------------------------------------------------------------------
-    | Rutas para peticiones
-    |--------------------------------------------------------------------------
-    */
-    // Route::get('/peti-postulante', fn() => view('Peticiones.peticionespos'))->name('peticionespos.postulante');
-    // Route::get('/habilitar-documentos/{c_numdoc}', [PeticionesController::class, 'verDocumentosRequeridos'])->name('peticionespos.postulante');
-    // Route::post('/solicitar-habilitacion', [PeticionesController::class, 'store'])->name('peticion.store');
 });
 
 /*

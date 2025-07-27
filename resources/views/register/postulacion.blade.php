@@ -48,6 +48,21 @@
   </select>
 </div>
 
+<!-- Programa de Interés -->
+<div class="mt-4 mx-2">
+  <select name="c_codesp1" id="programa_interes" class="{{ $inputClass }}">
+    <option value="" disabled selected>Seleccione el Programa de Interés</option>
+    @foreach ($especialidades as $esp)
+      <option value="{{ $esp->codesp }}" data-codfac="{{ $esp->codfac }}">
+        {{ $esp->nomesp }}
+      </option>
+    @endforeach
+  </select>
+
+  <!-- Campo oculto para guardar el codfac -->
+  <input type="hidden" name="c_codfac1" id="input_codfac1">
+</div>
+
 <!-- Modalidad y sede -->
 <div class="flex flex-col md:flex-row gap-4 mt-4">
   <div class="w-full mx-2 flex-1">
@@ -69,20 +84,6 @@
   </div>
 </div>
 
-<!-- Programa de Interés -->
-<div class="mt-4 mx-2">
-  <select name="c_codesp1" id="programa_interes" class="{{ $inputClass }}">
-    <option value="" disabled selected>Seleccione el Programa de Interés</option>
-    @foreach ($especialidades as $esp)
-      <option value="{{ $esp->codesp }}" data-codfac="{{ $esp->codfac }}">
-        {{ $esp->nomesp }}
-      </option>
-    @endforeach
-  </select>
-
-  <!-- Campo oculto para guardar el codfac -->
-  <input type="hidden" name="c_codfac1" id="input_codfac1">
-</div>
 
 <!-- Fuente de información -->
 <div class="mt-4 mx-2">
@@ -115,13 +116,7 @@
         <option value="N">Noche</option>
     </select>
   </div>
-  {{-- <div class="w-full mx-2 flex-1">
-    <select name="discapacidad" class="{{ $inputClass }}">
-        <option value="" disabled selected>Condición Discapacidad</option>
-        <option value="0">NO</option>
-        <option value="1">SÍ</option>
-    </select>
-  </div> --}}
+
   <div class="w-full mx-2 flex-1">
     <select name="c_ietnica" class="{{ $inputClass }}">
         <option value="" disabled selected>Identidad Étnica</option>

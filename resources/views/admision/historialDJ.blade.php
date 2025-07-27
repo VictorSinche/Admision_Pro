@@ -246,8 +246,8 @@
         { label: 'Ordinario', value: 'A' },
         { label: 'Pre-UMA', value: 'C' },
         { label: 'Traslado Externo', value: 'D' },
-        { label: 'Técnicos', value: 'E' },
-        { label: 'Alto Rendimiento', value: 'R' },
+        { label: 'Técnicos', value: 'L' },
+        { label: 'Alto Rendimiento', value: 'O' },
     ];
 
     $(document).ready(function () {

@@ -91,18 +91,6 @@
                         </svg>
                         </p>
                     </th>
-                    {{-- <th
-                        class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
-                        <p
-                        class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
-                        Área
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                        </svg>
-                        </p>
-                    </th> --}}
                     <th
                         class="p-4 transition-colors cursor-pointer border-y border-slate-200 bg-slate-50 hover:bg-slate-100">
                         <p
@@ -120,11 +108,6 @@
                         <p
                         class="flex items-center justify-between gap-2 font-sans text-sm  font-normal leading-none text-slate-500">
                         Acciones
-                        {{-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" aria-hidden="true" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"></path>
-                        </svg> --}}
                         </p>
                     </th>
 
@@ -170,15 +153,6 @@
                                     </span>
                                 </div>
                             </td>
-
-                            {{-- <td class="p-4 border-b border-slate-200">
-                                <div class="flex flex-col">
-                                    <p class="text-sm font-semibold text-slate-700">
-                                        {{ optional($usuario->area)->nombre ?? 'Sin asignar' }}
-                                    </p>
-                                </div>
-                            </td> --}}
-
                             <td class="p-4 border-b border-slate-200">
                                 <div class="flex flex-col">
                                     <p class="text-sm text-slate-500">
@@ -265,15 +239,6 @@
                         <option value="0">Inactivo</option>
                     </select>
                 </div>
-
-                {{-- <div>
-                    <label class="block text-sm font-medium text-gray-700">Área</label>
-                    <select name="area_id" class="w-full border rounded px-3 py-2 mt-1" required>
-                        @foreach ($areas as $area)
-                            <option value="{{ $area->id }}">{{ $area->nombre }}</option>
-                        @endforeach
-                    </select>
-                </div> --}}
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Contraseña</label>
