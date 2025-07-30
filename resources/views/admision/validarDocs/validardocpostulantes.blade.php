@@ -355,6 +355,10 @@
             badge = `<span class="inline-block px-3 py-1 bg-red-100 text-red-800 text-sm font-semibold rounded-full shadow">
                         ❌ Documento no válido
                     </span>`;
+        } else if (estado === 3) {
+            badge = `<span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-semibold rounded-full shadow">
+                        🔄 Documento reemplazado
+                    </span>`;
         } else {
             badge = `<span class="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-semibold rounded-full shadow">
                         ⚠️ Falta revisión
@@ -516,6 +520,13 @@
                         <i class="fa-solid fa-xmark-circle"></i>
                     </span>';
         }
+
+        if ((int)$estado === 3) {
+            return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-yellow-800 bg-yellow-100 px-3 py-1" title="Documento actualizado. Requiere nueva validación">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </span>';
+        }
+
         // Por si acaso
         return '<span class="inline-flex justify-center items-center w-10 h-10 rounded-full text-gray-600 bg-gray-100 px-3 py-1">
                     <i class="fa-solid fa-clock"></i>

@@ -1,9 +1,50 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-6xl mx-auto mt-12 bg-white shadow-2xl rounded-xl overflow-hidden">
+
+<div class="max-w-xl mx-auto mt-10 bg-white p-0 shadow rounded-lg">
+  <h1 class="text-xl font-bold mb-4 text-gray-800" aria-label="Buscar postulante por DNI">
+    <i class="fa-solid fa-id-card mr-2 text-blue-600" aria-hidden="true"></i> Buscar postulante por DNI
+  </h1>
+
+  {{-- Alertas de sesión --}}
+  @if (session('error'))
+    <div class="mb-4 p-3 bg-red-100 text-red-800 text-sm rounded shadow">
+      <i class="fa-solid fa-circle-exclamation mr-1"></i> {{ session('error') }}
+    </div>
+  @elseif (session('success'))
+    <div class="mb-4 p-3 bg-green-100 text-green-800 text-sm rounded shadow">
+      <i class="fa-solid fa-check-circle mr-1"></i> {{ session('success') }}
+    </div>
+  @endif
+
+  <form action="{{ route('admision.documentos') }}" method="GET" class="flex flex-col sm:flex-row gap-4">
+    <input type="text"
+            name="dni"
+            class="form-input w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            placeholder="Ejemplo: 12345678"
+            value="{{ old('dni', request('dni')) }}"
+            required>
+    <button type="submit"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded font-semibold shadow transition">
+      <i class="fa-solid fa-magnifying-glass mr-1"></i> Buscar
+    </button>
+  </form>
+</div>
+
+<!-- Separador con ícono decorativo -->
+<div class="my-10 flex items-center justify-center gap-4 text-gray-400 text-sm">
+  <div class="w-full border-t border-dashed"></div>
+  <div class="whitespace-nowrap flex items-center gap-1">
+    <i class="fa-solid fa-angles-down"></i> Resultado de la búsqueda
+  </div>
+  <div class="w-full border-t border-dashed"></div>
+</div>
+
+@if ($postulante)
+<div class="max-w-6xl mx-auto mt-12 bg-white shadow-lg rounded-xl overflow-hidden">
   <div class="bg-gradient-to-r from-blue-700 to-indigo-700 px-8 py-5">
-    <h2 class="text-2xl font-bold flex items-center gap-2">
+    <h2 class="text-2xl font-bold flex items-center gap-2 text-black">
       <i class="fa-solid fa-folder-open" style="color: #FFD43B;"></i> Control de Documentos del Postulante
     </h2>
   </div>
@@ -29,7 +70,7 @@
 
         <div class="relative bg-white p-5 border border-gray-200 rounded-xl shadow hover:shadow-lg transition duration-300 flex flex-col justify-between">
           
-          {{-- BADGE DE ESTADO EN ESQUINA SUPERIOR DERECHA --}}
+          {{-- BADGE DE ESTADO --}}
           <div class="absolute top-3 right-3">
             @switch($estado)
               @case(2)
@@ -75,9 +116,11 @@
           <form method="POST" action="{{ route('documentos.bloqueo.toggle', [$postulante->id, $campo]) }}" class="mt-4">
             @csrf
             @method('PUT')
-            <button type="submit"
-                    class="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-lg transition 
-                    {{ $bloqueado ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700' }} text-white shadow">
+            <button type="button"
+                    class="btn-bloqueo w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold rounded-lg transition 
+                    {{ $bloqueado ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700' }} text-white shadow"
+                    data-accion="{{ $bloqueado ? 'Desbloquear' : 'Bloquear' }}"
+                    data-label="{{ $label }}">
               <i class="fa-solid {{ $bloqueado ? 'fa-lock-open' : 'fa-lock' }}"></i>
               {{ $bloqueado ? 'Desbloquear' : 'Bloquear' }}
             </button>
@@ -87,46 +130,51 @@
     </div>
   </div>
 </div>
+@endif
 
 <script>
-  document.querySelectorAll('.btn-bloqueo').forEach(button => {
-    button.addEventListener('click', function (e) {
-      e.preventDefault();
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.btn-bloqueo').forEach(button => {
+      button.addEventListener('click', function (e) {
+        e.preventDefault();
 
-      const form = this.closest('form');
-      const accion = this.dataset.accion;
-      const label = this.dataset.label;
+        const form = this.closest('form');
+        const accion = this.dataset.accion;
+        const label = this.dataset.label;
 
-      Swal.fire({
-        title: `¿Confirmar ${accion}?`,
-        text: `Estás a punto de ${accion.toLowerCase()} el documento "${label}".`,
-        input: 'textarea',
-        inputLabel: 'Comentario (requerido)',
-        inputPlaceholder: 'Escribe aquí el motivo...',
-        inputAttributes: {
-          'aria-label': 'Comentario obligatorio'
-        },
-        showCancelButton: true,
-        confirmButtonText: 'Sí, confirmar',
-        cancelButtonText: 'Cancelar',
-        inputValidator: (value) => {
-          if (!value) {
-            return 'Debes ingresar un comentario';
+        Swal.fire({
+          title: `¿Confirmar ${accion}?`,
+          text: `Estás a punto de ${accion.toLowerCase()} el documento "${label}".`,
+          input: 'textarea',
+          inputLabel: 'Comentario (requerido)',
+          inputPlaceholder: 'Escribe aquí el motivo...',
+          inputAttributes: {
+            'aria-label': 'Comentario obligatorio'
+          },
+          showCancelButton: true,
+          confirmButtonText: 'Sí, confirmar',
+          cancelButtonText: 'Cancelar',
+          inputValidator: (value) => {
+            if (!value) {
+              return 'Debes ingresar un comentario';
+            }
           }
-        }
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Añadir comentario como input oculto al form
-          let input = document.createElement('input');
-          input.type = 'hidden';
-          input.name = 'observacion';
-          input.value = result.value;
-          form.appendChild(input);
-          form.submit();
-        }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'observacion';
+            input.value = result.value;
+            form.appendChild(input);
+            form.submit();
+          }
+        });
       });
     });
   });
 </script>
+
 @endsection
 
+{{-- @push('scripts') --}}
+{{-- {{-- @endpush --}}

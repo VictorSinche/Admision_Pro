@@ -248,6 +248,8 @@
         { label: 'Traslado Externo', value: 'D' },
         { label: 'Técnicos', value: 'L' },
         { label: 'Alto Rendimiento', value: 'O' },
+        { label: 'Primeros Puestos', value: 'B' },
+
     ];
 
     $(document).ready(function () {

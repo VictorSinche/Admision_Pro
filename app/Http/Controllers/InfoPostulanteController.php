@@ -20,7 +20,10 @@ use Carbon\Carbon;
 use App\Exports\PostulantesDJExport;
 use App\Exports\PostulantesSinDeclaracionExport;
 use App\Exports\ReporteGeneralPostulantesExport;
+use App\Mail\DocumentoReemplazadoMail;
 use App\Models\ControlDocumentos;
+use Dom\Document;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InfoPostulanteController extends Controller
@@ -308,6 +311,7 @@ class InfoPostulanteController extends Controller
                     if ($archivo->isValid()) {
 
                         $nombreAnterior = $registro->$campo ?? null;
+                        $huboReemplazo = !empty($nombreAnterior);
 
                         if (!empty($nombreAnterior)) {
                             $rutaAnterior = 'postulantes/' . $postulante->c_numdoc . '/' . $nombreAnterior;
@@ -326,6 +330,26 @@ class InfoPostulanteController extends Controller
 
                         $registro->$campo = $nombre;
                         $control->$campo = true;
+
+                        // 👉 BLOQUE A INSERTAR AQUÍ:
+                        if ($huboReemplazo) {
+                            $verificacion = VerificacionDocumento::firstOrNew([
+                                'info_postulante_id' => $postulante->id
+                            ]);
+
+                            $verificacion->$campo = 3;
+                            $verificacion->save();
+
+                            try {
+                                Mail::to('sinchevictorhugo@gmail.com')->send(new DocumentoReemplazadoMail(
+                                    $postulante,
+                                    $campo,
+                                    $nombre
+                                ));
+                            } catch (\Throwable $ex) {
+                                Log::error("❌ Error al enviar correo de reemplazo a admisión: " . $ex->getMessage());
+                            }
+                        }
 
                         // ===== Auditar el cambio del documento =====
                         HistorialVerificacion::create([
@@ -590,105 +614,6 @@ class InfoPostulanteController extends Controller
 
         return view('admision.historialDJ', compact('postulantes'));
     }
-
-    // public function exportarExcelDJ(Request $request)
-    // {
-    //     try {
-    //         $tipos = $request->input('tipo_admision');
-    //         if (!is_array($tipos) || empty($tipos)) {
-    //             return back()->with('error', 'Debe seleccionar al menos un tipo de admisión');
-    //         }
-
-    //         $placeholders = implode(',', array_fill(0, count($tipos), '?'));
-
-    //         $sql = "SELECT  
-    //                 CONCAT(ip.c_apepat, ' ', ip.c_apemat, ' ', ip.c_nombres) AS nombre_postulante,
-    //                 ip.c_numdoc AS dni_postulante,
-    //                 ip.nomesp AS carrera,
-    //                 CASE dj.id_mod_ing
-    //                     WHEN 'A' THEN 'ORDINARIO'
-    //                     WHEN 'C' THEN 'PRE-UMA'
-    //                     WHEN 'D' THEN 'TRASLADO EXTERNO'
-    //                     WHEN 'L' THEN 'ADMISIÓN TÉCNICOS'
-    //                     WHEN 'O' THEN 'ALTO RENDIMIENTO'
-    //                     ELSE 'DESCONOCIDO'
-    //                 END AS tipo,
-    //                 DATE(dj.created_at) AS fecha_registro,
-
-    //                 CASE 
-    //                     WHEN dj.id_mod_ing IN ('A','C','D','L','O') THEN 
-    //                         CASE dj.formulario_inscripcion WHEN '1' THEN 'PRESENTÓ' WHEN '0' THEN 'NO PRESENTÓ' END
-    //                     ELSE 'NO APLICA'
-    //                 END AS formulario_inscripcion,
-
-    //                 CASE 
-    //                     WHEN dj.id_mod_ing IN ('A','C','D','L','O') THEN 
-    //                         CASE dj.comprobante_pago WHEN '1' THEN 'PRESENTÓ' WHEN '0' THEN 'NO PRESENTÓ' END
-    //                     ELSE 'NO APLICA'
-    //                 END AS comprobante_pago,
-
-    //                 CASE 
-    //                     WHEN dj.id_mod_ing IN ('A','C','O') THEN 
-    //                         CASE dj.certificado_estudios WHEN '1' THEN 'PRESENTÓ' WHEN '0' THEN 'NO PRESENTÓ' END
-    //                     ELSE 'NO APLICA'
-    //                 END AS certificado_estudios,
-
-    //                 CASE 
-    //                     WHEN dj.id_mod_ing = 'O' THEN 
-    //                         CASE dj.constancia_colegio WHEN '1' THEN 'PRESENTÓ' WHEN '0' THEN 'NO PRESENTÓ' END
-    //                     ELSE 'NO APLICA'
-    //                 END AS constancia_colegio,
-
-    //                 CASE 
-    //                     WHEN dj.id_mod_ing IN ('A','C','D','L','O') THEN 
-    //                         CASE dj.copia_dni WHEN '1' THEN 'PRESENTÓ' WHEN '0' THEN 'NO PRESENTÓ' END
-    //                     ELSE 'NO APLICA'
-    //                 END AS copia_dni,
-
-    //                 CASE 
-    //                     WHEN dj.id_mod_ing IN ('A','C','D','L','O') THEN 
-    //                         CASE dj.seguro_salud WHEN '1' THEN 'PRESENTÓ' WHEN '0' THEN 'NO PRESENTÓ' END
-    //                     ELSE 'NO APLICA'
-    //                 END AS seguro_salud,
-
-    //                 CASE 
-    //                     WHEN dj.id_mod_ing IN ('D','L') THEN 
-    //                         CASE dj.certificado_notas_original WHEN '1' THEN 'PRESENTÓ' WHEN '0' THEN 'NO PRESENTÓ' END
-    //                     ELSE 'NO APLICA'
-    //                 END AS certificado_notas_original,
-
-    //                 CASE 
-    //                     WHEN dj.id_mod_ing IN ('D','L') THEN 
-    //                         CASE dj.constancia_primera_matricula WHEN '1' THEN 'PRESENTÓ' WHEN '0' THEN 'NO PRESENTÓ' END
-    //                     ELSE 'NO APLICA'
-    //                 END AS constancia_primera_matricula,
-
-    //                 CASE 
-    //                     WHEN dj.id_mod_ing IN ('D','L') THEN 
-    //                         CASE dj.syllabus_visados WHEN '1' THEN 'PRESENTÓ' WHEN '0' THEN 'NO PRESENTÓ' END
-    //                     ELSE 'NO APLICA'
-    //                 END AS syllabus_visados,
-
-    //                 CASE 
-    //                     WHEN dj.id_mod_ing = 'L' THEN 
-    //                         CASE dj.titulo_tecnico WHEN '1' THEN 'PRESENTÓ' WHEN '0' THEN 'NO PRESENTÓ' END
-    //                     ELSE 'NO APLICA'
-    //                 END AS titulo_tecnico
-
-    //             FROM declaracion_jurada dj
-    //             INNER JOIN info_postulante ip ON ip.id = dj.info_postulante_id
-    //             WHERE dj.id_mod_ing IN ($placeholders)
-    //         ";
-
-    //         $data = DB::connection('mysql')->select($sql, $tipos);
-
-    //         return Excel::download(new PostulantesDJExport($data), 'reporte_declaraciones.xlsx');
-
-    //     } catch (\Exception $e) {
-    //         Log::error('❌ Error al exportar excel DJ: ' . $e->getMessage());
-    //         return back()->with('error', 'Ocurrió un error al exportar los datos.');
-    //     }
-    // }
 
     public function exportExcelMultiple(Request $request)
     {

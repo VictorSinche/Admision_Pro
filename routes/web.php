@@ -54,10 +54,9 @@ Route::middleware('auth.admin')->group(function () {
 
     Route::post('/validar-documento', [InfoPostulanteController::class, 'validarCampo'])->name('verificacion.campo');
 
-    Route::get('/encargado/buscar-postulante', [EncargadoController::class, 'formularioBusqueda'])->name('admision.buscar');
-    Route::get('/encargado/revisar-documentos', [EncargadoController::class, 'revisarDocumentos'])->name('encargado.revisar');
-    
+    Route::get('/encargado/documentos', [EncargadoController::class, 'buscarYRevisar'])->name('admision.documentos');
     Route::put('/encargado/postulante/{id}/bloquear/{campo}', [EncargadoController::class, 'toggleBloqueo'])->name('documentos.bloqueo.toggle');
+
     Route::get('/reportes', fn() => view('admision.reportes.reportes'))->name('admision.reportes');
     //reportes
     Route::get('/exportar-reporte-general', [InfoPostulanteController::class, 'exportarReporteGeneral'])->name('reporte.general');
