@@ -56,6 +56,7 @@ Route::middleware('auth.admin')->group(function () {
 
     Route::get('/encargado/buscar-postulante', [EncargadoController::class, 'formularioBusqueda'])->name('admision.buscar');
     Route::get('/encargado/revisar-documentos', [EncargadoController::class, 'revisarDocumentos'])->name('encargado.revisar');
+    
     Route::put('/encargado/postulante/{id}/bloquear/{campo}', [EncargadoController::class, 'toggleBloqueo'])->name('documentos.bloqueo.toggle');
     Route::get('/reportes', fn() => view('admision.reportes.reportes'))->name('admision.reportes');
     //reportes

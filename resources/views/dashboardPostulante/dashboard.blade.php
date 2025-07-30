@@ -216,8 +216,8 @@
 		
 		} elseif ($estadoVerificacion === 1 && $tieneDJ && $faltanDocs && $documentosObservados === 0) {
 			$bgColor = 'bg-orange-100 text-orange-700';
-			$estadoTexto = '📌 Documentación incompleta';
-			$mensaje = '🔍 Has declarado tu documentación, pero aún tienes documentos obligatorios sin subir.';
+			$estadoTexto = '📌 Documentación validados';
+			$mensaje = '🔍 Documentos válidos, pero aún tienes documentos obligatorios sin subir.';
 			$buttonColor = 'border border-orange-600 text-orange-600 hover:bg-orange-50';
 			$buttonText = 'Completar documentos';
 			$icono = 'fas fa-exclamation-circle text-orange-600';

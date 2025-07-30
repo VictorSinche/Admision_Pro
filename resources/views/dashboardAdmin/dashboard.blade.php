@@ -47,7 +47,7 @@
                 <a href="{{ route('reporte.general') }}" class="bg-blue-600 text-white px-4 py-2 rounded-xl shadow hover:bg-blue-700" target="_blank">📄 Consolidado General</a>
                 <a href="{{ route('reporte.sin_declaracion') }}" class="bg-green-600 text-white px-4 py-2 rounded-xl shadow hover:bg-green-700" target="_blank">📋 Sin Declaración</a>
                 <a href="{{ route('reporte.faltantes.detalle') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-xl shadow hover:bg-indigo-700" target="_blank">📊 Documentos Faltantes</a>
-                <a href="#" class="bg-purple-600 text-white px-4 py-2 rounded-xl shadow hover:bg-purple-700">📈 Evolución Registros</a>
+                <a href="{{ route('reporte.evolucion') }}" class="bg-purple-600 text-white px-4 py-2 rounded-xl shadow hover:bg-purple-700" target="_blank">📈 Evolución Postulantes</a>
             </div>
         </div>
 

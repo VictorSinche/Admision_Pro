@@ -57,6 +57,27 @@
          value="{{ $procesoSeleccionado->id_proceso ?? '' }}">
 </div>
 
+  @php
+    $especialidadSeleccionada = null;
+    foreach ($especialidades as $esp) {
+        if (($data->c_codesp1 ?? request('c_codesp1')) == $esp->codesp) {
+            $especialidadSeleccionada = $esp;
+            break;
+        }
+    }
+  @endphp
+
+  <!-- Programa de interés -->
+  <div class="mt-4 mx-2">
+    <!-- Visible: nombre del programa -->
+    <input type="text" class="{{ $inputClass }}"
+          value="{{ $especialidadSeleccionada->nomesp ?? '' }}"
+          placeholder="Nombre del programa de interés" readonly>
+
+    <!-- Oculto: código de especialidad -->
+    <input type="hidden" name="c_codesp1"
+          value="{{ $especialidadSeleccionada->codesp ?? '' }}">
+  </div>
 
 <!-- Modalidad y sede -->
 <div class="flex flex-col md:flex-row gap-4 mt-4">
@@ -90,29 +111,6 @@
   </div>
 </div>
 
-  @php
-    $especialidadSeleccionada = null;
-    foreach ($especialidades as $esp) {
-        if (($data->c_codesp1 ?? request('c_codesp1')) == $esp->codesp) {
-            $especialidadSeleccionada = $esp;
-            break;
-        }
-    }
-  @endphp
-
-  <!-- Programa de interés -->
-  <div class="mt-4 mx-2">
-    <!-- Visible: nombre del programa -->
-    <input type="text" class="{{ $inputClass }}"
-          value="{{ $especialidadSeleccionada->nomesp ?? '' }}"
-          placeholder="Nombre del programa de interés" readonly>
-
-    <!-- Oculto: código de especialidad -->
-    <input type="hidden" name="c_codesp1"
-          value="{{ $especialidadSeleccionada->codesp ?? '' }}">
-  </div>
-
-
 <!-- Fuente de información -->
 <div class="mt-4 mx-2">
   <select name="id_tab_alu_contact" class="{{ $inputClass }}">
@@ -144,13 +142,7 @@
         <option value="N" {{ ($data->id_tab_turno ?? '') == 'N' ? 'selected' : '' }}>Noche</option>
     </select>
   </div>
-  {{-- <div class="w-full mx-2 flex-1">
-    <select name="discapacidad" class="{{ $inputClass }}">
-        <option value="" disabled selected>Condición Discapacidad</option>
-        <option value="0">NO</option>
-        <option value="1">SÍ</option>
-    </select>
-  </div> --}}
+
   <div class="w-full mx-2 flex-1">
     <select name="etnia" class="{{ $inputClass }}">
       <option value="" disabled >Tipo Documento</option>
@@ -165,59 +157,3 @@
     </select>
   </div>
 </div>
-
-{{-- <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const procesoSelect = document.getElementById('proceso_admision');
-    const programaSelect = document.getElementById('programa_interes');
-    const selectedPrograma = programaSelect.dataset.selected;
-
-    const allProgramOptions = Array.from(programaSelect.querySelectorAll('option'))
-        .filter(opt => opt.value !== "");
-
-    function filtrarProgramasPorFacultad(codfacSeleccionado) {
-        programaSelect.innerHTML = `
-            <option value="" disabled ${!selectedPrograma ? 'selected' : ''}>
-                Seleccione el Programa de Interés
-            </option>
-        `;
-
-        let seleccionadoAgregado = false;
-
-        allProgramOptions.forEach(opt => {
-            const codfac = opt.dataset.codfac;
-            const esSeleccionado = opt.value === selectedPrograma;
-
-            if (codfac === codfacSeleccionado || esSeleccionado) {
-                const clon = opt.cloneNode(true);
-                if (esSeleccionado) {
-                    clon.selected = true;
-                    seleccionadoAgregado = true;
-                }
-                programaSelect.appendChild(clon);
-            }
-        });
-
-        // Por si no se encontró en la lista (respaldo)
-        if (!seleccionadoAgregado && selectedPrograma) {
-            const original = allProgramOptions.find(opt => opt.value === selectedPrograma);
-            if (original) {
-                const clon = original.cloneNode(true);
-                clon.selected = true;
-                programaSelect.appendChild(clon);
-            }
-        }
-    }
-
-    procesoSelect.addEventListener('change', function () {
-        const codfac = this.options[this.selectedIndex].dataset.codfac;
-        if (codfac) filtrarProgramasPorFacultad(codfac);
-    });
-
-    const codfacInicial = procesoSelect.querySelector('option:checked')?.dataset.codfac;
-    if (codfacInicial) {
-        filtrarProgramasPorFacultad(codfacInicial);
-    }
-});
-
-</script> --}}

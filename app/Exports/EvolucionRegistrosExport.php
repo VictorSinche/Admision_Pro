@@ -18,6 +18,6 @@ class EvolucionRegistrosExport implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        return ['Fecha', 'Total Interesados'];
+        return ['Fecha', 'Total Postulantes'];
     }
 }

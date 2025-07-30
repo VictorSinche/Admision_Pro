@@ -5,11 +5,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- Codificación y compatibilidad -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Login Admin - UMA</title>
   
+  <!-- Título SEO -->
+  <title>Login Admin - Sistema de Admisión UMA</title>
+  
+  <!-- SEO Básico -->
+  <meta name="description" content="Accede al panel administrativo del Sistema de Admisión de la Universidad María Auxiliadora. Gestiona postulantes y procesos del periodo 2025.">
+  <meta name="author" content="Equipo de Desarrollo - Oficina de Tecnologías de la Información, Universidad María Auxiliadora">
+  <meta name="keywords" content="admisión UMA, login administrativo, sistema de admisión 2025, universidad María Auxiliadora, panel UMA, gestión de postulantes">
+
   <link rel="icon" href="{{ asset('uma/img/logo-uma.ico') }}" type="image/x-icon">
   <link rel="stylesheet" href="{{ asset('build/' . $manifest['resources/css/app.css']['file']) }}">
   <script type="module" src="{{ asset('build/' . $manifest['resources/js/app.js']['file']) }}"></script>
