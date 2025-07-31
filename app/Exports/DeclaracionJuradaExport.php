@@ -22,7 +22,16 @@ class DeclaracionJuradaExport implements FromCollection, WithHeadings
             ->selectRaw("
                 ip.c_numdoc AS DNI,
                 CONCAT(ip.c_apepat, ' ', ip.c_apemat, ' ', ip.c_nombres) AS Nombre,
-                dj.id_mod_ing AS Modalidad,
+                
+                CASE dj.id_mod_ing
+                    WHEN 'B' THEN 'Primeros Puestos'
+                    WHEN 'A' THEN 'Ordinario'
+                    WHEN 'O' THEN 'Alto Rendimiento'
+                    WHEN 'D' THEN 'Traslado Externo'
+                    WHEN 'C' THEN 'Admisión Pre-UMA'
+                    WHEN 'L' THEN 'Titulos y Graduados'
+                    ELSE 'Desconocida'
+                END AS Modalidad,
 
                 CASE 
                     WHEN dj.id_mod_ing IN ('A','B','C','D','L','O') THEN 

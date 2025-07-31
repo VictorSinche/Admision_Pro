@@ -9,49 +9,43 @@ use App\Models\InfoPostulante;
 
 class EncargadoController extends Controller
 {
-    // public function formularioBusqueda()
-    // {
-    //     return view('admision.validarDocs.formularioBusqueda');
-    // }
+    public function buscarYRevisar(Request $request)
+    {
+        $dni = $request->dni;
+        $postulante = null;
+        $nombreModalidad = null;
+        $documentosRequeridos = [];
 
-    // public function revisarDocumentos(Request $request)
-    // {
-    //     $dni = $request->dni;
+        if ($dni) {
+            $postulante = InfoPostulante::with(['documentos', 'controlDocumentos'])
+                ->where('c_numdoc', $dni)
+                ->first();
 
-    //     $postulante = InfoPostulante::with(['documentos', 'controlDocumentos']) // relación que crearemos
-    //         ->where('c_numdoc', $dni)
-    //         ->first();
+            if ($postulante) {
+                $codigo = $postulante->id_mod_ing;
+                $nombreModalidad = [
+                    'B' => 'Primeros Puestos',
+                    'A' => 'Ordinario',
+                    'O' => 'Alto Rendimiento',
+                    'D' => 'Traslado Externo',
+                    'L' => 'Titulos y Graduados',
+                    'C' => 'Admisión Pre-UMA',
+                ][$codigo] ?? 'Desconocida';
 
-    //     if (!$postulante) {
-    //         return back()->with('error', 'Postulante no encontrado.');
-    //     }
+                $documentosPorModalidad = [
+                    'A' => ['formulario', 'pago', 'seguro', 'dni', 'constancia'],
+                    'C' => ['formulario', 'pago', 'seguro', 'dni', 'constancia'],
+                    'B' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito'],
+                    'O' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito'],
+                    'D' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus'],
+                    'L' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus', 'certprofesional'],
+                ];
+                $documentosRequeridos = $documentosPorModalidad[$codigo] ?? [];
+            }
+        }
 
-    //     $codigo = $postulante->id_mod_ing;
-
-    //     $nombreModalidad = [
-    //         'B' => 'Primeros Puestos',
-    //         'A' => 'Ordinario',
-    //         'O' => 'Alto Rendimiento',
-    //         'D' => 'Traslado Externo',
-    //         'L' => 'Titulos y Graduados',
-    //         'C' => 'Admisión Pre-UMA',
-    //     ][$codigo] ?? 'Desconocida';
-
-    //     // Mapeo de modalidad a documentos
-    //     $documentosPorModalidad = [
-    //         'A' => ['formulario', 'pago', 'seguro', 'dni', 'constancia' ],
-    //         'C' => ['formulario', 'pago', 'seguro', 'dni', 'constancia' ],
-    //         //'L' => ['formulario', 'pago', 'seguro', 'dni', 'certprofesional' ],
-    //         'B' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito' ],
-    //         'O' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito' ],
-    //         'D' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus' ],
-    //         'L' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus', 'certprofesional' ],
-    //     ];
-
-    //     $documentosRequeridos = $documentosPorModalidad[$codigo] ?? [];
-
-    //     return view('admision.validarDocs.revisionDocumentos', compact('postulante', 'documentosRequeridos', 'nombreModalidad'));
-    // }
+        return view('admision.validarDocs.revisionDocumentos', compact('postulante', 'documentosRequeridos', 'nombreModalidad'));
+    }
 
     public function toggleBloqueo($id, $campo)
     {
@@ -92,44 +86,6 @@ class EncargadoController extends Controller
         ]);
 
         return back()->with('success', 'Estado de bloqueo actualizado correctamente.');
-    }
-
-    public function buscarYRevisar(Request $request)
-    {
-        $dni = $request->dni;
-        $postulante = null;
-        $nombreModalidad = null;
-        $documentosRequeridos = [];
-
-        if ($dni) {
-            $postulante = InfoPostulante::with(['documentos', 'controlDocumentos'])
-                ->where('c_numdoc', $dni)
-                ->first();
-
-            if ($postulante) {
-                $codigo = $postulante->id_mod_ing;
-                $nombreModalidad = [
-                    'B' => 'Primeros Puestos',
-                    'A' => 'Ordinario',
-                    'O' => 'Alto Rendimiento',
-                    'D' => 'Traslado Externo',
-                    'L' => 'Titulos y Graduados',
-                    'C' => 'Admisión Pre-UMA',
-                ][$codigo] ?? 'Desconocida';
-
-                $documentosPorModalidad = [
-                    'A' => ['formulario', 'pago', 'seguro', 'dni', 'constancia'],
-                    'C' => ['formulario', 'pago', 'seguro', 'dni', 'constancia'],
-                    'B' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito'],
-                    'O' => ['formulario', 'pago', 'seguro', 'dni', 'constancia', 'merito'],
-                    'D' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus'],
-                    'L' => ['formulario', 'pago', 'seguro', 'dni', 'constancianotas', 'syllabus', 'certprofesional'],
-                ];
-                $documentosRequeridos = $documentosPorModalidad[$codigo] ?? [];
-            }
-        }
-
-        return view('admision.validarDocs.revisionDocumentos', compact('postulante', 'documentosRequeridos', 'nombreModalidad'));
     }
 
 }
