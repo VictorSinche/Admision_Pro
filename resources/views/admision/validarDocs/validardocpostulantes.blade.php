@@ -54,6 +54,18 @@
                 {{-- Agrega más modalidades si deseas --}}
             </select>
         </div>
+
+        <div class="flex items-center gap-4 mt-4 px-4">
+            <label for="filtroEstado" class="text-sm font-medium text-slate-700">Filtrar por estado:</label>
+            <select id="filtroEstado" onchange="filtrarPostulantesPorEstado()" class="w-60 border border-slate-300 text-sm rounded px-3 py-2">
+                <option value="todos">Todos</option>
+                <option value="validado">Validados ✅</option>
+                <option value="invalido">Invalidados ❌</option>
+                <option value="reenviado">Reenviados 🔁</option>
+                <option value="sin_revisar">Sin revisar ⏰</option>
+            </select>
+        </div>
+
         {{-- colocar aqui los includes --}}
         <div id="contenedor-tablas">
             <div class="modalidad-tab" data-mod="C">
@@ -488,7 +500,8 @@
             fila.style.display = textoFila.includes(filtro) ? "" : "none";
         });
     }
-        function mostrarModalidadSelect(select) {
+
+    function mostrarModalidadSelect(select) {
         const codigo = select.value;
 
         document.querySelectorAll('.modalidad-tab').forEach(tab => {
@@ -499,6 +512,31 @@
         });
     }
 </script>
+
+    <script>
+        function filtrarPostulantesPorEstado() {
+            const estadoSeleccionado = document.getElementById('filtroEstado').value;
+
+            // Identifica la tabla actualmente visible (la modalidad activa)
+            const tablaVisible = document.querySelector('.modalidad-tab:not(.hidden)');
+            if (!tablaVisible) return;
+
+            // Busca todas las filas <tr> dentro del cuerpo de la tabla
+            const filas = tablaVisible.querySelectorAll('tbody tr');
+
+            // Recorre cada fila y la oculta o muestra según el estado seleccionado
+            filas.forEach(fila => {
+                const estado = fila.dataset.estadoGlobal;
+
+                if (estadoSeleccionado === 'todos' || estado === estadoSeleccionado) {
+                    fila.classList.remove('hidden');
+                } else {
+                    fila.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+
 
 @endsection
 

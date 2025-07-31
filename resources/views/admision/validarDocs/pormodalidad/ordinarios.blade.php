@@ -117,7 +117,31 @@
                 </thead>
                 <tbody>
                     @foreach($postulantesModalidad as $i => $postulante)
-                        <tr data-dni="{{ $postulante->c_numdoc }}">
+                        @php
+                            $verif = $postulante->verificacion;
+
+                            $estados = collect([
+                                $verif->formulario ?? null,
+                                $verif->pago ?? null,
+                                $verif->dni ?? null,
+                                $verif->seguro ?? null,
+                                $verif->constancia ?? null
+                            ]);
+
+                            if ($estados->contains(1)) {
+                                $estadoGlobal = 'invalido';
+                            } elseif ($estados->contains(3)) {
+                                $estadoGlobal = 'reenviado';
+                            } elseif ($estados->contains(2)) {
+                                $estadoGlobal = 'validado';
+                            } elseif ($estados->every(fn($e) => is_null($e))) {
+                                $estadoGlobal = 'sin_revisar';
+                            } else {
+                                $estadoGlobal = 'sin_revisar';
+                            }
+                        @endphp
+
+                        <tr data-dni="{{ $postulante->c_numdoc }}" data-estado-global="{{ $estadoGlobal }}">
                             <td class="p-4 border-b border-slate-200">
                                 <div class="flex flex-col">
                                     <p class="text-sm font-semibold text-slate-700">
@@ -149,7 +173,9 @@
                                     <i class="fa-solid fa-folder-open"></i>
                                 </a>
                             </td>
-                            @php $verif = $postulante->verificacion; @endphp
+                            @php 
+                                $verif = $postulante->verificacion; 
+                            @endphp
 
                             <td class="p-4 border-b border-slate-200 text-center" data-estado="{{ $verif->formulario ?? 'null' }}" data-campo="formulario">
                                 {!! mostrarIconoVerificacion($verif->formulario ?? null) !!}
